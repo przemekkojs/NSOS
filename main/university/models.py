@@ -13,29 +13,26 @@ class Faculty(models.Model):
 
 
 class Position(models.Model):
-    FULL = 'full'
-    HALF = 'half'
-    THREE_QUARTER = '3/4'
+    FULL = 40
+    HALF = 20
+    THREE_QUARTER = 30
 
     WORKLOAD_CHOICES = [
-        (FULL, 'Full-time (40h)'),
-        (HALF, 'Half-time (20h)'),
-        (THREE_QUARTER, 'Three-quarter (30h)'),
+        (FULL, 'Full (40h)'),
+        (HALF, 'Half (20h)'),
+        (THREE_QUARTER, 'Three quarter (30h)'),
     ]
 
     name = models.CharField(max_length=100, unique=True)
     hourly_rate = models.DecimalField(max_digits=8, decimal_places=2)
-    workload = models.CharField(max_length=10, choices=WORKLOAD_CHOICES, default=FULL)
+    workload = models.IntegerField(choices=WORKLOAD_CHOICES, default=FULL)
 
     class Meta:
         verbose_name = "Position"
         verbose_name_plural = "Positions"
 
-    def get_workload_hours(self):
-        return {'full': 40, 'half': 20, '3/4': 30}[self.workload]
-
     def __str__(self):
-        return f"{self.name} ({self.get_workload_display()})"
+        return f"{self.name} ({self.workload})"
 
 
 class Semester(models.Model):
