@@ -2,6 +2,16 @@
 import MainCalendar from '@/components/MainCalendar.vue'
 </script>
 <template>
-  <h1>Calendar view</h1>
-  <MainCalendar />
+  <UDashboardPanel id="calendar">
+    <template #header>
+      <UDashboardNavbar title="Calendar" :ui="{ right: 'gap-3' }">
+        <template #leading>
+          <UDashboardSidebarCollapse />
+        </template>
+      </UDashboardNavbar>
+    </template>
+    <template #body>
+      <MainCalendar />
+    </template>
+  </UDashboardPanel>
 </template>

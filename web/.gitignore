@@ -46,3 +46,7 @@ playwright-report/
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# nuxt ui
+auto-imports.d.ts
+components.d.ts

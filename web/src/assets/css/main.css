@@ -1,0 +1,26 @@
+/* @import 'fullcalendar.css'; */
+@import 'tailwindcss';
+@import '@nuxt/ui';
+
+:root {
+  --font-sans: 'Public Sans', sans-serif;
+
+  /* Modern red palette - slightly more vibrant and saturated */
+  --color-primary-50: oklch(96.5% 0.015 25);
+  --color-primary-100: oklch(93.2% 0.035 25);
+  --color-primary-200: oklch(87.8% 0.068 25);
+  --color-primary-300: oklch(79.5% 0.115 25);
+  --color-primary-400: oklch(68.2% 0.165 25);
+  --color-primary-500: oklch(55.8% 0.195 25);
+  --color-primary-600: oklch(48.5% 0.178 25);
+  --color-primary-700: oklch(40.2% 0.148 25);
+  --color-primary-800: oklch(32.8% 0.115 25);
+  --color-primary-900: oklch(22.5% 0.072 25);
+  --color-primary-950: oklch(15.2% 0.045 25);
+
+  --ui-primary: var(--color-primary-600);
+}
+
+.dark {
+  --ui-primary: var(--color-primary-400);
+}

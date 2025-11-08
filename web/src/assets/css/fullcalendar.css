@@ -1,0 +1,7 @@
+:root {
+  --fc-today-bg-color: var(--color-primary-100);
+}
+
+.dark {
+  --fc-today-bg-color: var(--color-primary-800);
+}
