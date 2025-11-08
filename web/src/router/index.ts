@@ -1,6 +1,4 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
-import HomeView from './HomeView.vue'
-import CalendarView from './CalendarView.vue'
 import { authGuard } from '@/features/auth/guards'
 
 import authRoute from '../features/auth/router'
@@ -8,11 +6,11 @@ import authRoute from '../features/auth/router'
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    component: HomeView,
+    component: () => import('./HomeView.vue'),
   },
   {
     path: '/calendar',
-    component: CalendarView,
+    component: () => import('./CalendarView.vue'),
   },
   authRoute,
 ]

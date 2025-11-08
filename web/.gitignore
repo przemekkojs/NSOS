@@ -50,3 +50,7 @@ playwright-report/
 # nuxt ui
 auto-imports.d.ts
 components.d.ts
+
+.env
+.env*.local
+!.env.example

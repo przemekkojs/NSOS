@@ -1,9 +1,5 @@
 <template>
-  <ConfigProvider>
-    <Suspense>
-      <UApp>
-        <RouterView />
-      </UApp>
-    </Suspense>
-  </ConfigProvider>
+  <UApp>
+    <RouterView />
+  </UApp>
 </template>
