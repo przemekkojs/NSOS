@@ -1,0 +1,25 @@
+# Virtual environment
+.venv/
+venv/
+env/
+*.env/
+nsosEnv/
+
+# Django
+*.sqlite3
+db.sqlite3
+*.log
+*.pot
+*.py[cod]
+
+# PyCharm / IntelliJ
+.idea/
+
+# Django migrations
+*.pyc
+*.pyo
+
+# Cache
+__pycache__/
+.mypy_cache/
+

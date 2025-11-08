@@ -1,0 +1,21 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Vitest",
+      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/vitest", // Adjust this path if needed
+      "args": [
+        "run",
+        "--test-timeout",
+        "10000",
+        "--inspect-brk", // Tells Vitest to wait for the debugger
+        "--no-file-parallelism"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": ["<node_internals>"]
+    }
+  ]
+}

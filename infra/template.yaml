@@ -1,0 +1,30 @@
+Description: 'NSOS - University Management System Infrastructure'
+
+Parameters:
+  Environment:
+    Type: String
+    Default: dev
+    AllowedValues:
+      - dev
+      - staging
+      - prod
+    Description: Environment name
+
+  ProjectName:
+    Type: String
+    Default: nsos
+    Description: Project name for resource naming
+
+Resources:
+  MyFirstBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "my-first-bucket-${AWS::AccountId}"
+      Tags:
+        - Key: Project
+          Value: Learning
+
+Outputs:
+  BucketName:
+    Description: Name of the S3 bucket
+    Value: !Ref Bucket
