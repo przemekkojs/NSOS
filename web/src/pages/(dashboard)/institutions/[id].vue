@@ -1,16 +1,12 @@
 <script setup lang="ts">
 import { useAPIFetch } from '@/core/lib/sdk'
 import type { Institution } from '@/mocks/fixtures'
-import { useRoute } from 'vue-router'
-// import { useRouter } from 'vue-router'
 
 const route = useRoute()
 
 const { data: rawData, isFetching } = useAPIFetch(`/institutions/${route.params.id}`).json<
   Institution[]
 >()
-// const toast = useToast()
-// const router = useRouter()
 </script>
 <template>
   <h1>Institutions {{ $route.params.id }}</h1>

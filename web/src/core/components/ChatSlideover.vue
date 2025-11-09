@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-// import type {UIMessage} from 'ai'
 import { getTextFromMessage } from '@nuxt/ui/runtime/utils/ai.js'
 import type { UIMessage } from 'ai'
 import * as marked from 'marked'

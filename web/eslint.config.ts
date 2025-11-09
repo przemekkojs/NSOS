@@ -62,6 +62,17 @@ export default defineConfigWithVueTs(
               importNames: ['useI18n'],
               message: 'The useI18n composable is auto-imported. Remove the import statement.',
             },
+            {
+              name: '@vueuse/core',
+              importNames: [
+                'useFetch',
+                'useStorage',
+                'useDebounceFn',
+                'useIntervalFn',
+                'useTimeoutFn',
+              ],
+              message: 'These VueUse composables are auto-imported. Remove the import statement.',
+            },
           ],
         },
       ],

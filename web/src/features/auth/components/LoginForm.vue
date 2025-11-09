@@ -2,7 +2,6 @@
 import type { FormSubmitEvent } from '@nuxt/ui'
 import PasswordField from '@/core/components/ui/PasswordField.vue'
 
-import { ref } from 'vue'
 import z from 'zod'
 import { useAuth } from '@/core/lib/sdk'
 import { useUserStore } from '../stores/user-store'

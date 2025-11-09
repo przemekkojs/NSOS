@@ -4,8 +4,6 @@ import { useAPIFetch } from '@/core/lib/sdk'
 // TODO: replace with correct Institution type when available
 import type { Institution } from '@/mocks/fixtures/institutions'
 import type { TableColumn } from '@nuxt/ui'
-import { computed } from 'vue'
-import { useI18n } from 'vue-i18n'
 
 const { data: rawData, isFetching } = useAPIFetch('/institutions').json<Institution[]>()
 const getDropdownActions = useTableActions()

@@ -3,7 +3,6 @@ import { useTableActions } from '@/core/composables/useTableActions'
 import { useAPIFetch } from '@/core/lib/sdk'
 import type { Lecturer } from '@/core/types'
 import type { TableColumn } from '@nuxt/ui'
-import { useI18n } from 'vue-i18n'
 
 const { data: rawData, isFetching } = useAPIFetch('/users?kind=lecturer').json<Lecturer[]>()
 

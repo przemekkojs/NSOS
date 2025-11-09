@@ -1,10 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { formatTime } from '@/core/utils/time'
 import type { NSOSNotification } from '@/features/notifications/useNotifications'
 import type { DropdownMenuItem, TableColumn } from '@nuxt/ui'
-import { useStorage } from '@vueuse/core'
-import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 const notifications = useStorage<NSOSNotification[]>('notifications', [])

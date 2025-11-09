@@ -1,16 +1,11 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { useStorage } from '@vueuse/core'
 import type { DropdownMenuItem, NavigationMenuItem } from '@nuxt/ui'
-import { useRoute } from 'vue-router'
 import { useNotifications } from '@/features/notifications/useNotifications'
 import ChatSlideover from '@/core/components/ChatSlideover.vue'
 import LocaleSelect from '@/core/components/ui/LocaleSelect.vue'
-import { useI18n } from 'vue-i18n'
 
 const toast = useToast()
 const open = ref(true)
-const route = useRoute()
 const { t } = useI18n()
 const { unreadCount } = useNotifications()
 

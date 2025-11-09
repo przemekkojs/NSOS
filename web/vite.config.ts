@@ -13,7 +13,7 @@ export default defineConfig({
     vue(),
     ui({
       autoImport: {
-        imports: ['vue', 'vue-router', 'vue-i18n'],
+        imports: ['vue', 'vue-router', 'vue-i18n', '@vueuse/core'],
         dts: true,
       },
       ui: {
