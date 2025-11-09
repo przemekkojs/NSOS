@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useStorage } from '@vueuse/core'
-import type { NavigationMenuItem } from '@nuxt/ui'
+import type { DropdownMenuItem, NavigationMenuItem } from '@nuxt/ui'
 import { useRoute } from 'vue-router'
+import { useNotifications } from '@/features/notifications/useNotifications'
+import ChatSlideover from '@/core/components/ChatSlideover.vue'
 
 const toast = useToast()
 const open = ref(true)
 const route = useRoute()
+const { unreadCount } = useNotifications()
 
 const setOpen = (value: boolean) => {
   return () => {
@@ -14,7 +17,7 @@ const setOpen = (value: boolean) => {
   }
 }
 
-const links = [
+const links = computed<NavigationMenuItem[][]>(() => [
   [
     {
       label: 'Dashboard',
@@ -50,7 +53,7 @@ const links = [
       label: 'Inbox',
       icon: 'i-lucide-inbox',
       to: '/inbox',
-      badge: '4',
+      badge: unreadCount.value > 0 ? unreadCount.value.toString() : undefined,
       onSelect: setOpen(false),
     },
     {
@@ -73,13 +76,13 @@ const links = [
       target: '_blank',
     },
   ],
-] satisfies NavigationMenuItem[][]
+])
 
 const groups = computed(() => [
   {
     id: 'links',
     label: 'Go to',
-    items: links.flat(),
+    items: links.value.flat(),
   },
   {
     id: 'code',
@@ -95,6 +98,21 @@ const groups = computed(() => [
     ],
   },
 ])
+
+const items = [
+  [
+    {
+      label: 'New mail',
+      icon: 'i-lucide-send',
+      to: '/inbox',
+    },
+    {
+      label: 'New employee',
+      icon: 'i-lucide-user-plus',
+      to: '/customers',
+    },
+  ],
+] satisfies DropdownMenuItem[][]
 
 const cookie = useStorage('cookie-consent', 'pending')
 if (cookie.value !== 'accepted') {
@@ -161,14 +179,30 @@ if (cookie.value !== 'accepted') {
 
     <UDashboardSearch :groups="groups" />
 
-    <UDashboardPanel :id="$route.name?.toString()">
+    <UDashboardPanel>
       <template #header>
-        <UDashboardNavbar :title="route.name?.toString().toUpperCase()" :ui="{ right: 'gap-3' }">
+        <UDashboardNavbar :ui="{ right: 'gap-3' }">
           <template #leading>
             <UDashboardSidebarCollapse />
           </template>
+
+          <template #right>
+            <ChatSlideover />
+            <UTooltip text="Notifications" :shortcuts="['N']">
+              <UButton color="neutral" variant="ghost" square>
+                <UChip color="error" inset>
+                  <UIcon name="i-lucide-bell" class="size-5 shrink-0" />
+                </UChip>
+              </UButton>
+            </UTooltip>
+
+            <UDropdownMenu :items="items">
+              <UButton icon="i-lucide-plus" size="md" class="rounded-full" />
+            </UDropdownMenu>
+          </template>
         </UDashboardNavbar>
       </template>
+
       <template #body>
         <RouterView />
       </template>

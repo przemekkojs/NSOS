@@ -9,7 +9,6 @@ const { data: rawData, isFetching } = useAPIFetch('/users?kind=lecturer').json<L
 const getDropdownActions = useTableActions()
 
 const columns: TableColumn<Lecturer>[] = [
-  { accessorKey: 'id', header: '#', cell: ({ row }) => `#${row.getValue('id')}` },
   { accessorKey: 'email', header: 'Email' },
   {
     accessorKey: 'faculty.name',

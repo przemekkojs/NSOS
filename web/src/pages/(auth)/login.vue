@@ -16,4 +16,3 @@ async function onSuccess() {
     <LoginForm @success="onSuccess" />
   </div>
 </template>
-<style lang="css" scoped></style>

@@ -2,6 +2,7 @@
   --fc-today-bg-color: var(--color-primary-50);
   --fc-event-bg-color: var(--color-primary-500);
   --fc-event-border-color: var(--fc-event-bg-color);
+  --fc-border-color: var(--ui-border);
 }
 
 .dark {
