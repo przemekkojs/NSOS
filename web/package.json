@@ -44,15 +44,24 @@
     "eslint-plugin-playwright": "^2.2.2",
     "eslint-plugin-vue": "~10.5.0",
     "jiti": "^2.6.1",
-    "jsdom": "^27.0.1",
+    "msw": "^2.12.0",
     "npm-run-all2": "^8.0.4",
     "prettier": "3.6.2",
     "typescript": "~5.9.0",
     "unplugin-vue-components": "^30.0.0",
+    "unplugin-vue-router": "^0.16.1",
     "vite": "^7.1.11",
     "vite-plugin-vue-devtools": "^8.0.3",
     "vitest": "^3.2.4",
     "vue-tsc": "^3.1.1"
   },
-  "packageManager": "yarn@4.10.3"
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
+  },
+  "packageManager": "yarn@4.11.0",
+  "overrides": {
+    "@vueuse/core": "^14.0.0"
+  }
 }

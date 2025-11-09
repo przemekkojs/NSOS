@@ -1,8 +1,13 @@
 <script setup lang="ts">
-import LoginForm from '../components/LoginForm.vue'
+import LoginForm from '@/features/auth/components/LoginForm.vue'
+import { useRouter } from 'vue-router'
 
-function onSuccess(value: any) {
-  console.info(value.email, value.password)
+const router = useRouter()
+
+async function onSuccess() {
+  await router.push({
+    path: '/',
+  })
 }
 </script>
 <template>

@@ -11,5 +11,5 @@
       "path": "./tsconfig.vitest.json"
     }
   ],
-  "include": ["components.d.ts"]
+  "include": ["components.d.ts", "./typed-router.d.ts"]
 }

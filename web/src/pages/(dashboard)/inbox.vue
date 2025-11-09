@@ -1,3 +1,3 @@
 <template>
-  <p>Register</p>
+  <h1>Inbox</h1>
 </template>
