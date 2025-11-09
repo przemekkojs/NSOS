@@ -42,6 +42,29 @@ export default defineConfigWithVueTs(
       'vue/multi-word-component-names': 'off',
       'vue/max-attributes-per-line': ['error', { singleline: 3 }],
       'no-undef': 'off',
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              name: 'vue',
+              importNames: ['ref', 'computed', 'reactive', 'watch', 'onMounted', 'onUnmounted'],
+              message: 'These Vue composables are auto-imported. Remove the import statement.',
+            },
+            {
+              name: 'vue-router',
+              importNames: ['useRouter', 'useRoute'],
+              message:
+                'These Vue Router composables are auto-imported. Remove the import statement.',
+            },
+            {
+              name: 'vue-i18n',
+              importNames: ['useI18n'],
+              message: 'The useI18n composable is auto-imported. Remove the import statement.',
+            },
+          ],
+        },
+      ],
     },
   },
 )

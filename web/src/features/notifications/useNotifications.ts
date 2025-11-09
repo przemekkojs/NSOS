@@ -11,7 +11,7 @@ export interface NSOSNotification {
 }
 
 export const useNotifications = () => {
-  const notifications = useStorage<Notification[]>('notifications', [])
+  const notifications = useStorage<NSOSNotification[]>('notifications', [])
   const unreadCount = computed<number>(() => {
     return notifications.value.filter((n) => !n.read).length
   })

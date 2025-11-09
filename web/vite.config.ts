@@ -12,6 +12,10 @@ export default defineConfig({
     VueRouter(),
     vue(),
     ui({
+      autoImport: {
+        imports: ['vue', 'vue-router', 'vue-i18n'],
+        dts: true,
+      },
       ui: {
         colors: {
           primary: 'indigo',

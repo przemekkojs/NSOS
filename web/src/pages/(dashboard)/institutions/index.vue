@@ -4,18 +4,20 @@ import { useAPIFetch } from '@/core/lib/sdk'
 // TODO: replace with correct Institution type when available
 import type { Institution } from '@/mocks/fixtures/institutions'
 import type { TableColumn } from '@nuxt/ui'
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 const { data: rawData, isFetching } = useAPIFetch('/institutions').json<Institution[]>()
 const getDropdownActions = useTableActions()
+const { t } = useI18n()
 
-const columns: TableColumn<Institution>[] = [
-  { accessorKey: 'id', header: '#', cell: ({ row }) => `#${row.getValue('id')}` },
-  { accessorKey: 'name', header: 'Name' },
-  { accessorKey: 'address', header: 'Address' },
+const columns = computed<TableColumn<Institution>[]>(() => [
+  { accessorKey: 'name', header: t('table.header.name') },
+  { accessorKey: 'address', header: t('table.header.address') },
   {
     id: 'actions',
   },
-]
+])
 </script>
 <template>
   <h1>Institutions</h1>

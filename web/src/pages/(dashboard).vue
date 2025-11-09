@@ -5,10 +5,13 @@ import type { DropdownMenuItem, NavigationMenuItem } from '@nuxt/ui'
 import { useRoute } from 'vue-router'
 import { useNotifications } from '@/features/notifications/useNotifications'
 import ChatSlideover from '@/core/components/ChatSlideover.vue'
+import LocaleSelect from '@/core/components/ui/LocaleSelect.vue'
+import { useI18n } from 'vue-i18n'
 
 const toast = useToast()
 const open = ref(true)
 const route = useRoute()
+const { t } = useI18n()
 const { unreadCount } = useNotifications()
 
 const setOpen = (value: boolean) => {
@@ -17,60 +20,62 @@ const setOpen = (value: boolean) => {
   }
 }
 
+t('table')
+
 const links = computed<NavigationMenuItem[][]>(() => [
   [
     {
-      label: 'Dashboard',
+      label: t('dashboard.nav.dashboard'),
       icon: 'i-lucide-layout-dashboard',
       to: '/',
       onSelect: setOpen(false),
     },
     {
-      label: 'Harmonogram',
+      label: t('dashboard.nav.harmonogram'),
       icon: 'i-lucide-calendar',
       to: '/harmonogram',
       onSelect: setOpen(false),
     },
     {
-      label: 'Employees',
+      label: t('dashboard.nav.employees'),
       icon: 'i-lucide-users',
       to: '/employees',
       onSelect: setOpen(false),
     },
     {
-      label: 'Institutions',
+      label: t('dashboard.nav.institutions'),
       icon: 'i-lucide-building-2',
       to: '/institutions',
       onSelect: setOpen(false),
     },
     {
-      label: 'Subjects',
+      label: t('dashboard.nav.subjects'),
       icon: 'i-lucide-book-open',
       to: '/subjects',
       onSelect: setOpen(false),
     },
     {
-      label: 'Inbox',
+      label: t('dashboard.nav.inbox'),
       icon: 'i-lucide-inbox',
       to: '/inbox',
       badge: unreadCount.value > 0 ? unreadCount.value.toString() : undefined,
       onSelect: setOpen(false),
     },
     {
-      label: 'Settings',
+      label: t('dashboard.nav.settings'),
       to: '/settings',
       icon: 'i-lucide-settings',
     },
   ],
   [
     {
-      label: 'Feedback',
+      label: t('dashboard.nav.feedback'),
       icon: 'i-lucide-message-circle',
       to: '/feedback',
       target: '_blank',
     },
     {
-      label: 'Help & Support',
+      label: t('dashboard.nav.help'),
       icon: 'i-lucide-info',
       to: '/help',
       target: '_blank',
@@ -92,7 +97,7 @@ const groups = computed(() => [
         id: 'source',
         label: 'View page source',
         icon: 'simple-icons:github',
-        to: `https://github.com/nuxt-ui-templates/dashboard-vue/blob/main/src/pages${route.path === '/' ? '/index' : route.path}.vue`,
+        to: `https://github.com/przemekkojs/NSOS`,
         target: '_blank',
       },
     ],
@@ -187,8 +192,9 @@ if (cookie.value !== 'accepted') {
           </template>
 
           <template #right>
+            <LocaleSelect />
             <ChatSlideover />
-            <UTooltip text="Notifications" :shortcuts="['N']">
+            <UTooltip :text="$t('notifications.tooltip')" :shortcuts="['N']">
               <UButton color="neutral" variant="ghost" square>
                 <UChip color="error" inset>
                   <UIcon name="i-lucide-bell" class="size-5 shrink-0" />

@@ -3,23 +3,22 @@ import { useTableActions } from '@/core/composables/useTableActions'
 import { useAPIFetch } from '@/core/lib/sdk'
 import type { Lecturer } from '@/core/types'
 import type { TableColumn } from '@nuxt/ui'
+import { useI18n } from 'vue-i18n'
 
 const { data: rawData, isFetching } = useAPIFetch('/users?kind=lecturer').json<Lecturer[]>()
 
+const { t } = useI18n()
 const getDropdownActions = useTableActions()
 
 const columns: TableColumn<Lecturer>[] = [
-  { accessorKey: 'id', header: '#', cell: ({ row }) => `#${row.getValue('id')}` },
-  { accessorKey: 'email', header: 'Email' },
+  { accessorKey: 'email', header: t('table.header.email') },
   {
     accessorKey: 'faculty.name',
-    header: 'Faculty',
-    cell: ({ row }) => row.original.faculty.name,
+    header: t('table.header.faculty'),
   },
   {
     accessorKey: 'position.name',
-    header: 'Position',
-    cell: ({ row }) => row.original.position.name,
+    header: t('table.header.position'),
   },
   {
     id: 'actions',
@@ -34,7 +33,7 @@ const columns: TableColumn<Lecturer>[] = [
           icon="i-lucide-ellipsis-vertical"
           color="neutral"
           variant="ghost"
-          aria-label="actions"
+          :aria-label="$t('table.ariaLabel.actions')"
         />
       </UDropdownMenu>
     </template>

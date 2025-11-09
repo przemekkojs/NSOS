@@ -13,6 +13,10 @@ const color = 'primary'
 </script>
 <template>
   <UFormField label="Password" name="password" required>
-    <UInput v-model="model" placeholder="Password" :color="color" :type="type" class="w-full" />
+    <UInput v-model="model"
+placeholder="Password"
+:color="color"
+:type="type"
+class="w-full" />
   </UFormField>
 </template>

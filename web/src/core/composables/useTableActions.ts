@@ -1,17 +1,19 @@
 import { useRouter } from 'vue-router'
 import { useClipboard } from '@vueuse/core'
 import type { DropdownMenuItem } from '@nuxt/ui'
+import { useI18n } from 'vue-i18n'
 
 export function useTableActions() {
   const toast = useToast()
   const router = useRouter()
+  const { t } = useI18n()
   const { copy } = useClipboard()
 
   function getDropdownActions(row: { id: number }): DropdownMenuItem[][] {
     return [
       [
         {
-          label: `Copy ID`,
+          label: t('table.actions.copyId'),
           icon: 'i-lucide-copy',
           onSelect: () => {
             copy(row.id.toString())
@@ -26,27 +28,25 @@ export function useTableActions() {
       ],
       [
         {
-          label: 'View Details',
+          label: t('table.actions.viewDetails'),
           icon: 'i-lucide-eye',
           onSelect: () => {
-            // Navigate to details page
             router.push({
               path: router.currentRoute.value.path + '/' + row.id,
             })
           },
         },
         {
-          label: 'Edit',
+          label: t('common.edit'),
           icon: 'i-lucide-edit',
           onSelect: () => {
-            // Navigate to edit page
             router.push({
               path: router.currentRoute.value.path + '/' + row.id + '/edit',
             })
           },
         },
         {
-          label: 'Delete',
+          label: t('common.delete'),
           icon: 'i-lucide-trash',
           color: 'error',
           onSelect: () => {

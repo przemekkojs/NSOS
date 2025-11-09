@@ -49,7 +49,7 @@ const sanitize = (text: string) => {
 </script>
 <template>
   <USlideover>
-    <UTooltip text="AI Chat" :shortcuts="['C']">
+    <UTooltip :text="$t('chat.tooltip')" :shortcuts="['C']">
       <UButton
         icon="i-lucide-bot-message-square"
         color="neutral"
@@ -66,16 +66,12 @@ const sanitize = (text: string) => {
           :user="{
             side: 'right',
             variant: 'soft',
+            // FIXME: replace with actual user avatar
             avatar: { src: 'https://github.com/benjamincanac.png' },
           }"
           :assistant="{ icon: 'i-lucide-bot', side: 'left', variant: 'naked' }"
         >
           <template #content="{ message }">
-            <!-- <MDC
-              :value="getTextFromMessage(message)"
-              :cache-key="message.id"
-              class="[&_.my-5]:my-2.5 *:first:mt-0! *:last:mb-0! [&_.leading-7]:leading-6!"
-            /> -->
             <div v-html="sanitize(getTextFromMessage(message))" />
           </template>
         </UChatMessages>
@@ -86,7 +82,7 @@ const sanitize = (text: string) => {
             icon="i-lucide-search"
             variant="naked"
             :error="error"
-            placeholder="Ask about teacher workload, schedules, reports..."
+            :placeholder="$t('chat.placeholder')"
             :disabled="status === 'streaming'"
             @submit="onSubmit"
           />

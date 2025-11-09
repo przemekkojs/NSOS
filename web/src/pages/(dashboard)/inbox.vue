@@ -1,21 +1,34 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import { formatTime } from '@/core/utils/time'
 import type { NSOSNotification } from '@/features/notifications/useNotifications'
 import type { DropdownMenuItem, TableColumn } from '@nuxt/ui'
 import { useStorage } from '@vueuse/core'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const notifications = useStorage<NSOSNotification[]>('notifications', [])
 
-const columns: TableColumn<NSOSNotification>[] = [
-  { accessorKey: 'id', header: '#', cell: ({ row }) => `#${row.getValue('id')}` },
-  { accessorKey: 'title', header: 'Title' },
-  { accessorKey: 'message', header: 'Message' },
-  { accessorKey: 'timestamp', header: 'Timestamp' },
-  { accessorKey: 'priority', header: 'Priority' },
-  { accessorKey: 'read', header: 'Read', cell: ({ row }) => (row.getValue('read') ? 'Yes' : 'No') },
+const columns = computed<TableColumn<NSOSNotification>[]>(() => [
+  { accessorKey: 'title', header: t('table.header.title') },
+  { accessorKey: 'message', header: t('table.header.message') },
+  {
+    accessorKey: 'timestamp',
+    header: t('table.header.date'),
+    cell: ({ row }) => {
+      return formatTime(new Date(row.getValue('timestamp')))
+    },
+  },
+  { accessorKey: 'priority', header: t('table.header.priority') },
+  {
+    accessorKey: 'read',
+    header: t('table.header.read'),
+    cell: ({ row }) => (row.getValue('read') ? 'Yes' : 'No'),
+  },
   {
     id: 'actions',
   },
-]
+])
 
 function getDropdownActions(notification: NSOSNotification): DropdownMenuItem[] {
   return [
@@ -42,7 +55,6 @@ function getDropdownActions(notification: NSOSNotification): DropdownMenuItem[] 
 }
 </script>
 <template>
-  <h1>Inbox</h1>
   <UTable :data="notifications" :columns>
     <template #actions-cell="{ row }">
       <UDropdownMenu :items="getDropdownActions(row.original)">
