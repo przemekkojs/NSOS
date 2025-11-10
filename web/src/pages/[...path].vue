@@ -1,10 +1,14 @@
 <template>
   <UError
-    redirect="/"
+    redirect="/abc"
     :error="{
       statusCode: 404,
-      statusMessage: 'Page not found',
-      message: 'The page you are looking for does not exist.',
+      statusMessage: $t('error.pageNotFound'),
+      message: $t('error.pageNotFoundDescription'),
     }"
-  />
+  >
+    <template #links>
+      <UButton to="/" color="primary">{{ $t('error.backToHome') }}</UButton>
+    </template>
+  </UError>
 </template>

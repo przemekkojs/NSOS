@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import type { DropdownMenuItem, NavigationMenuItem } from '@nuxt/ui'
+import type { NavigationMenuItem } from '@nuxt/ui'
 import { useNotifications } from '@/features/notifications/useNotifications'
 import ChatSlideover from '@/core/components/ChatSlideover.vue'
 import LocaleSelect from '@/core/components/ui/LocaleSelect.vue'
+import TeamsMenu from '@/core/components/TeamsMenu.vue'
+import UserMenu from '@/core/components/UserMenu.vue'
+import NotificationsSlideover from '@/core/NotificationsSlideover.vue'
 
 const toast = useToast()
 const open = ref(true)
@@ -14,8 +17,6 @@ const setOpen = (value: boolean) => {
     open.value = value
   }
 }
-
-t('table')
 
 const links = computed<NavigationMenuItem[][]>(() => [
   [
@@ -72,7 +73,7 @@ const links = computed<NavigationMenuItem[][]>(() => [
     {
       label: t('dashboard.nav.help'),
       icon: 'i-lucide-info',
-      to: '/help',
+      to: 'http://localhost:5174/',
       target: '_blank',
     },
   ],
@@ -99,20 +100,20 @@ const groups = computed(() => [
   },
 ])
 
-const items = [
-  [
-    {
-      label: 'New mail',
-      icon: 'i-lucide-send',
-      to: '/inbox',
-    },
-    {
-      label: 'New employee',
-      icon: 'i-lucide-user-plus',
-      to: '/customers',
-    },
-  ],
-] satisfies DropdownMenuItem[][]
+// const items = [
+//   [
+//     {
+//       label: 'New mail',
+//       icon: 'i-lucide-send',
+//       to: '/inbox',
+//     },
+//     {
+//       label: 'New employee',
+//       icon: 'i-lucide-user-plus',
+//       to: '/customers',
+//     },
+//   ],
+// ] satisfies DropdownMenuItem[][]
 
 const cookie = useStorage('cookie-consent', 'pending')
 if (cookie.value !== 'accepted') {
@@ -187,7 +188,6 @@ if (cookie.value !== 'accepted') {
           </template>
 
           <template #right>
-            <LocaleSelect />
             <ChatSlideover />
             <UTooltip :text="$t('notifications.tooltip')" :shortcuts="['N']">
               <UButton color="neutral" variant="ghost" square>
@@ -196,10 +196,11 @@ if (cookie.value !== 'accepted') {
                 </UChip>
               </UButton>
             </UTooltip>
-
-            <UDropdownMenu :items="items">
+            <UColorModeButton />
+            <LocaleSelect />
+            <!-- <UDropdownMenu :items="items">
               <UButton icon="i-lucide-plus" size="md" class="rounded-full" />
-            </UDropdownMenu>
+            </UDropdownMenu> -->
           </template>
         </UDashboardNavbar>
       </template>
@@ -208,7 +209,6 @@ if (cookie.value !== 'accepted') {
         <RouterView />
       </template>
     </UDashboardPanel>
-
     <NotificationsSlideover />
   </UDashboardGroup>
 </template>

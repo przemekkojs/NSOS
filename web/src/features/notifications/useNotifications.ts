@@ -1,3 +1,4 @@
+import type { User } from '@/core/types'
 import { useStorage, useWebSocket } from '@vueuse/core'
 import { computed, watch } from 'vue'
 
@@ -5,6 +6,7 @@ export interface NSOSNotification {
   id: number
   message: string
   title: string
+  sender: User
   read: boolean
   timestamp: string
   priority: 'low' | 'normal' | 'high'

@@ -33,6 +33,30 @@ const employeesHandlers = [
       return new HttpResponse('Not Found', { status: 404 })
     }
   }),
+  http.post(apiUrl('/users/invite'), () => {
+    return new HttpResponse(null, { status: 204 })
+  }),
+  http.post(apiUrl('/users'), async ({ request }) => {
+    const users = (await request.json()) as object[]
+
+    const usersWithIds = users.map((user, index) => ({
+      id: 1000 + index,
+      ...user,
+    }))
+    return HttpResponse.json(usersWithIds)
+  }),
+  http.put(apiUrl(/\/users\/\d+/), async (req) => {
+    const url = new URL(req.request.url)
+    const id = Number(url.pathname.split('/').pop())
+    const data = (await req.request.json()) as object
+
+    const updatedUser = {
+      id,
+      ...data,
+    }
+
+    return HttpResponse.json(updatedUser)
+  }),
 ]
 
 const institutionsHandlers = [
@@ -49,6 +73,28 @@ const institutionsHandlers = [
     } else {
       return new HttpResponse('Not Found', { status: 404 })
     }
+  }),
+  http.post(apiUrl('/institutions'), async ({ request }) => {
+    const data = (await request.json()) as object
+
+    const newInstitution = {
+      id: Math.floor(Math.random() * 1000) + 3,
+      ...data,
+    }
+
+    return HttpResponse.json(newInstitution, { status: 201 })
+  }),
+  http.put(apiUrl(/\/institutions\/\d+/), async (req) => {
+    const url = new URL(req.request.url)
+    const id = Number(url.pathname.split('/').pop())
+    const data = (await req.request.json()) as object
+
+    const updatedInstitution = {
+      id,
+      ...data,
+    }
+
+    return HttpResponse.json(updatedInstitution)
   }),
 ]
 

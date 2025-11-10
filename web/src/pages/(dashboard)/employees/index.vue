@@ -1,32 +1,47 @@
 <script setup lang="ts">
+import { useLecturers } from '@/core/composables/useEmployees'
 import { useTableActions } from '@/core/composables/useTableActions'
-import { useAPIFetch } from '@/core/lib/sdk'
+import InviteModal from '@/features/users/components/InviteModal.vue'
 import type { Lecturer } from '@/core/types'
 import type { TableColumn } from '@nuxt/ui'
+import CSVImport from '@/core/components/CSVImport.vue'
+import { useCreateUser, useUsers, type UserHeader } from '@/core/composables/useUsers'
+import { userHeaderUserAdapter } from '@/core/composables/useUsers'
+import type { User } from '@/api/modules/user'
 
-const { data: rawData, isFetching } = useAPIFetch('/users?kind=lecturer').json<Lecturer[]>()
+const { data, isFetching } = useUsers()
+const { mutate: create } = useCreateUser()
 
 const getDropdownActions = useTableActions()
+const { t } = useI18n()
 
-const columns: TableColumn<Lecturer>[] = [
-  { accessorKey: 'email', header: 'Email' },
+const columns = computed<TableColumn<User>[]>(() => [
+  { accessorKey: 'email', header: t('table.header.email') },
   {
     accessorKey: 'faculty.name',
-    header: 'Faculty',
-    cell: ({ row }) => row.original.faculty.name,
+    header: t('table.header.faculty'),
   },
   {
     accessorKey: 'position.name',
-    header: 'Position',
-    cell: ({ row }) => row.original.position.name,
+    header: t('table.header.position'),
   },
   {
     id: 'actions',
   },
-]
+])
+
+function onImported(importedData: UserHeader[]) {
+  const adaptedData = importedData.map(userHeaderUserAdapter)
+  create(adaptedData)
+}
 </script>
 <template>
-  <UTable :data="rawData ?? []" :loading="isFetching" :columns>
+  <div class="flex gap-2">
+    <InviteModal />
+    <!-- @vue-generic {UserHeader} -->
+    <CSVImport @proceed="onImported" />
+  </div>
+  <UTable :data="data ?? []" :loading="isFetching" :columns>
     <template #actions-cell="{ row }">
       <UDropdownMenu :items="getDropdownActions(row.original)">
         <UButton

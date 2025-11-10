@@ -54,3 +54,6 @@ components.d.ts
 .env
 .env*.local
 !.env.example
+
+# example import files
+csv/

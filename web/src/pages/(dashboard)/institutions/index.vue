@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { useTableActions } from '@/core/composables/useTableActions'
-import { useAPIFetch } from '@/core/lib/sdk'
+import CreateInstitutionModal from '@/features/institutions/components/CreateInstitutionModal.vue'
+import { useInstitutions } from '@/features/institutions/composables/useInstitutions'
 // TODO: replace with correct Institution type when available
 import type { Institution } from '@/mocks/fixtures/institutions'
 import type { TableColumn } from '@nuxt/ui'
 
-const { data: rawData, isFetching } = useAPIFetch('/institutions').json<Institution[]>()
+const { institutions } = useInstitutions()
+const { data, isFetching } = toRefs(institutions)
 const getDropdownActions = useTableActions()
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 const columns = computed<TableColumn<Institution>[]>(() => [
   { accessorKey: 'name', header: t('table.header.name') },
@@ -18,8 +20,10 @@ const columns = computed<TableColumn<Institution>[]>(() => [
 ])
 </script>
 <template>
-  <h1>Institutions</h1>
-  <UTable :data="rawData ?? []" :loading="isFetching" :columns>
+  <div class="flex gap-2">
+    <CreateInstitutionModal />
+  </div>
+  <UTable :key="locale" :data="data ?? []" :loading="isFetching" :columns>
     <template #actions-cell="{ row }">
       <UDropdownMenu :items="getDropdownActions(row.original)">
         <UButton

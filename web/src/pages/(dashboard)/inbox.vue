@@ -20,7 +20,7 @@ const columns = computed<TableColumn<NSOSNotification>[]>(() => [
   {
     accessorKey: 'read',
     header: t('table.header.read'),
-    cell: ({ row }) => (row.getValue('read') ? 'Yes' : 'No'),
+    cell: ({ row }) => (row.getValue('read') ? t('common.yes') : t('common.no')),
   },
   {
     id: 'actions',

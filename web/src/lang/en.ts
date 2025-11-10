@@ -10,6 +10,8 @@ const en = {
     delete: 'Delete',
     confirm: 'Confirm',
     actions: 'Actions',
+    invite: 'Invite',
+    create: 'Create',
   },
   dashboard: {
     nav: {
@@ -20,6 +22,8 @@ const en = {
       subjects: 'Subjects',
       inbox: 'Inbox',
       settings: 'Settings',
+      feedback: 'Feedback',
+      help: 'Help',
     },
   },
   table: {
@@ -29,6 +33,42 @@ const en = {
       priority: 'Priority',
       date: 'Date',
       read: 'Read',
+      email: 'Email',
+      faculty: 'Faculty',
+      position: 'Position',
+      name: 'Name',
+      address: 'Address',
+    },
+    ariaLabel: {
+      actions: 'Actions',
+    },
+    actions: {
+      copyId: 'Copy ID',
+      viewDetails: 'View Details',
+    },
+  },
+  chat: {
+    tooltip: 'AI Chat',
+    placeholder: 'Ask a question or enter a command...',
+  },
+  notifications: {
+    tooltip: 'Notifications',
+  },
+  error: {
+    pageNotFound: 'Page not found',
+    pageNotFoundDescription: "The page you're looking for doesn't exist.",
+    backToHome: 'Back to Home',
+  },
+  institution: {
+    create: {
+      title: 'Create a new institution',
+      description: 'Create a new institution to start managing its data and users.',
+      submit: 'Create Institution',
+    },
+    fields: {
+      name: 'Institution Name',
+      address: 'Institution Address',
+      code: 'Institution Code',
     },
   },
 } satisfies I18nSchema

@@ -116,6 +116,20 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/(help)/feedback': RouteRecordInfo<
+      '/(help)/feedback',
+      '/feedback',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/(help)/help': RouteRecordInfo<
+      '/(help)/help',
+      '/help',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/[...path]': RouteRecordInfo<
       '/[...path]',
       '/:path(.*)',
@@ -215,6 +229,18 @@ declare module 'vue-router/auto-routes' {
     'src/pages/(auth)/login.vue': {
       routes:
         | '/(auth)/login'
+      views:
+        | never
+    }
+    'src/pages/(help)/feedback.vue': {
+      routes:
+        | '/(help)/feedback'
+      views:
+        | never
+    }
+    'src/pages/(help)/help.vue': {
+      routes:
+        | '/(help)/help'
       views:
         | never
     }

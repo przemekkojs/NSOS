@@ -1,8 +1,13 @@
 :root {
-  --fc-today-bg-color: var(--color-primary-50);
+  --fc-today-bg-color: var(--color-primary-100);
   --fc-event-bg-color: var(--color-primary-500);
   --fc-event-border-color: var(--fc-event-bg-color);
   --fc-border-color: var(--ui-border);
+  --fc-button-bg-color: var(--color-primary-600);
+  --fc-button-border-color: var(--fc-button-bg-color);
+  --fc-button-hover-bg-color: var(--color-primary-700);
+  --fc-button-hover-border-color: var(--fc-button-hover-bg-color);
+  --fc-button-active-bg-color: var(--color-primary-800);
 }
 
 .dark {
@@ -21,4 +26,8 @@
   border-radius: 8px;
   padding: 6px 10px;
   font-weight: 600;
+}
+
+.fc-button {
+  transition: all 0.1s;
 }

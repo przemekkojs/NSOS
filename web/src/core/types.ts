@@ -31,6 +31,8 @@ interface Semester {
 
 export interface User extends BaseModel {
   email: string
+  /** TODO: check if that exists */
+  avatar?: string
 }
 
 type LecturerStatus = 'active' | 'inactive' | 'retired'

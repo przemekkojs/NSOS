@@ -9,7 +9,7 @@ const { data: rawData, isFetching } = useAPIFetch('/users?kind=lecturer').json<L
 const { t } = useI18n()
 const getDropdownActions = useTableActions()
 
-const columns: TableColumn<Lecturer>[] = [
+const columns = computed<TableColumn<Lecturer>[]>(() => [
   { accessorKey: 'email', header: t('table.header.email') },
   {
     accessorKey: 'faculty.name',
@@ -22,7 +22,7 @@ const columns: TableColumn<Lecturer>[] = [
   {
     id: 'actions',
   },
-]
+])
 </script>
 <template>
   <UTable :data="rawData ?? []" :loading="isFetching" :columns>

@@ -20,6 +20,11 @@ export default defineConfig({
         colors: {
           primary: 'indigo',
         },
+        input: {
+          slots: {
+            root: 'w-full',
+          },
+        },
       },
     }),
     vueDevTools(),

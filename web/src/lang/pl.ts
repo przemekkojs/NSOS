@@ -8,6 +8,8 @@ const pl = {
     delete: 'Usuń',
     confirm: 'Potwierdź',
     actions: 'Akcje',
+    invite: 'Zaproś',
+    create: 'Utwórz',
   },
   dashboard: {
     nav: {
@@ -49,6 +51,23 @@ const pl = {
   },
   notifications: {
     tooltip: 'Powiadomienia',
+  },
+  error: {
+    pageNotFound: 'Strona nie została znaleziona',
+    pageNotFoundDescription: 'Strona, której szukasz, nie istnieje.',
+    backToHome: 'Powrót do strony głównej',
+  },
+  institution: {
+    create: {
+      title: 'Utwórz nową instytucję',
+      description: 'Utwórz nową instytucję, aby rozpocząć zarządzanie jej danymi i użytkownikami.',
+      submit: 'Utwórz instytucję',
+    },
+    fields: {
+      name: 'Nazwa instytucji',
+      address: 'Adres instytucji',
+      code: 'Kod instytucji',
+    },
   },
 }
 

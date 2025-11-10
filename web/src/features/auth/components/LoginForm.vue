@@ -32,10 +32,7 @@ async function onSubmit(event: FormSubmitEvent<LoginSchema>) {
 }
 </script>
 <template>
-  <UForm :schema="loginFormSchema"
-:state
-@submit="onSubmit"
-class="flex flex-col gap-4">
+  <UForm :schema="loginFormSchema" :state @submit="onSubmit" class="flex flex-col gap-4">
     <UFormField label="Email" name="email" required>
       <UInput v-model="state.email" class="w-full" />
     </UFormField>
