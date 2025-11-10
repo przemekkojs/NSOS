@@ -29,6 +29,8 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       Record<never, never>,
       | '/(dashboard)/'
+      | '/(dashboard)/courses/'
+      | '/(dashboard)/courses/[id]'
       | '/(dashboard)/employees/'
       | '/(dashboard)/employees/[id]'
       | '/(dashboard)/harmonogram'
@@ -36,14 +38,26 @@ declare module 'vue-router/auto-routes' {
       | '/(dashboard)/institutions/'
       | '/(dashboard)/institutions/[id]'
       | '/(dashboard)/settings/'
-      | '/(dashboard)/subjects/'
-      | '/(dashboard)/subjects/[id]'
     >,
     '/(dashboard)/': RouteRecordInfo<
       '/(dashboard)/',
       '/',
       Record<never, never>,
       Record<never, never>,
+      | never
+    >,
+    '/(dashboard)/courses/': RouteRecordInfo<
+      '/(dashboard)/courses/',
+      '/courses',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/(dashboard)/courses/[id]': RouteRecordInfo<
+      '/(dashboard)/courses/[id]',
+      '/courses/:id',
+      { id: ParamValue<true> },
+      { id: ParamValue<false> },
       | never
     >,
     '/(dashboard)/employees/': RouteRecordInfo<
@@ -95,20 +109,6 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
-    '/(dashboard)/subjects/': RouteRecordInfo<
-      '/(dashboard)/subjects/',
-      '/subjects',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/(dashboard)/subjects/[id]': RouteRecordInfo<
-      '/(dashboard)/subjects/[id]',
-      '/subjects/:id',
-      { id: ParamValue<true> },
-      { id: ParamValue<false> },
-      | never
-    >,
     '/(auth)/login': RouteRecordInfo<
       '/(auth)/login',
       '/login',
@@ -154,6 +154,8 @@ declare module 'vue-router/auto-routes' {
       routes:
         | '/(dashboard)'
         | '/(dashboard)/'
+        | '/(dashboard)/courses/'
+        | '/(dashboard)/courses/[id]'
         | '/(dashboard)/employees/'
         | '/(dashboard)/employees/[id]'
         | '/(dashboard)/harmonogram'
@@ -161,14 +163,24 @@ declare module 'vue-router/auto-routes' {
         | '/(dashboard)/institutions/'
         | '/(dashboard)/institutions/[id]'
         | '/(dashboard)/settings/'
-        | '/(dashboard)/subjects/'
-        | '/(dashboard)/subjects/[id]'
       views:
         | 'default'
     }
     'src/pages/(dashboard)/index.vue': {
       routes:
         | '/(dashboard)/'
+      views:
+        | never
+    }
+    'src/pages/(dashboard)/courses/index.vue': {
+      routes:
+        | '/(dashboard)/courses/'
+      views:
+        | never
+    }
+    'src/pages/(dashboard)/courses/[id].vue': {
+      routes:
+        | '/(dashboard)/courses/[id]'
       views:
         | never
     }
@@ -211,18 +223,6 @@ declare module 'vue-router/auto-routes' {
     'src/pages/(dashboard)/settings/index.vue': {
       routes:
         | '/(dashboard)/settings/'
-      views:
-        | never
-    }
-    'src/pages/(dashboard)/subjects/index.vue': {
-      routes:
-        | '/(dashboard)/subjects/'
-      views:
-        | never
-    }
-    'src/pages/(dashboard)/subjects/[id].vue': {
-      routes:
-        | '/(dashboard)/subjects/[id]'
       views:
         | never
     }

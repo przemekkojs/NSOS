@@ -8,8 +8,10 @@ const _useDashboard = () => {
   const isNotificationsSlideoverOpen = ref(false)
 
   defineShortcuts({
-    'g-h': () => router.push('/'),
+    'g-d': () => router.push('/'),
     'g-i': () => router.push('/inbox'),
+    'g-h': () => router.push('/help'),
+    'g-e': () => router.push('/employees'),
     'g-c': () => router.push('/customers'),
     'g-s': () => router.push('/settings'),
     n: () => (isNotificationsSlideoverOpen.value = !isNotificationsSlideoverOpen.value),

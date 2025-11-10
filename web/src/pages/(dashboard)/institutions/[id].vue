@@ -1,17 +1,15 @@
 <script setup lang="ts">
-import { useAPIFetch } from '@/core/lib/sdk'
-import type { Institution } from '@/mocks/fixtures'
+import { useInstitution } from '@/core/composables/useInstitutions'
 
-const route = useRoute()
+const params = useRoute().params
+const id = ref(Number(params.id as string))
 
-const { data: rawData, isFetching } = useAPIFetch(`/institutions/${route.params.id}`).json<
-  Institution[]
->()
+const { data, isFetching } = useInstitution(id)
 </script>
 <template>
   <h1>Institutions {{ $route.params.id }}</h1>
   <div v-if="isFetching">Loading...</div>
   <div v-else>
-    <pre>{{ rawData }}</pre>
+    <pre>{{ data }}</pre>
   </div>
 </template>

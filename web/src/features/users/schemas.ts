@@ -16,6 +16,8 @@ export interface UserHeader {
   status: string
 }
 
+/* create */
+
 export const createLecturerSchema = z.object({
   email: z.email(),
   avatar: z.url().optional(),
@@ -39,3 +41,12 @@ export const createUserSchema = z.union([createLecturerSchema, createStudentSche
 export type CreateLecturerDto = z.infer<typeof createLecturerSchema>
 export type CreateStudentDto = z.infer<typeof createStudentSchema>
 export type CreateUserDto = z.infer<typeof createUserSchema>
+
+/** update */
+
+export const updateUserSchema = z.union([
+  createLecturerSchema.partial(),
+  createStudentSchema.partial(),
+])
+
+export type UpdateUserDto = z.infer<typeof updateUserSchema>

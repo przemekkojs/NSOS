@@ -1,14 +1,13 @@
 import type { Faculty } from '@/core/types'
+import { faker } from '@faker-js/faker'
+import { createFactory } from './factory-builder'
 
-export const faculties: Faculty[] = [
-  {
-    id: 1,
-    name: 'Faculty of Science',
-    description: 'A faculty focused on scientific research and education.',
-  },
-  {
-    id: 2,
-    name: 'Faculty of Arts',
-    description: 'A faculty dedicated to the study of humanities and social sciences.',
-  },
-]
+export const createFaculty = createFactory<Faculty>((overrides = {}) => {
+  const faculty: Faculty = {
+    id: faker.number.int(),
+    name: faker.company.name(),
+    description: faker.lorem.sentence(),
+  }
+
+  return Object.assign(faculty, overrides)
+})

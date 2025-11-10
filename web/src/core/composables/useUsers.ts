@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/vue-query'
 import type { MaybeRef } from 'vue'
-import { userApi, type UpdateUserDto } from '@/api/modules/user'
+import { userApi } from '@/api/modules/user'
+import type { UpdateUserDto } from '@/features/users/schemas'
 
 export const userKeys = {
   all: ['users'] as const,
@@ -45,7 +46,6 @@ export function useCreateUser() {
   })
 }
 
-// Update user
 export function useUpdateUser() {
   const queryClient = useQueryClient()
 
@@ -59,7 +59,6 @@ export function useUpdateUser() {
   })
 }
 
-// Delete user
 export function useDeleteUser() {
   const queryClient = useQueryClient()
 
@@ -70,5 +69,11 @@ export function useDeleteUser() {
       queryClient.removeQueries({ queryKey: userKeys.detail(id) })
       queryClient.invalidateQueries({ queryKey: userKeys.lists() })
     },
+  })
+}
+
+export function useInviteUser() {
+  return useMutation({
+    mutationFn: userApi.invite,
   })
 }

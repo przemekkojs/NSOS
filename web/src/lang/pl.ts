@@ -17,7 +17,7 @@ const pl = {
       harmonogram: 'Harmonogram',
       employees: 'Pracownicy',
       institutions: 'Instytucje',
-      subjects: 'Przedmioty',
+      courses: 'Kursy',
       inbox: 'Skrzynka odbiorcza',
       settings: 'Ustawienia',
       feedback: 'Opinie',
@@ -67,6 +67,15 @@ const pl = {
       name: 'Nazwa instytucji',
       address: 'Adres instytucji',
       code: 'Kod instytucji',
+    },
+  },
+  course: {
+    header: {
+      name: 'Nazwa',
+      weeklyHours: 'Godziny tygodniowo',
+      ects: 'ECTS',
+      courseGroup: 'Grupa kursów',
+      courseType: 'Typ',
     },
   },
 }

@@ -1,22 +1,16 @@
 import type { Position } from '@/core/types'
+import { createFactory } from './factory-builder'
+import { faker } from '@faker-js/faker'
 
-export const positions: Position[] = [
-  {
-    id: 1,
-    name: 'Professor',
-    hourlyRate: 100,
-    workload: 40,
-  },
-  {
-    id: 2,
-    name: 'Associate Professor',
-    hourlyRate: 80,
-    workload: 30,
-  },
-  {
-    id: 3,
-    name: 'Assistant Professor',
-    hourlyRate: 60,
-    workload: 20,
-  },
-]
+export const workloads = [20, 30, 40] as const
+
+export const createPosition = createFactory<Position>((overrides = {}) => {
+  const position: Position = {
+    id: faker.number.int(),
+    name: faker.person.jobTitle(),
+    hourlyRate: faker.number.int({ min: 80, max: 160 }),
+    workload: faker.helpers.arrayElement(workloads),
+  }
+
+  return Object.assign(position, overrides)
+})

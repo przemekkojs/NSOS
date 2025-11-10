@@ -6,8 +6,8 @@ export const createInstitutionSchema = z.object({
   address: z.string().optional(),
 })
 
-export type CreateInstitutionSchema = z.infer<typeof createInstitutionSchema>
+export type CreateInstitutionDto = z.infer<typeof createInstitutionSchema>
 
 export const updateInstitutionSchema = createInstitutionSchema.partial()
 
-export type UpdateInstitutionSchema = z.infer<typeof updateInstitutionSchema>
+export type UpdateInstitutionDto = z.infer<typeof updateInstitutionSchema>

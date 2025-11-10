@@ -5,7 +5,7 @@ import ChatSlideover from '@/core/components/ChatSlideover.vue'
 import LocaleSelect from '@/core/components/ui/LocaleSelect.vue'
 import TeamsMenu from '@/core/components/TeamsMenu.vue'
 import UserMenu from '@/core/components/UserMenu.vue'
-import NotificationsSlideover from '@/core/NotificationsSlideover.vue'
+import NotificationsSlideover from '@/core/components/NotificationsSlideover.vue'
 
 const toast = useToast()
 const open = ref(true)
@@ -45,9 +45,9 @@ const links = computed<NavigationMenuItem[][]>(() => [
       onSelect: setOpen(false),
     },
     {
-      label: t('dashboard.nav.subjects'),
+      label: t('dashboard.nav.courses'),
       icon: 'i-lucide-book-open',
-      to: '/subjects',
+      to: '/courses',
       onSelect: setOpen(false),
     },
     {

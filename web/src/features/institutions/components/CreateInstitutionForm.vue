@@ -1,15 +1,12 @@
 <script setup lang="ts">
-import {
-  createInstitutionSchema,
-  type CreateInstitutionSchema,
-} from '@/features/institutions/schemas'
+import { createInstitutionSchema, type CreateInstitutionDto } from '@/features/institutions/schemas'
 
 defineEmits<{
-  (e: 'success', institution: CreateInstitutionSchema): void
+  (e: 'success', institution: CreateInstitutionDto): void
   (e: 'cancel'): void
 }>()
 
-const state = reactive<Partial<CreateInstitutionSchema>>({})
+const state = reactive<Partial<CreateInstitutionDto>>({})
 </script>
 <template>
   <UForm

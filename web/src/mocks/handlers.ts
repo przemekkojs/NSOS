@@ -1,5 +1,15 @@
 import { http, HttpResponse } from 'msw'
-import { user, lecturers, institutions } from '@/mocks/fixtures'
+import { lecturers, createUsers, createInsitution } from '@/mocks/fixtures'
+import { createCourses } from './fixtures/courses'
+
+const courses = createCourses.bulk(6)
+const institutions = createInsitution.bulk(2)
+const users = createUsers.bulk(6)
+const user = users[0]!
+
+function HttpNotFound() {
+  return new HttpResponse('Not Found', { status: 404 })
+}
 
 const apiUrl = (path: string | URL | RegExp) => {
   if (path instanceof RegExp) {
@@ -30,7 +40,7 @@ const employeesHandlers = [
     if (lecturer) {
       return HttpResponse.json(lecturer)
     } else {
-      return new HttpResponse('Not Found', { status: 404 })
+      return HttpNotFound()
     }
   }),
   http.post(apiUrl('/users/invite'), () => {
@@ -66,13 +76,13 @@ const institutionsHandlers = [
   http.get(apiUrl(/\/institutions\/\d+/), (req) => {
     const url = new URL(req.request.url)
     const id = Number(url.pathname.split('/').pop())
-    const institution = { id, name: `University ${String.fromCharCode(64 + id)}` }
+    const institution = institutions.find((v) => v.id === id)
 
-    if ([1, 2].includes(id)) {
+    if (institution) {
       return HttpResponse.json(institution)
-    } else {
-      return new HttpResponse('Not Found', { status: 404 })
     }
+
+    return HttpNotFound()
   }),
   http.post(apiUrl('/institutions'), async ({ request }) => {
     const data = (await request.json()) as object
@@ -98,4 +108,25 @@ const institutionsHandlers = [
   }),
 ]
 
-export const handlers = [...authHandlers, ...employeesHandlers, ...institutionsHandlers]
+const courseHandlers = [
+  http.get(apiUrl('/courses'), () => HttpResponse.json(courses)),
+
+  http.get(apiUrl(/\/courses\/\d+/), (req) => {
+    const url = new URL(req.request.url)
+    const id = Number(url.pathname.split('/').pop())
+    const course = courses.find((v) => v.id === id)
+
+    if (course) {
+      return HttpResponse.json(course)
+    }
+
+    return HttpNotFound()
+  }),
+]
+
+export const handlers = [
+  ...authHandlers,
+  ...employeesHandlers,
+  ...institutionsHandlers,
+  ...courseHandlers,
+]

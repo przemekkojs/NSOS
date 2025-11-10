@@ -19,7 +19,7 @@ const en = {
       harmonogram: 'Schedule',
       employees: 'Employees',
       institutions: 'Institutions',
-      subjects: 'Subjects',
+      courses: 'Courses',
       inbox: 'Inbox',
       settings: 'Settings',
       feedback: 'Feedback',

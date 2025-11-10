@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import CreateInstitutionForm from '@/features/institutions/components/CreateInstitutionForm.vue'
-import { useInstitutions } from '@/features/institutions/composables/useInstitutions'
-import type { CreateInstitutionSchema } from '../schemas'
+import type { CreateInstitutionDto } from '../schemas'
+import { useCreateInstitution } from '@/core/composables/useInstitutions'
 
-const { create } = useInstitutions()
+const { mutate } = useCreateInstitution()
 const open = ref(false)
 const toast = useToast()
 
-function onCreate(value: CreateInstitutionSchema) {
+function onCreate(value: CreateInstitutionDto) {
   open.value = false
   toast.add({
     title: 'Institution created',
@@ -15,7 +15,7 @@ function onCreate(value: CreateInstitutionSchema) {
     color: 'success',
   })
 
-  create(value)
+  mutate(value)
 }
 </script>
 <template>

@@ -1,11 +1,11 @@
 import {
   createLecturerSchema,
   createStudentSchema,
-  type CreateUser,
+  type CreateUserDto,
   type UserHeader,
 } from './schemas'
 
-export const userHeaderUserAdapter = (header: UserHeader): CreateUser => {
+export const userHeaderUserAdapter = (header: UserHeader): CreateUserDto => {
   if (header.userType === 'lecturer') {
     return createLecturerSchema.parse({
       email: header.email,

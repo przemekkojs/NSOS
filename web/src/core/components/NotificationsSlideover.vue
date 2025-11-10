@@ -5,9 +5,7 @@ import type { NSOSNotification } from '@/features/notifications/useNotifications
 
 const { isNotificationsSlideoverOpen } = useDashboard()
 
-const { data: notifications } = useFetch('https://dashboard-template.nuxt.dev/api/notifications', {
-  initialData: [],
-}).json<NSOSNotification[]>()
+const notifications = ref<NSOSNotification[]>([])
 </script>
 
 <template>

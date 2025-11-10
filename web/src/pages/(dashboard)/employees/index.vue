@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import { useLecturers } from '@/core/composables/useEmployees'
 import { useTableActions } from '@/core/composables/useTableActions'
 import InviteModal from '@/features/users/components/InviteModal.vue'
-import type { Lecturer } from '@/core/types'
 import type { TableColumn } from '@nuxt/ui'
 import CSVImport from '@/core/components/CSVImport.vue'
-import { useCreateUser, useUsers, type UserHeader } from '@/core/composables/useUsers'
-import { userHeaderUserAdapter } from '@/core/composables/useUsers'
+import { useCreateUser, useUsers } from '@/core/composables/useUsers'
 import type { User } from '@/api/modules/user'
+import { userHeaderUserAdapter } from '@/features/users/adapters'
+import type { UserHeader } from '@/features/users/schemas'
 
 const { data, isFetching } = useUsers()
 const { mutate: create } = useCreateUser()
