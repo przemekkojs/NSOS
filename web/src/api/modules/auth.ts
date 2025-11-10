@@ -8,11 +8,17 @@ export interface Credentials {
 
 export const authApi = {
   login: (data: Credentials) =>
-    apiClient.post<{ accessToken: string; refreshToken: string; user: User }>('/auth/login', data),
+    apiClient.post<{ accessToken: string; refreshToken: string; user: User }>('/auth/login', data, {
+      credentials: 'include',
+    }),
 
   register: (data: Credentials) =>
     apiClient.post<{ accessToken: string; refreshToken: string; user: User }>(
       '/auth/register',
       data,
+      {
+        credentials: 'include',
+      },
     ),
+  logout: () => apiClient.post('/auth/logout'),
 }

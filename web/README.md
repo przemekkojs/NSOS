@@ -76,3 +76,11 @@ yarn lint
 
 - user must login, or they are redirected to login/register pages
 - the admin
+
+## Troubleshooting
+
+If e2e test fail with "Error: browserType.launch": Executable doesn't exist, run:
+
+```
+yarn playwright install
+```

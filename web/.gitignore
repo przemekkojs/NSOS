@@ -32,6 +32,9 @@ coverage
 /cypress/videos/
 /cypress/screenshots/
 
+# vite cache
+.vite/
+
 # Vitest
 __screenshots__/
 

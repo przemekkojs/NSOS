@@ -21,5 +21,10 @@ export const useUserStore = defineStore('user', {
       return state.role !== 'unauthenticated'
     },
   },
+  actions: {
+    logout() {
+      this.$reset()
+    },
+  },
   storage: import.meta.env.DEV ? 'localStorage' : undefined,
 })

@@ -18,13 +18,36 @@ const apiUrl = (path: string | URL | RegExp) => {
   return new URL(path, import.meta.env.VITE_API_GATEWAY_URL).toString()
 }
 
+const sessionCookie = 'sessionid=mock-session-id-123; Path=/; HttpOnly; SameSite=Lax'
+const _sessionCookie = 'sessionid=mock-session-id-123; Path=/; SameSite=Lax'
+
 const authHandlers = [
   http.post(apiUrl('/auth/register'), () => {
-    const json = JSON.stringify(user)
-    return new HttpResponse(json, { status: 201 })
+    return HttpResponse.json(user, {
+      status: 201,
+      headers: {
+        'Set-Cookie': [sessionCookie, _sessionCookie].join('; '),
+      },
+    })
   }),
   http.post(apiUrl('/auth/login'), () => {
-    return HttpResponse.json(user)
+    return HttpResponse.json(user, {
+      status: 200,
+      headers: {
+        'Set-Cookie': [sessionCookie].join('; '),
+      },
+    })
+  }),
+  http.post(apiUrl('/auth/logout'), () => {
+    return HttpResponse.json(
+      { message: 'Logged out successfully' },
+      {
+        status: 200,
+        headers: {
+          'Set-Cookie': [sessionCookie].join('; '),
+        },
+      },
+    )
   }),
 ]
 

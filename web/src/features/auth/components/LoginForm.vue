@@ -3,8 +3,8 @@ import type { FormSubmitEvent } from '@nuxt/ui'
 import PasswordField from '@/core/components/ui/PasswordField.vue'
 
 import z from 'zod'
-import { useAuth } from '@/core/lib/sdk'
 import { useUserStore } from '../stores/user-store'
+import { useLogin } from '@/core/composables/useAuth'
 
 const loginFormSchema = z.object({
   email: z.email(),
@@ -23,10 +23,10 @@ const state = ref<Partial<LoginSchema>>({
 })
 
 const userStore = useUserStore()
-const auth = useAuth()
+const { mutate: login } = useLogin()
 
 async function onSubmit(event: FormSubmitEvent<LoginSchema>) {
-  const data = await auth.login(event.data)
+  const data = await login(event.data)
   userStore.$patch(data)
   emit('success', event.data)
 }

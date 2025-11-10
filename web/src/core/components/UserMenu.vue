@@ -1,6 +1,8 @@
 <script setup lang="ts">
+// import { useUserStore } from '@/features/auth/stores/user-store'
 import type { DropdownMenuItem } from '@nuxt/ui'
 import { useColorMode } from '@vueuse/core'
+import { useLogout } from '../composables/useAuth'
 
 defineProps<{
   collapsed?: boolean
@@ -8,6 +10,8 @@ defineProps<{
 
 const colorMode = useColorMode()
 const appConfig = useAppConfig()
+// const userStore = useUserStore()
+const { mutateAsync: logout } = useLogout()
 
 const colors = [
   'red',
@@ -163,8 +167,8 @@ const items = computed<DropdownMenuItem[][]>(() => [
     {
       label: 'Log out',
       icon: 'i-lucide-log-out',
-      onSelect() {
-        alert('Logging out...')
+      async onSelect() {
+        await logout()
       },
     },
   ],
