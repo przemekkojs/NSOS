@@ -25,13 +25,13 @@ async function handleFileUpload(file: File | null | undefined) {
 </script>
 <template>
   <UModal v-model:open="open">
-    <UButton :label="$t('import CSV')" trailing-icon="i-lucide-file-up" />
+    <UButton :label="$t('feature.csv.import')" trailing-icon="i-lucide-file-up" />
     <template #body>
       <UForm>
         <UFileUpload
           @update:model-value="handleFileUpload"
           accpet=".csv"
-          :label="props.label ?? $t('Drop your csv file here')"
+          :label="props.label ?? $t('feature.csv.dropFile')"
         />
       </UForm>
     </template>
@@ -39,7 +39,7 @@ async function handleFileUpload(file: File | null | undefined) {
       <a
         href="/samples/users.example.csv"
         download
-        :title="$t('Download sample CSV file')"
+        :title="$t('feature.csv.downloadTemplate')"
         class="bg-primary px-4 py-1 rounded-sm mx-auto"
       >
         Or download a sample file first

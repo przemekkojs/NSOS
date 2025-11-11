@@ -11,8 +11,8 @@ const getDropdownActions = useTableActions()
 const { t, locale } = useI18n()
 
 const columns = computed<TableColumn<Institution>[]>(() => [
-  { accessorKey: 'name', header: t('table.header.name') },
-  { accessorKey: 'address', header: t('table.header.address') },
+  { accessorKey: 'name', header: t('table.column.name') },
+  { accessorKey: 'address', header: t('table.column.address') },
   {
     id: 'actions',
   },

@@ -15,18 +15,18 @@ const state = reactive<Partial<CreateInstitutionDto>>({})
     @submit="$emit('success', $event)"
     class="space-y-2"
   >
-    <UFormField :label="$t('institution.fields.name')" name="name">
+    <UFormField :label="$t('form.label.institutionName')" name="name">
       <UInput v-model="state.name" />
     </UFormField>
-    <UFormField :label="$t('institution.fields.code')" name="code">
+    <UFormField :label="$t('form.label.institutionCode')" name="code">
       <UInput v-model="state.code" />
     </UFormField>
-    <UFormField :label="$t('institution.fields.address')" name="address">
+    <UFormField :label="$t('form.label.institutionAddress')" name="address">
       <UInput v-model="state.address" />
     </UFormField>
     <div class="flex gap-2">
-      <UButton type="submit">{{ $t('institution.create.submit') }}</UButton>
-      <UButton @click="$emit('cancel')">{{ $t('common.cancel') }}</UButton>
+      <UButton type="submit">{{ $t('button.create') }}</UButton>
+      <UButton @click="$emit('cancel')">{{ $t('button.cancel') }}</UButton>
     </div>
   </UForm>
 </template>

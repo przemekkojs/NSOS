@@ -3,6 +3,7 @@
 import type { DropdownMenuItem } from '@nuxt/ui'
 import { useColorMode } from '@vueuse/core'
 import { useLogout } from '../composables/useAuth'
+import { useUserStore } from '@/features/auth/stores/user-store'
 
 defineProps<{
   collapsed?: boolean
@@ -34,20 +35,29 @@ const colors = [
 ]
 const neutrals = ['slate', 'gray', 'zinc', 'neutral', 'stone']
 
-const user = ref({
-  name: 'Benjamin Canac',
-  avatar: {
-    src: 'https://github.com/benjamincanac.png',
-    alt: 'Benjamin Canac',
-  },
+const router = useRouter()
+const userStore = useUserStore()
+
+const user = computed(() => {
+  if (userStore.$state.role === 'unauthenticated') {
+    return undefined
+  }
+
+  return {
+    name: userStore.$state.email,
+    avatar: {
+      src: userStore.$state.avatar,
+      alt: userStore.$state.email,
+    },
+  }
 })
 
 const items = computed<DropdownMenuItem[][]>(() => [
   [
     {
       type: 'label',
-      label: user.value.name,
-      avatar: user.value.avatar,
+      label: user.value?.name,
+      avatar: user.value?.avatar,
     },
   ],
   [
@@ -167,8 +177,13 @@ const items = computed<DropdownMenuItem[][]>(() => [
     {
       label: 'Log out',
       icon: 'i-lucide-log-out',
+      'data-testid': 'user-menu-logout',
       async onSelect() {
         await logout()
+        userStore.$reset()
+        await router.push({
+          path: '/login',
+        })
       },
     },
   ],
@@ -195,6 +210,7 @@ const items = computed<DropdownMenuItem[][]>(() => [
       :ui="{
         trailingIcon: 'text-dimmed',
       }"
+      data-testid="sidebar-user-select"
     />
 
     <template #chip-leading="{ item }">

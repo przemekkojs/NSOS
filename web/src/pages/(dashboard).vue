@@ -20,58 +20,59 @@ const setOpen = (value: boolean) => {
 
 const links = computed<NavigationMenuItem[][]>(() => [
   [
+    { awesome: 'something' },
     {
-      label: t('dashboard.nav.dashboard'),
+      label: t('navigation.dashboard'),
       icon: 'i-lucide-layout-dashboard',
       to: '/',
       onSelect: setOpen(false),
     },
     {
-      label: t('dashboard.nav.harmonogram'),
+      label: t('navigation.schedule'),
       icon: 'i-lucide-calendar',
       to: '/harmonogram',
       onSelect: setOpen(false),
     },
     {
-      label: t('dashboard.nav.employees'),
+      label: t('navigation.employees'),
       icon: 'i-lucide-users',
       to: '/employees',
       onSelect: setOpen(false),
     },
     {
-      label: t('dashboard.nav.institutions'),
+      label: t('navigation.institutions'),
       icon: 'i-lucide-building-2',
       to: '/institutions',
       onSelect: setOpen(false),
     },
     {
-      label: t('dashboard.nav.courses'),
+      label: t('navigation.courses'),
       icon: 'i-lucide-book-open',
       to: '/courses',
       onSelect: setOpen(false),
     },
     {
-      label: t('dashboard.nav.inbox'),
+      label: t('navigation.inbox'),
       icon: 'i-lucide-inbox',
       to: '/inbox',
       badge: unreadCount.value > 0 ? unreadCount.value.toString() : undefined,
       onSelect: setOpen(false),
     },
     {
-      label: t('dashboard.nav.settings'),
+      label: t('navigation.settings'),
       to: '/settings',
       icon: 'i-lucide-settings',
     },
   ],
   [
     {
-      label: t('dashboard.nav.feedback'),
+      label: t('navigation.feedback'),
       icon: 'i-lucide-message-circle',
       to: '/feedback',
       target: '_blank',
     },
     {
-      label: t('dashboard.nav.help'),
+      label: t('navigation.help'),
       icon: 'i-lucide-info',
       to: 'http://localhost:5174/',
       target: '_blank',
@@ -82,16 +83,16 @@ const links = computed<NavigationMenuItem[][]>(() => [
 const groups = computed(() => [
   {
     id: 'links',
-    label: 'Go to',
+    label: t('navigation.goTo'),
     items: links.value.flat(),
   },
   {
     id: 'code',
-    label: 'Code',
+    label: t('navigation.code'),
     items: [
       {
         id: 'source',
-        label: 'View page source',
+        label: t('navigation.sourceCode'),
         icon: 'simple-icons:github',
         to: `https://github.com/przemekkojs/NSOS`,
         target: '_blank',
@@ -100,38 +101,24 @@ const groups = computed(() => [
   },
 ])
 
-// const items = [
-//   [
-//     {
-//       label: 'New mail',
-//       icon: 'i-lucide-send',
-//       to: '/inbox',
-//     },
-//     {
-//       label: 'New employee',
-//       icon: 'i-lucide-user-plus',
-//       to: '/customers',
-//     },
-//   ],
-// ] satisfies DropdownMenuItem[][]
-
 const cookie = useStorage('cookie-consent', 'pending')
 if (cookie.value !== 'accepted') {
   toast.add({
-    title: 'We use first-party cookies to enhance your experience on our website.',
+    title: t('feature.cookieConsent.message'),
     duration: 0,
     close: false,
     actions: [
       {
-        label: 'Accept',
+        label: t('feature.cookieConsent.accept'),
         color: 'neutral',
         variant: 'outline',
+        'data-testid': 'accept-cookies-button',
         onClick: () => {
           cookie.value = 'accepted'
         },
       },
       {
-        label: 'Opt out',
+        label: t('feature.cookieConsent.optOut'),
         color: 'neutral',
         variant: 'ghost',
       },
@@ -189,7 +176,7 @@ if (cookie.value !== 'accepted') {
 
           <template #right>
             <ChatSlideover />
-            <UTooltip :text="$t('notifications.tooltip')" :shortcuts="['N']">
+            <UTooltip :text="$t('feature.notifications.tooltip')" :shortcuts="['N']">
               <UButton color="neutral" variant="ghost" square>
                 <UChip color="error" inset>
                   <UIcon name="i-lucide-bell" class="size-5 shrink-0" />
@@ -198,9 +185,6 @@ if (cookie.value !== 'accepted') {
             </UTooltip>
             <UColorModeButton />
             <LocaleSelect />
-            <!-- <UDropdownMenu :items="items">
-              <UButton icon="i-lucide-plus" size="md" class="rounded-full" />
-            </UDropdownMenu> -->
           </template>
         </UDashboardNavbar>
       </template>

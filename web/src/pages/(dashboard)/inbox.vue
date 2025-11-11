@@ -7,20 +7,20 @@ const { t } = useI18n()
 const notifications = useStorage<NSOSNotification[]>('notifications', [])
 
 const columns = computed<TableColumn<NSOSNotification>[]>(() => [
-  { accessorKey: 'title', header: t('table.header.title') },
-  { accessorKey: 'message', header: t('table.header.message') },
+  { accessorKey: 'title', header: t('table.column.title') },
+  { accessorKey: 'message', header: t('table.column.message') },
   {
     accessorKey: 'timestamp',
-    header: t('table.header.date'),
+    header: t('table.column.date'),
     cell: ({ row }) => {
       return formatTime(new Date(row.getValue('timestamp')))
     },
   },
-  { accessorKey: 'priority', header: t('table.header.priority') },
+  { accessorKey: 'priority', header: t('table.column.priority') },
   {
     accessorKey: 'read',
-    header: t('table.header.read'),
-    cell: ({ row }) => (row.getValue('read') ? t('common.yes') : t('common.no')),
+    header: t('table.status.read'),
+    cell: ({ row }) => (row.getValue('read') ? t('button.yes') : t('button.no')),
   },
   {
     id: 'actions',

@@ -21,10 +21,10 @@ function onCreate(value: CreateInstitutionDto) {
 <template>
   <UModal
     v-model:open="open"
-    :title="$t('institution.create.title')"
-    :description="$t('institution.create.description')"
+    :title="$t('page.institution.create.title')"
+    :description="$t('page.institution.create.description')"
   >
-    <UButton>{{ $t('common.create') }}</UButton>
+    <UButton>{{ $t('button.create') }}</UButton>
     <template #body>
       <CreateInstitutionForm @success="onCreate" @cancel="open = false" />
     </template>

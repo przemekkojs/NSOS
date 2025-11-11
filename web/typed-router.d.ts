@@ -116,6 +116,13 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/(auth)/register': RouteRecordInfo<
+      '/(auth)/register',
+      '/register',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/(help)/feedback': RouteRecordInfo<
       '/(help)/feedback',
       '/feedback',
@@ -229,6 +236,12 @@ declare module 'vue-router/auto-routes' {
     'src/pages/(auth)/login.vue': {
       routes:
         | '/(auth)/login'
+      views:
+        | never
+    }
+    'src/pages/(auth)/register.vue': {
+      routes:
+        | '/(auth)/register'
       views:
         | never
     }

@@ -13,7 +13,7 @@ export function useTableActions() {
     return [
       [
         {
-          label: t('table.actions.copyId'),
+          label: t('table.action.copyId'),
           icon: 'i-lucide-copy',
           onSelect: () => {
             copy(row.id.toString())
@@ -28,7 +28,7 @@ export function useTableActions() {
       ],
       [
         {
-          label: t('table.actions.viewDetails'),
+          label: t('table.action.viewDetails'),
           icon: 'i-lucide-eye',
           onSelect: () => {
             router.push({
@@ -37,7 +37,7 @@ export function useTableActions() {
           },
         },
         {
-          label: t('common.edit'),
+          label: t('button.edit'),
           icon: 'i-lucide-edit',
           onSelect: () => {
             router.push({
@@ -46,7 +46,7 @@ export function useTableActions() {
           },
         },
         {
-          label: t('common.delete'),
+          label: t('button.delete'),
           icon: 'i-lucide-trash',
           color: 'error',
           onSelect: () => {

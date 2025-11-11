@@ -7,7 +7,7 @@ export interface FactoryFunction<T> extends EntityGenerator<T> {
 export function createFactory<T>(generator: EntityGenerator<T>): FactoryFunction<T> {
   const factory = generator as FactoryFunction<T>
 
-  factory.bulk = function(count: number): T[] {
+  factory.bulk = function (count: number): T[] {
     const items: T[] = []
     for (let i = 0; i < count; i++) {
       items.push(generator())

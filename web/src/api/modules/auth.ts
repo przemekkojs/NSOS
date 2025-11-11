@@ -1,5 +1,5 @@
 import { apiClient } from '../client'
-import type { User } from './user'
+import type { User } from '@/core/types'
 
 export interface Credentials {
   email: string
@@ -8,12 +8,12 @@ export interface Credentials {
 
 export const authApi = {
   login: (data: Credentials) =>
-    apiClient.post<{ accessToken: string; refreshToken: string; user: User }>('/auth/login', data, {
+    apiClient.post<User>('/auth/login', data, {
       credentials: 'include',
     }),
 
   register: (data: Credentials) =>
-    apiClient.post<{ accessToken: string; refreshToken: string; user: User }>(
+    apiClient.post<User>(
       '/auth/register',
       data,
       {

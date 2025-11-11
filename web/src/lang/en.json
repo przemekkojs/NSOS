@@ -1,0 +1,209 @@
+{
+  "button": {
+    "yes": "Yes",
+    "no": "No",
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "invite": "Invite",
+    "create": "Create",
+    "login": "Log In",
+    "register": "Create Account",
+    "backToHome": "Back to Home"
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "schedule": "Schedule",
+    "employees": "Employees",
+    "institutions": "Institutions",
+    "courses": "Courses",
+    "inbox": "Inbox",
+    "settings": "Settings",
+    "feedback": "Feedback",
+    "help": "Help",
+    "goTo": "Go to",
+    "code": "Code",
+    "sourceCode": "View page source"
+  },
+  "table": {
+    "column": {
+      "title": "Title",
+      "message": "Message",
+      "priority": "Priority",
+      "date": "Date",
+      "status": "Status",
+      "email": "Email",
+      "faculty": "Faculty",
+      "position": "Position",
+      "name": "Name",
+      "address": "Address",
+      "weeklyHours": "Weekly Hours",
+      "ects": "ECTS",
+      "courseGroup": "Course Group",
+      "courseType": "Type"
+    },
+    "action": {
+      "copyId": "Copy ID",
+      "viewDetails": "View Details"
+    },
+    "ariaLabel": {
+      "actionsMenu": "Open actions menu",
+      "sortColumn": "Sort by {column}"
+    },
+    "status": {
+      "read": "Read",
+      "unread": "Unread"
+    }
+  },
+  "feature": {
+    "chat": {
+      "title": "AI Chat",
+      "tooltip": "AI Chat Assistant",
+      "placeholder": "Ask a question or enter a command...",
+      "ariaLabel": "Chat with AI assistant"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "tooltip": "View notifications",
+      "empty": "No new notifications",
+      "ariaLabel": "Open notifications"
+    },
+    "csv": {
+      "import": "Import CSV",
+      "export": "Export CSV",
+      "dropFile": "Drop your CSV file here, or click to select",
+      "downloadTemplate": "Download CSV Template"
+    },
+    "cookieConsent": {
+      "message": "We use cookies to enhance your experience on our website.",
+      "accept": "Accept",
+      "optOut": "Opt out"
+    }
+  },
+  "page": {
+    "dashboard": {
+      "title": "Dashboard",
+      "description": "Overview of your workspace"
+    },
+    "login": {
+      "title": "Log In",
+      "description": "Sign in to your account"
+    },
+    "register": {
+      "title": "Sign Up",
+      "description": "Create a new account"
+    },
+    "error": {
+      "notFound": {
+        "title": "Page Not Found",
+        "description": "The page you're looking for doesn't exist."
+      }
+    },
+    "institution": {
+      "list": {
+        "title": "Institutions",
+        "description": "Manage your institutions"
+      },
+      "create": {
+        "title": "Create Institution",
+        "description": "Create a new institution to start managing its data and users."
+      }
+    },
+    "course": {
+      "list": {
+        "title": "Courses",
+        "description": "Manage your courses"
+      }
+    },
+    "employee": {
+      "list": {
+        "title": "Employees",
+        "description": "Manage employee accounts"
+      }
+    }
+  },
+  "form": {
+    "label": {
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "institutionName": "Institution Name",
+      "institutionAddress": "Address",
+      "institutionCode": "Code",
+      "courseName": "Course Name",
+      "weeklyHours": "Weekly Hours",
+      "ects": "ECTS Credits",
+      "courseGroup": "Course Group",
+      "courseType": "Course Type"
+    },
+    "placeholder": {
+      "email": "e.g. john.doe@mail.com",
+      "password": "Enter your password",
+      "confirmPassword": "Re-enter your password",
+      "institutionName": "e.g. University of Warsaw",
+      "institutionAddress": "e.g. Krakowskie Przedmieście 26/28",
+      "institutionCode": "e.g. UW001",
+      "search": "Search..."
+    },
+    "validation": {
+      "required": "This field is required",
+      "invalidEmail": "Please enter a valid email address",
+      "passwordMismatch": "Passwords do not match",
+      "passwordTooShort": "Password must be at least 8 characters",
+      "invalidFormat": "Invalid format"
+    },
+    "hint": {
+      "password": "Must be at least 8 characters",
+      "institutionCode": "Unique code for this institution"
+    }
+  },
+  "message": {
+    "success": {
+      "saved": "Successfully saved!",
+      "created": "Successfully created!",
+      "updated": "Successfully updated!",
+      "deleted": "Successfully deleted!",
+      "loginSuccess": "Welcome back!",
+      "registerSuccess": "Account created successfully!",
+      "inviteSent": "Invitation sent successfully!"
+    },
+    "error": {
+      "generic": "Something went wrong. Please try again.",
+      "network": "Network error. Please check your connection.",
+      "unauthorized": "You are not authorized to perform this action.",
+      "notFound": "The requested resource was not found.",
+      "validationFailed": "Please check the form for errors.",
+      "loginFailed": "Invalid email or password.",
+      "registerFailed": "Registration failed. Please try again."
+    },
+    "confirm": {
+      "delete": "Are you sure you want to delete this item?",
+      "deleteInstitution": "Are you sure you want to delete this institution? This action cannot be undone.",
+      "logout": "Are you sure you want to log out?"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "noData": "No data available",
+    "noResults": "No results found",
+    "searchResults": "{count} result | {count} results",
+    "itemsSelected": "{count} item selected | {count} items selected",
+    "of": "of",
+    "and": "and",
+    "or": "or"
+  },
+  "accessibility": {
+    "skipToContent": "Skip to main content",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "openDialog": "Open dialog",
+    "closeDialog": "Close dialog",
+    "loading": "Loading content, please wait",
+    "previous": "Previous",
+    "next": "Next",
+    "page": "Page",
+    "currentPage": "Current page, page {page}"
+  }
+}

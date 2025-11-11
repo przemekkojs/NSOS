@@ -15,14 +15,14 @@ const getDropdownActions = useTableActions()
 const { t } = useI18n()
 
 const columns = computed<TableColumn<User>[]>(() => [
-  { accessorKey: 'email', header: t('table.header.email') },
+  { accessorKey: 'email', header: t('table.column.email') },
   {
     accessorKey: 'faculty.name',
-    header: t('table.header.faculty'),
+    header: t('table.column.name'),
   },
   {
     accessorKey: 'position.name',
-    header: t('table.header.position'),
+    header: t('table.column.position'),
   },
   {
     id: 'actions',

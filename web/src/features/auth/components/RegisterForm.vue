@@ -4,10 +4,13 @@ import PasswordField from '@/core/components/ui/PasswordField.vue'
 
 import z from 'zod'
 
-const loginFormSchema = z.object({
-  email: z.email(),
-  password: z.string(), // FIXME: refine for client side validation also
-})
+const loginFormSchema = z
+  .object({
+    email: z.email(),
+    password: z.string(), // FIXME: refine for client side validation also
+    confirmPassword: z.string(),
+  })
+  .refine(({ password, confirmPassword }) => password === confirmPassword, 'Passwords do not match')
 
 type LoginSchema = z.output<typeof loginFormSchema>
 
@@ -42,13 +45,19 @@ async function onSubmit(event: FormSubmitEvent<LoginSchema>) {
       />
     </UFormField>
     <PasswordField v-model="state.password" data-testid="password-input" id="password" />
+    <PasswordField
+      v-model="state.confirmPassword"
+      :label="$t('form.label.confirmPassword')"
+      name="confirm-password"
+      data-testid="confirm-password-input"
+      id="confirm-password"
+    />
 
     <UButton
       type="submit"
       class="w-full mt-6 text-white text-center inline-block text-1xl font-bold"
-      data-testid="login-submit"
     >
-      {{ $t('button.login') }}
+      {{ $t('button.register') }}
     </UButton>
   </UForm>
 </template>

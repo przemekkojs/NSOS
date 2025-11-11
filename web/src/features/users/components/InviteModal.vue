@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useUsers } from '@/core/composables/useUsers'
+import { useInviteUser } from '@/core/composables/useUsers'
 import type { FormSubmitEvent } from '@nuxt/ui'
 import * as z from 'zod'
 
@@ -32,7 +32,8 @@ function clearForm() {
 
 const toast = useToast()
 const { t } = useI18n()
-const { invite } = useUsers()
+
+const { mutateAsync: invite } = useInviteUser()
 
 async function onSubmit(event: FormSubmitEvent<InviteForm>) {
   event.preventDefault()
@@ -40,7 +41,7 @@ async function onSubmit(event: FormSubmitEvent<InviteForm>) {
 
   open.value = false
   toast.add({
-    title: t('common.sendingInvitations'),
+    title: t('message.success.inviteSent'),
     description: state.emails.join(', '),
     color: 'success',
   })
@@ -51,7 +52,7 @@ async function onSubmit(event: FormSubmitEvent<InviteForm>) {
 </script>
 <template>
   <UModal v-model:open="open">
-    <UButton :label="$t('invite')" trailing-icon="i-lucide-user-plus" />
+    <UButton :label="$t('button.invite')" trailing-icon="i-lucide-user-plus" />
     <template #content>
       <UForm class="p-4 space-y-4" @submit="onSubmit" :schema>
         <UFormField label="Email" name="email">
@@ -67,7 +68,7 @@ async function onSubmit(event: FormSubmitEvent<InviteForm>) {
           />
         </UFormField>
         <UButton type="submit" color="primary" class="mt-4">
-          {{ $t('common.sendInvitation') }}
+          {{ $t('button.invite') }}
         </UButton>
       </UForm>
     </template>

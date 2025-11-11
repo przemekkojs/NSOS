@@ -1,12 +1,6 @@
 import { apiClient } from '../client'
 import type { CreateUserDto, UpdateUserDto } from '@/features/users/schemas'
-
-export interface User {
-  id: number
-  name: string
-  email: string
-  role: string
-}
+import type { User } from '@/core/types'
 
 export const userApi = {
   me: () => apiClient.get<User>('/users/me'),

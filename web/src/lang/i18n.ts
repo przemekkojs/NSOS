@@ -1,5 +1,6 @@
 import { createI18n, type I18nOptions } from 'vue-i18n'
-import { en, pl } from '@/lang'
+import en from './en.json'
+import pl from './pl.json'
 
 const options = {
   legacy: false,

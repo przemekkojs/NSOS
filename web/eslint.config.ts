@@ -16,7 +16,7 @@ export default defineConfigWithVueTs(
     files: ['**/*.{ts,mts,tsx,vue}'],
   },
 
-  globalIgnores(['**/dist/**', '**/dist-ssr/**', '**/coverage/**']),
+  globalIgnores(['**/dist/**', '.vite/**', '**/dist-ssr/**', '**/coverage/**']),
 
   pluginVue.configs['flat/essential'],
   vueTsConfigs.recommended,
@@ -72,6 +72,11 @@ export default defineConfigWithVueTs(
                 'useTimeoutFn',
               ],
               message: 'These VueUse composables are auto-imported. Remove the import statement.',
+            },
+            {
+              name: '@unhead/vue',
+              importNames: ['useHead'],
+              message: 'These Unhead composables are auto-imported. Remove the import statement.',
             },
           ],
         },

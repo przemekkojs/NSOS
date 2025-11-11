@@ -33,6 +33,7 @@ export interface User extends BaseModel {
   email: string
   /** TODO: check if that exists */
   avatar?: string
+  role: "admin" | "employee" | "student"
 }
 
 type LecturerStatus = 'active' | 'inactive' | 'retired'

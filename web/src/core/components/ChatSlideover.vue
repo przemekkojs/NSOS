@@ -47,7 +47,7 @@ const sanitize = (text: string) => {
 </script>
 <template>
   <USlideover>
-    <UTooltip :text="$t('chat.tooltip')" :shortcuts="['C']">
+    <UTooltip :text="$t('feature.chat.tooltip')" :shortcuts="['C']">
       <UButton
         icon="i-lucide-bot-message-square"
         color="neutral"
@@ -80,7 +80,7 @@ const sanitize = (text: string) => {
             icon="i-lucide-search"
             variant="naked"
             :error="error"
-            :placeholder="$t('chat.placeholder')"
+            :placeholder="$t('feature.chat.placeholder')"
             :disabled="status === 'streaming'"
             @submit="onSubmit"
           />

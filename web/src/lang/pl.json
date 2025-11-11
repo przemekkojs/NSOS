@@ -1,0 +1,209 @@
+{
+  "accessibility": {
+    "closeDialog": "Zamknij okno dialogowe",
+    "closeMenu": "Zamknij menu",
+    "currentPage": "Bieżąca strona, strona {page}",
+    "loading": "Ładowanie treści, proszę czekać",
+    "next": "Następna",
+    "openDialog": "Otwórz okno dialogowe",
+    "openMenu": "Otwórz menu",
+    "page": "Strona",
+    "previous": "Poprzednia",
+    "skipToContent": "Przejdź do treści głównej"
+  },
+  "button": {
+    "backToHome": "Powrót do strony głównej",
+    "cancel": "Anuluj",
+    "confirm": "Potwierdź",
+    "create": "Utwórz",
+    "delete": "Usuń",
+    "edit": "Edytuj",
+    "invite": "Zaproś",
+    "login": "Zaloguj się",
+    "no": "Nie",
+    "register": "Utwórz konto",
+    "save": "Zapisz",
+    "yes": "Tak"
+  },
+  "common": {
+    "and": "i",
+    "itemsSelected": "{count} element zaznaczony | {count} elementy zaznaczone | {count} elementów zaznaczonych",
+    "loading": "Ładowanie...",
+    "noData": "Brak danych",
+    "noResults": "Nie znaleziono wyników",
+    "of": "z",
+    "or": "lub",
+    "searchResults": "{count} wynik | {count} wyniki | {count} wyników"
+  },
+  "feature": {
+    "chat": {
+      "ariaLabel": "Czat z asystentem AI",
+      "placeholder": "Zadaj pytanie lub wpisz polecenie...",
+      "title": "Czat AI",
+      "tooltip": "Asystent czatu AI"
+    },
+    "cookieConsent": {
+      "accept": "Akceptuję",
+      "message": "Używamy plików cookie, aby poprawić komfort korzystania z naszej witryny.",
+      "optOut": "Rezygnuję"
+    },
+    "csv": {
+      "downloadTemplate": "Pobierz szablon CSV",
+      "dropFile": "Upuść tutaj plik CSV lub kliknij, aby wybrać",
+      "export": "Eksportuj plik CSV",
+      "import": "Importuj plik CSV"
+    },
+    "notifications": {
+      "ariaLabel": "Otwórz powiadomienia",
+      "empty": "Brak nowych powiadomień",
+      "title": "Powiadomienia",
+      "tooltip": "Zobacz powiadomienia"
+    }
+  },
+  "form": {
+    "hint": {
+      "institutionCode": "Unikalny kod dla tej instytucji",
+      "password": "Musi mieć co najmniej 8 znaków"
+    },
+    "label": {
+      "confirmPassword": "Potwierdź hasło",
+      "courseGroup": "Grupa kursów",
+      "courseName": "Nazwa kursu",
+      "courseType": "Typ kursu",
+      "ects": "Punkty ECTS",
+      "email": "Email",
+      "institutionAddress": "Adres",
+      "institutionCode": "Kod",
+      "institutionName": "Nazwa instytucji",
+      "password": "Hasło",
+      "weeklyHours": "Godziny tygodniowo"
+    },
+    "placeholder": {
+      "confirmPassword": "Wprowadź hasło ponownie",
+      "email": "np. jan.kowalski@mail.pl",
+      "institutionAddress": "np. Krakowskie Przedmieście 26/28",
+      "institutionCode": "np. UW001",
+      "institutionName": "np. Uniwersytet Warszawski",
+      "password": "Wprowadź hasło",
+      "search": "Szukaj..."
+    },
+    "validation": {
+      "invalidEmail": "Wprowadź prawidłowy adres email",
+      "invalidFormat": "Nieprawidłowy format",
+      "passwordMismatch": "Hasła nie są zgodne",
+      "passwordTooShort": "Hasło musi mieć co najmniej 8 znaków",
+      "required": "To pole jest wymagane"
+    }
+  },
+  "message": {
+    "confirm": {
+      "delete": "Czy na pewno chcesz usunąć ten element?",
+      "deleteInstitution": "Czy na pewno chcesz usunąć tę instytucję? Tej operacji nie można cofnąć.",
+      "logout": "Czy na pewno chcesz się wylogować?"
+    },
+    "error": {
+      "generic": "Coś poszło nie tak. Spróbuj ponownie.",
+      "loginFailed": "Nieprawidłowy email lub hasło.",
+      "network": "Błąd sieci. Sprawdź połączenie.",
+      "notFound": "Nie znaleziono żądanego zasobu.",
+      "registerFailed": "Rejestracja nie powiodła się. Spróbuj ponownie.",
+      "unauthorized": "Nie masz uprawnień do wykonania tej akcji.",
+      "validationFailed": "Sprawdź formularz pod kątem błędów."
+    },
+    "success": {
+      "created": "Pomyślnie utworzono!",
+      "deleted": "Pomyślnie usunięto!",
+      "inviteSent": "Zaproszenie wysłane pomyślnie!",
+      "loginSuccess": "Witaj ponownie!",
+      "registerSuccess": "Konto utworzone pomyślnie!",
+      "saved": "Pomyślnie zapisano!",
+      "updated": "Pomyślnie zaktualizowano!"
+    }
+  },
+  "navigation": {
+    "code": "Kod",
+    "courses": "Kursy",
+    "dashboard": "Panel główny",
+    "employees": "Pracownicy",
+    "feedback": "Opinie",
+    "goTo": "Idź do",
+    "help": "Pomoc",
+    "inbox": "Skrzynka odbiorcza",
+    "institutions": "Instytucje",
+    "schedule": "Harmonogram",
+    "settings": "Ustawienia",
+    "sourceCode": "Wyświetl źródło strony"
+  },
+  "page": {
+    "course": {
+      "list": {
+        "description": "Zarządzaj kursami",
+        "title": "Kursy"
+      }
+    },
+    "dashboard": {
+      "description": "Przegląd Twojej przestrzeni roboczej",
+      "title": "Panel główny"
+    },
+    "employee": {
+      "list": {
+        "description": "Zarządzaj kontami pracowników",
+        "title": "Pracownicy"
+      }
+    },
+    "error": {
+      "notFound": {
+        "description": "Strona, której szukasz, nie istnieje.",
+        "title": "Strona nie została znaleziona"
+      }
+    },
+    "institution": {
+      "create": {
+        "description": "Utwórz nową instytucję, aby rozpocząć zarządzanie jej danymi i użytkownikami.",
+        "title": "Utwórz instytucję"
+      },
+      "list": {
+        "description": "Zarządzaj instytucjami",
+        "title": "Instytucje"
+      }
+    },
+    "login": {
+      "description": "Zaloguj się do swojego konta",
+      "title": "Zaloguj się"
+    },
+    "register": {
+      "description": "Utwórz nowe konto",
+      "title": "Zarejestruj się"
+    }
+  },
+  "table": {
+    "action": {
+      "copyId": "Kopiuj ID",
+      "viewDetails": "Zobacz szczegóły"
+    },
+    "ariaLabel": {
+      "actionsMenu": "Otwórz menu akcji",
+      "sortColumn": "Sortuj według {column}"
+    },
+    "column": {
+      "address": "Adres",
+      "courseGroup": "Grupa kursów",
+      "courseType": "Typ",
+      "date": "Data",
+      "ects": "ECTS",
+      "email": "Email",
+      "faculty": "Wydział",
+      "message": "Wiadomość",
+      "name": "Nazwa",
+      "position": "Stanowisko",
+      "priority": "Priorytet",
+      "status": "Status",
+      "title": "Tytuł",
+      "weeklyHours": "Godziny tygodniowo"
+    },
+    "status": {
+      "read": "Przeczytane",
+      "unread": "Nieprzeczytane"
+    }
+  }
+}

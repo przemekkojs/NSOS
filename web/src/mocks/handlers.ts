@@ -18,29 +18,29 @@ const apiUrl = (path: string | URL | RegExp) => {
   return new URL(path, import.meta.env.VITE_API_GATEWAY_URL).toString()
 }
 
-const sessionCookie = 'sessionid=mock-session-id-123; Path=/; HttpOnly; SameSite=Lax'
-const _sessionCookie = 'sessionid=mock-session-id-123; Path=/; SameSite=Lax'
+const sessionCookie = 'sessionid=mock-session-id-123; Path=/; SameSite=Lax'
+const expireCookie = 'sessionid=; Path=/; SameSite=Lax; Max-Age=0'
 
 const authHandlers = [
-  http.post(apiUrl('/auth/register'), () => {
-    return HttpResponse.json(user, {
+  http.post(apiUrl('/auth/register'), async (req) => {
+    const data = (await req.request.json()) as { email: string }
+    return HttpResponse.json({
+      ...user,
+      email: data.email
+    }, {
       status: 201,
-      headers: {
-        'Set-Cookie': [sessionCookie, _sessionCookie].join('; '),
-      },
-    })
-  }),
-  http.post(apiUrl('/auth/login'), () => {
-    return HttpResponse.json(user, {
-      status: 200,
       headers: {
         'Set-Cookie': [sessionCookie].join('; '),
       },
     })
   }),
-  http.post(apiUrl('/auth/logout'), () => {
+  http.post(apiUrl('/auth/login'), async (req) => {
+    const data = (await req.request.json()) as { email: string }
     return HttpResponse.json(
-      { message: 'Logged out successfully' },
+      {
+        ...user,
+        email: data.email,
+      },
       {
         status: 200,
         headers: {
@@ -49,10 +49,21 @@ const authHandlers = [
       },
     )
   }),
+  http.post(apiUrl('/auth/logout'), () => {
+    return HttpResponse.json(
+      { message: 'Logged out successfully' },
+      {
+        status: 200,
+        headers: {
+          'Set-Cookie': [expireCookie].join('; '),
+        },
+      },
+    )
+  }),
 ]
 
 const employeesHandlers = [
-  http.get(apiUrl('/users?kind=lecturer'), () => {
+  http.get(apiUrl('/users'), () => {
     return HttpResponse.json(lecturers)
   }),
   http.get(apiUrl(/\/users\/\d+/), (req) => {
@@ -132,7 +143,9 @@ const institutionsHandlers = [
 ]
 
 const courseHandlers = [
-  http.get(apiUrl('/courses'), () => HttpResponse.json(courses)),
+  http.get(apiUrl('/courses'), () => {
+    return HttpResponse.json(courses)
+  }),
 
   http.get(apiUrl(/\/courses\/\d+/), (req) => {
     const url = new URL(req.request.url)
@@ -147,7 +160,22 @@ const courseHandlers = [
   }),
 ]
 
+const corsHandlers = [
+  http.options('*', () => {
+    return new Response(null, {
+      status: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
+        'Access-Control-Allow-Headers': '*',
+        'Access-Control-Allow-Credentials': 'true',
+      },
+    })
+  }),
+]
+
 export const handlers = [
+  ...corsHandlers,
   ...authHandlers,
   ...employeesHandlers,
   ...institutionsHandlers,

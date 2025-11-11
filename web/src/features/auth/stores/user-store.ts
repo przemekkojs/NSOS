@@ -1,14 +1,9 @@
 import { defineStore } from 'pinia'
+import type { User } from '@/core/types'
 
 interface AnonymousUser {
   id: 'anonymous'
   role: 'unauthenticated'
-}
-
-export interface User {
-  id: number
-  name: string
-  role: 'admin' | 'employee' | 'student'
 }
 
 export const useUserStore = defineStore('user', {
