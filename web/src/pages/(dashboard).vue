@@ -112,6 +112,7 @@ if (cookie.value !== 'accepted') {
         label: t('feature.cookieConsent.accept'),
         color: 'neutral',
         variant: 'outline',
+        // @ts-expect-error manually add data-testid
         'data-testid': 'accept-cookies-button',
         onClick: () => {
           cookie.value = 'accepted'

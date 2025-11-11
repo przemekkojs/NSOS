@@ -1,5 +1,5 @@
 import { http, HttpResponse } from 'msw'
-import { lecturers, createUsers, createInsitution } from '@/mocks/fixtures'
+import { createUsers, createInsitution } from '@/mocks/fixtures'
 import { createCourses } from './fixtures/courses'
 
 const courses = createCourses.bulk(6)
@@ -24,15 +24,18 @@ const expireCookie = 'sessionid=; Path=/; SameSite=Lax; Max-Age=0'
 const authHandlers = [
   http.post(apiUrl('/auth/register'), async (req) => {
     const data = (await req.request.json()) as { email: string }
-    return HttpResponse.json({
-      ...user,
-      email: data.email
-    }, {
-      status: 201,
-      headers: {
-        'Set-Cookie': [sessionCookie].join('; '),
+    return HttpResponse.json(
+      {
+        ...user,
+        email: data.email,
       },
-    })
+      {
+        status: 201,
+        headers: {
+          'Set-Cookie': [sessionCookie].join('; '),
+        },
+      },
+    )
   }),
   http.post(apiUrl('/auth/login'), async (req) => {
     const data = (await req.request.json()) as { email: string }
@@ -64,12 +67,12 @@ const authHandlers = [
 
 const employeesHandlers = [
   http.get(apiUrl('/users'), () => {
-    return HttpResponse.json(lecturers)
+    return HttpResponse.json(users)
   }),
   http.get(apiUrl(/\/users\/\d+/), (req) => {
     const url = new URL(req.request.url)
     const id = Number(url.pathname.split('/').pop())
-    const lecturer = lecturers.find((lecturer) => lecturer.id === id)
+    const lecturer = users.find((lecturer) => lecturer.id === id)
 
     if (lecturer) {
       return HttpResponse.json(lecturer)

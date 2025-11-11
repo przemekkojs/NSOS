@@ -13,12 +13,8 @@ export const authApi = {
     }),
 
   register: (data: Credentials) =>
-    apiClient.post<User>(
-      '/auth/register',
-      data,
-      {
-        credentials: 'include',
-      },
-    ),
+    apiClient.post<User>('/auth/register', data, {
+      credentials: 'include',
+    }),
   logout: () => apiClient.post('/auth/logout'),
 }
