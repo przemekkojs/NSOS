@@ -38,112 +38,112 @@ declare module 'vue-router/auto-routes' {
       | '/(dashboard)/institutions/'
       | '/(dashboard)/institutions/[id]'
       | '/(dashboard)/settings/'
-    >
+    >,
     '/(dashboard)/': RouteRecordInfo<
       '/(dashboard)/',
       '/',
       Record<never, never>,
       Record<never, never>,
-      never
-    >
+      | never
+    >,
     '/(dashboard)/courses/': RouteRecordInfo<
       '/(dashboard)/courses/',
       '/courses',
       Record<never, never>,
       Record<never, never>,
-      never
-    >
+      | never
+    >,
     '/(dashboard)/courses/[id]': RouteRecordInfo<
       '/(dashboard)/courses/[id]',
       '/courses/:id',
       { id: ParamValue<true> },
       { id: ParamValue<false> },
-      never
-    >
+      | never
+    >,
     '/(dashboard)/employees/': RouteRecordInfo<
       '/(dashboard)/employees/',
       '/employees',
       Record<never, never>,
       Record<never, never>,
-      never
-    >
+      | never
+    >,
     '/(dashboard)/employees/[id]': RouteRecordInfo<
       '/(dashboard)/employees/[id]',
       '/employees/:id',
       { id: ParamValue<true> },
       { id: ParamValue<false> },
-      never
-    >
+      | never
+    >,
     '/(dashboard)/harmonogram': RouteRecordInfo<
       '/(dashboard)/harmonogram',
       '/harmonogram',
       Record<never, never>,
       Record<never, never>,
-      never
-    >
+      | never
+    >,
     '/(dashboard)/inbox': RouteRecordInfo<
       '/(dashboard)/inbox',
       '/inbox',
       Record<never, never>,
       Record<never, never>,
-      never
-    >
+      | never
+    >,
     '/(dashboard)/institutions/': RouteRecordInfo<
       '/(dashboard)/institutions/',
       '/institutions',
       Record<never, never>,
       Record<never, never>,
-      never
-    >
+      | never
+    >,
     '/(dashboard)/institutions/[id]': RouteRecordInfo<
       '/(dashboard)/institutions/[id]',
       '/institutions/:id',
       { id: ParamValue<true> },
       { id: ParamValue<false> },
-      never
-    >
+      | never
+    >,
     '/(dashboard)/settings/': RouteRecordInfo<
       '/(dashboard)/settings/',
       '/settings',
       Record<never, never>,
       Record<never, never>,
-      never
-    >
+      | never
+    >,
     '/(auth)/login': RouteRecordInfo<
       '/(auth)/login',
       '/login',
       Record<never, never>,
       Record<never, never>,
-      never
-    >
+      | never
+    >,
     '/(auth)/register': RouteRecordInfo<
       '/(auth)/register',
       '/register',
       Record<never, never>,
       Record<never, never>,
-      never
-    >
+      | never
+    >,
     '/(help)/feedback': RouteRecordInfo<
       '/(help)/feedback',
       '/feedback',
       Record<never, never>,
       Record<never, never>,
-      never
-    >
+      | never
+    >,
     '/(help)/help': RouteRecordInfo<
       '/(help)/help',
       '/help',
       Record<never, never>,
       Record<never, never>,
-      never
-    >
+      | never
+    >,
     '/[...path]': RouteRecordInfo<
       '/[...path]',
       '/:path(.*)',
       { path: ParamValue<true> },
       { path: ParamValue<false> },
-      never
-    >
+      | never
+    >,
   }
 
   /**
@@ -170,67 +170,98 @@ declare module 'vue-router/auto-routes' {
         | '/(dashboard)/institutions/'
         | '/(dashboard)/institutions/[id]'
         | '/(dashboard)/settings/'
-      views: 'default'
+      views:
+        | 'default'
     }
     'src/pages/(dashboard)/index.vue': {
-      routes: '/(dashboard)/'
-      views: never
+      routes:
+        | '/(dashboard)/'
+      views:
+        | never
     }
     'src/pages/(dashboard)/courses/index.vue': {
-      routes: '/(dashboard)/courses/'
-      views: never
+      routes:
+        | '/(dashboard)/courses/'
+      views:
+        | never
     }
     'src/pages/(dashboard)/courses/[id].vue': {
-      routes: '/(dashboard)/courses/[id]'
-      views: never
+      routes:
+        | '/(dashboard)/courses/[id]'
+      views:
+        | never
     }
     'src/pages/(dashboard)/employees/index.vue': {
-      routes: '/(dashboard)/employees/'
-      views: never
+      routes:
+        | '/(dashboard)/employees/'
+      views:
+        | never
     }
     'src/pages/(dashboard)/employees/[id].vue': {
-      routes: '/(dashboard)/employees/[id]'
-      views: never
+      routes:
+        | '/(dashboard)/employees/[id]'
+      views:
+        | never
     }
     'src/pages/(dashboard)/harmonogram.vue': {
-      routes: '/(dashboard)/harmonogram'
-      views: never
+      routes:
+        | '/(dashboard)/harmonogram'
+      views:
+        | never
     }
     'src/pages/(dashboard)/inbox.vue': {
-      routes: '/(dashboard)/inbox'
-      views: never
+      routes:
+        | '/(dashboard)/inbox'
+      views:
+        | never
     }
     'src/pages/(dashboard)/institutions/index.vue': {
-      routes: '/(dashboard)/institutions/'
-      views: never
+      routes:
+        | '/(dashboard)/institutions/'
+      views:
+        | never
     }
     'src/pages/(dashboard)/institutions/[id].vue': {
-      routes: '/(dashboard)/institutions/[id]'
-      views: never
+      routes:
+        | '/(dashboard)/institutions/[id]'
+      views:
+        | never
     }
     'src/pages/(dashboard)/settings/index.vue': {
-      routes: '/(dashboard)/settings/'
-      views: never
+      routes:
+        | '/(dashboard)/settings/'
+      views:
+        | never
     }
     'src/pages/(auth)/login.vue': {
-      routes: '/(auth)/login'
-      views: never
+      routes:
+        | '/(auth)/login'
+      views:
+        | never
     }
     'src/pages/(auth)/register.vue': {
-      routes: '/(auth)/register'
-      views: never
+      routes:
+        | '/(auth)/register'
+      views:
+        | never
     }
     'src/pages/(help)/feedback.vue': {
-      routes: '/(help)/feedback'
-      views: never
+      routes:
+        | '/(help)/feedback'
+      views:
+        | never
     }
     'src/pages/(help)/help.vue': {
-      routes: '/(help)/help'
-      views: never
+      routes:
+        | '/(help)/help'
+      views:
+        | never
     }
     'src/pages/[...path].vue': {
-      routes: '/[...path]'
-      views: never
+      routes:
+        | '/[...path]'
+      views:
+        | never
     }
   }
 
@@ -241,5 +272,7 @@ declare module 'vue-router/auto-routes' {
    * @internal
    */
   export type _RouteNamesForFilePath<FilePath extends string> =
-    _RouteFileInfoMap extends Record<FilePath, infer Info> ? Info['routes'] : keyof RouteNamedMap
+    _RouteFileInfoMap extends Record<FilePath, infer Info>
+      ? Info['routes']
+      : keyof RouteNamedMap
 }

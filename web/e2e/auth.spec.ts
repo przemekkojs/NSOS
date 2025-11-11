@@ -1,35 +1,5 @@
-import { test, expect, Page } from '@playwright/test'
-
-const user = {
-  id: 1,
-  email: 'john.doe@mail.com',
-  password: 'ExamplePassword1',
-}
-
-//
-async function forceLogin(page: Page) {
-  await page.goto('http://localhost:5173/login')
-
-  // const locator = page.getByTestId('login-form').first()
-  await expect(page).toHaveTitle(/Login/)
-
-  await page.fill('#email', user.email)
-  await page.fill('#password', user.password)
-
-  await page.click('button[type="submit"]')
-  await page.waitForURL('http://localhost:5173/')
-}
-
-async function acceptCookies(page: Page) {
-  const acceptButton = page.getByTestId('accept-cookies-button')
-  await acceptButton.waitFor({ state: 'visible', timeout: 2000 })
-  await acceptButton.click()
-  await acceptButton.waitFor({ state: 'hidden', timeout: 2000 })
-}
-
-test.use({
-  viewport: { width: 1280, height: 720 },
-})
+import { test, expect } from '@playwright/test'
+import { forceLogin, acceptCookies, user } from './helpers.js'
 
 test.describe('Auth flows', () => {
   test.beforeEach(async ({ page }) => {
@@ -67,11 +37,9 @@ test.describe('Auth flows', () => {
     await forceLogin(page)
     await acceptCookies(page)
 
-    await page.bringToFront()
-    await page.mouse.move(0, 0) // Trigger any hover states
-
     const userPresence = page.getByTestId('sidebar-user-select').first()
     await expect(userPresence).toBeVisible()
+    // @ts-expect-error this exists
     await userPresence.evaluate((el) => el.click())
 
     await page.getByTestId('user-menu-logout').click()

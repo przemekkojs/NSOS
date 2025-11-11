@@ -1,4 +1,3 @@
-export * from './employees'
 export * from './users'
 export * from './faculties'
 export * from './positions'
