@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { useTableActions } from '@/core/composables/useTableActions'
 import { useCourses } from '@/core/composables/useCourses'
-import type { Lecturer } from '@/core/types'
 import type { TableColumn } from '@nuxt/ui'
+import type { Course } from '@/api/modules/courses'
 
 const { data, isFetching } = useCourses()
 
 const { t } = useI18n()
 const getDropdownActions = useTableActions()
 
-const columns = computed<TableColumn<Lecturer>[]>(() => [
+const columns = computed<TableColumn<Course>[]>(() => [
   { accessorKey: 'name', header: t('table.column.name') },
   {
     accessorKey: 'weeklyHours',

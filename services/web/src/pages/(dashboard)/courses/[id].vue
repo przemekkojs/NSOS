@@ -1,19 +1,15 @@
 <script setup lang="ts">
 import { useCourse } from '@/core/composables/useCourses'
-const params = useRoute().params
+const route = useRoute('/(dashboard)/courses/[id]')
 
-const id = Number(params.id as string)
+const id = Number(route.params.id)
 
-if (isNaN(id)) {
-  throw new Error('Invalid course ID')
-}
-
-const { data, isFetching } = useCourse(Number(params.id as string))
+const { data, isFetching } = useCourse(id)
 // const toast = useToast()
 // const router = useRouter()
 </script>
 <template>
-  <h1>Employee: {{ $route.params.id }}</h1>
+  <h1>Employee: {{ id }}</h1>
   <div v-if="isFetching">Loading...</div>
   <div v-else>
     <pre>{{ data }}</pre>

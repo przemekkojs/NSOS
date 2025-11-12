@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker'
 import type { Course } from '@/api/modules/courses'
 import { createFactory } from './factory-builder'
 import { courseTypes } from '@/api/modules/courses'
+import { createFaculty } from './faculties'
 
 const COURSE_NAMES = ['ABC']
 
@@ -23,7 +24,7 @@ export const createCourses = createFactory<Course>((overrides = {}) => {
     }),
     courseGroup: faker.word.noun(),
     courseType: faker.helpers.arrayElement(courseTypes),
-    faculty: faker.number.int(),
+    faculty: createFaculty(),
   }
 
   return Object.assign(course, overrides)

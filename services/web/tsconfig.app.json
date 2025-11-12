@@ -6,6 +6,7 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "auto-imports.d.ts",
+    "typed-router.d.ts",
     "components.d.ts"
   ],
   "exclude": ["src/**/__tests__/*"],

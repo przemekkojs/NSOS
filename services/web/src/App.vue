@@ -1,5 +1,9 @@
+<!-- eslint-disable no-restricted-imports because type-check -->
 <script setup lang="ts">
 import * as locales from '@nuxt/ui/locale'
+import { useHead } from '@unhead/vue'
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 const i18n = useI18n()
 

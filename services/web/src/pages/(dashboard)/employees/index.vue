@@ -4,7 +4,7 @@ import InviteModal from '@/features/users/components/InviteModal.vue'
 import type { TableColumn } from '@nuxt/ui'
 import CSVImport from '@/core/components/CSVImport.vue'
 import { useCreateUser, useUsers } from '@/core/composables/useUsers'
-import type { User } from '@/api/modules/user'
+import type { User } from '@/core/types'
 import { userHeaderUserAdapter } from '@/features/users/adapters'
 import type { UserHeader } from '@/features/users/schemas'
 

@@ -1,5 +1,4 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/vue-query'
-import type { MaybeRef } from 'vue'
 import { userApi } from '@/api/modules/user'
 import type { UpdateUserDto } from '@/features/users/schemas'
 

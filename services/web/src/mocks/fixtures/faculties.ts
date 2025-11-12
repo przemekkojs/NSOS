@@ -2,10 +2,12 @@ import type { Faculty } from '@/core/types'
 import { faker } from '@faker-js/faker'
 import { createFactory } from './factory-builder'
 
+const FACULTIES = ['Faculty of Biotechnology', 'Faculty of Computer Science'] as const
+
 export const createFaculty = createFactory<Faculty>((overrides = {}) => {
   const faculty: Faculty = {
     id: faker.number.int(),
-    name: faker.company.name(),
+    name: faker.helpers.arrayElement(FACULTIES),
     description: faker.lorem.sentence(),
   }
 

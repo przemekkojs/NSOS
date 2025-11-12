@@ -1,7 +1,6 @@
 services:
   db:
     image: keinos/sqlite3:latest
-    container_name: db
     ports:
       - "5432:5432"
     volumes:
@@ -19,7 +18,6 @@ services:
     build:
       context: ../services/core-api
       dockerfile: Dockerfile
-    container_name: finance_worker
     ports: 
       - "8000:8000"
     environment:
@@ -27,7 +25,7 @@ services:
       - DEBUG=${DEBUG}
       - ALLOWED_HOSTS=${CORE_API_ALLOWED_HOSTS}
       - DATABASE_ENGINE=${DATABASE_ENGINE}
-      - DATABASE_ENGINE=${DATABASE_USERNAME}
+      - DATABASE_USERNAME=${DATABASE_USERNAME}
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
       - DATABASE_HOST=${DATABASE_HOST}
       - DATABASE_PORT=${DATABASE_PORT}
@@ -45,7 +43,6 @@ services:
       dockerfile: Dockerfile
       args:
         - VITE_API_GATEWAY_URL=${VITE_API_GATEWAY_URL}
-    container_name: web
     ports:
       - "3000:80"
     depends_on:
@@ -58,7 +55,6 @@ services:
     build:
       context: ../services/docs
       dockerfile: Dockerfile
-    container_name: docs
     ports:
       - "3001:80"
     depends_on:
