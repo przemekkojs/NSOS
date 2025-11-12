@@ -61,7 +61,7 @@ View your teaching schedule, monitor your workload against pensum, and access yo
 
 ### Students
 
-Enroll in courses and access your personalized class schedule. [Student Guide →](/student/)
+<!-- Enroll in courses and access your personalized class schedule. [Student Guide →](/student/) -->
 
 ## Key Concepts
 
@@ -79,17 +79,17 @@ Enroll in courses and access your personalized class schedule. [Student Guide �
 
 ::: info For First-Time Administrators
 
-1. [Register and create your institution](/administrator/institution-setup)
-2. [Set up your first semester](/administrator/semester-management)
-3. [Define teacher positions](/administrator/teacher-positions)
-4. [Create a study program](/administrator/study-programs)
-5. [Start assigning teachers](/administrator/teacher-assignments)
+<!-- 1. [Register and create your institution](/administrator/institution-setup) -->
+<!-- 2. [Set up your first semester](/administrator/semester-management) -->
+<!-- 3. [Define teacher positions](/administrator/teacher-positions) -->
+<!-- 4. [Create a study program](/administrator/study-programs) -->
+<!-- 5. [Start assigning teachers](/administrator/teacher-assignments) -->
    :::
 
 ::: info For Teachers
 
-1. [Access your institution](/teacher/getting-started)
-2. [View your teaching schedule](/teacher/harmonogram)
+<!-- 1. [Access your institution](/teacher/getting-started) -->
+<!-- 2. [View your teaching schedule](/teacher/harmonogram) -->
 3. [Check your hour register](/teacher/hour-register)
 4. [Understand your workload](/teacher/understanding-pensum)
    :::

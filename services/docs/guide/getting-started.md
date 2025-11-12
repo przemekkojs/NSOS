@@ -190,7 +190,7 @@ Hour calculations update in real-time as administrators create or modify teachin
 If you encounter any issues:
 
 1. Check the relevant section of this documentation
-2. Review the [Use Cases](/use-cases/overview) for detailed scenarios
+<!-- 2. Review the [Use Cases](/use-cases/overview) for detailed scenarios -->
 3. Contact your system administrator
 4. Report bugs on [GitHub Issues](https://github.com/przemekkojs/NSOS/issues)
 

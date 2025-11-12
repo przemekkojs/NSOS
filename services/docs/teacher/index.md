@@ -456,7 +456,7 @@ A: Yes, NSOS is web-based and works on mobile devices. Use your regular login cr
 - [Personal Hour Register](/teacher/hour-register) - Complete register documentation
 - [Understanding Pensum](/teacher/understanding-pensum) - Deep dive into calculations
 - [User Roles](/guide/user-roles) - What teachers can and can't do
-- [Use Cases](/use-cases/overview) - Example scenarios
+<!-- - [Use Cases](/use-cases/overview) - Example scenarios -->
 
 ---
 

@@ -315,7 +315,7 @@ Contact your system administrator. Permission changes require administrative app
 - [Getting Started Guide](/guide/getting-started) - Initial setup and login
 - [Administrator Guide](/administrator/) - Complete admin feature documentation
 - [Teacher Guide](/teacher/) - Complete teacher feature documentation
-- [Use Cases Overview](/use-cases/overview) - Detailed scenarios for each role
+<!-- - [Use Cases Overview](/use-cases/overview) - Detailed scenarios for each role -->
 
 ---
 

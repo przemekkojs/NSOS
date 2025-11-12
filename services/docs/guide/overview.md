@@ -188,11 +188,11 @@ Choose your path:
 :::
 
 ::: info I'm a student using NSOS
-→ [Student Guide](/student/)
+<!-- → [Student Guide](/student/) -->
 :::
 
 ## Need Help?
 
-- **Use Cases** - See detailed scenarios in [Use Cases Overview](/use-cases/)
+<!-- - **Use Cases** - See detailed scenarios in [Use Cases Overview](/use-cases/) -->
 - **Technical Docs** - Architecture and system design
 - **Support** - Contact your institution administrator

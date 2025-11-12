@@ -370,7 +370,7 @@ Per Semester: Plan for 5% contingency hours
 
 ### Additional Resources
 
-- [Use Cases](/use-cases/overview) - Detailed scenarios
+<!-- - [Use Cases](/use-cases/overview) - Detailed scenarios -->
 - [User Roles](/guide/user-roles) - Permission reference
 - [Key Concepts](/guide/key-concepts) - System fundamentals
 

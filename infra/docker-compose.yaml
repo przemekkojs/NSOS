@@ -1,0 +1,76 @@
+services:
+  db:
+    image: keinos/sqlite3:latest
+    container_name: db
+    ports:
+      - "5432:5432"
+    volumes:
+      - sqlite_data:/db
+    # healthcheck:
+    #   test: ["CMD-SHELL", "pg_isready -U admin -d db"]
+    #   interval: 3s
+    #   timeout: 3s
+    #   retries: 10
+    #   start_period: 5s
+    networks:
+      - nsos_net
+    
+  core-api:
+    build:
+      context: ../services/core-api
+      dockerfile: Dockerfile
+    container_name: finance_worker
+    ports: 
+      - "8000:8000"
+    environment:
+      - SECRET_KEY=${CORE_API_SECRET_KEY}
+      - DEBUG=${DEBUG}
+      - ALLOWED_HOSTS=${CORE_API_ALLOWED_HOSTS}
+      - DATABASE_ENGINE=${DATABASE_ENGINE}
+      - DATABASE_ENGINE=${DATABASE_USERNAME}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_HOST=${DATABASE_HOST}
+      - DATABASE_PORT=${DATABASE_PORT}
+    env_file:
+      - .env
+    depends_on:
+      - db
+    restart: unless-stopped
+    networks:
+      - nsos_net
+
+  web:
+    build:
+      context: ../services/web
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_GATEWAY_URL=${VITE_API_GATEWAY_URL}
+    container_name: web
+    ports:
+      - "3000:80"
+    depends_on:
+      - core-api
+    restart: unless-stopped
+    networks:
+      - nsos_net
+
+  docs:
+    build:
+      context: ../services/docs
+      dockerfile: Dockerfile
+    container_name: docs
+    ports:
+      - "3001:80"
+    depends_on:
+      - core-api
+    restart: unless-stopped
+    networks:
+      - nsos_net
+
+networks:
+  nsos_net:
+    driver: bridge
+
+volumes:
+  sqlite_data:
+
