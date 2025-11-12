@@ -1,9 +1,11 @@
 import { test, expect } from '@playwright/test'
 import { forceLogin, acceptCookies, user } from './helpers.js'
 
+test.describe.configure({ mode: 'parallel' })
+
 test.describe('Auth flows', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('http://localhost:5173')
+    await page.goto('/')
   })
 
   test('User can login', async ({ page }) => {
@@ -15,7 +17,7 @@ test.describe('Auth flows', () => {
   })
 
   test('User can register', async ({ page }) => {
-    await page.goto('http://localhost:5173/register')
+    await page.goto('/register')
 
     await expect(page).toHaveTitle(/Register/)
 
@@ -24,7 +26,7 @@ test.describe('Auth flows', () => {
     await page.fill('#confirm-password', user.password)
 
     await page.click('button[type="submit"]')
-    await page.waitForURL('http://localhost:5173/')
+    await page.waitForURL('/')
     await acceptCookies(page)
 
     //TODO: email verification flow
@@ -39,11 +41,10 @@ test.describe('Auth flows', () => {
 
     const userPresence = page.getByTestId('sidebar-user-select').first()
     await expect(userPresence).toBeVisible()
-    // @ts-expect-error this exists
-    await userPresence.evaluate((el) => el.click())
+    await userPresence.dispatchEvent('click')
 
     await page.getByTestId('user-menu-logout').click()
-    await page.waitForURL('http://localhost:5173/login')
+    await page.waitForURL('/login')
     await expect(page).toHaveTitle(/Login/)
     const loginButton = page.getByTestId('login-submit')
     await expect(loginButton).toBeVisible()

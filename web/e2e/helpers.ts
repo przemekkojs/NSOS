@@ -7,7 +7,7 @@ export const user = {
 }
 
 export async function forceLogin(page: Page) {
-  await page.goto('http://localhost:5173/login')
+  await page.goto('/login')
 
   await expect(page).toHaveTitle(/Login/)
 
@@ -15,7 +15,7 @@ export async function forceLogin(page: Page) {
   await page.fill('#password', user.password)
 
   await page.click('button[type="submit"]')
-  await page.waitForURL('http://localhost:5173/')
+  await page.waitForURL('/')
 }
 
 export async function acceptCookies(page: Page) {
