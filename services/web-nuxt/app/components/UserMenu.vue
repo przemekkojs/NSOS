@@ -2,9 +2,9 @@
 import type { DropdownMenuItem } from "@nuxt/ui";
 import { useColorMode } from "@vueuse/core";
 import { useLogout } from "../composables/useAuth";
-import { useRouter } from "@typed-router";
+import { navigateTo } from "@typed-router";
 
-import { useUserStore } from "~~/features/auth/stores/user-store";
+import { useUserStore } from "~/stores/user-store";
 defineProps<{
   collapsed?: boolean;
 }>();
@@ -34,7 +34,6 @@ const colors = [
 ];
 const neutrals = ["slate", "gray", "zinc", "neutral", "stone"];
 
-const router = useRouter();
 const userStore = useUserStore();
 
 const user = computed(() => {
@@ -182,9 +181,7 @@ const items = computed<DropdownMenuItem[][]>(() => [
       async onSelect() {
         await logout();
         userStore.$reset();
-        await router.push({
-          path: "/login",
-        });
+        await navigateTo("/login");
       },
     },
   ],

@@ -31,3 +31,7 @@
 .fc-button {
   transition: all 0.1s;
 }
+
+.fc-media-screen {
+  height: 100%;
+}

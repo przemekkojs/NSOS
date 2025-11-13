@@ -32,7 +32,7 @@ async function handleFileUpload(file: File | null | undefined) {
     <template #body>
       <UForm>
         <UFileUpload
-          accpet=".csv"
+          accept=".csv"
           :label="props.label ?? $t('feature.csv.dropFile')"
           @update:model-value="handleFileUpload"
         />
@@ -45,7 +45,7 @@ async function handleFileUpload(file: File | null | undefined) {
         :title="$t('feature.csv.downloadTemplate')"
         class="bg-primary px-4 py-1 rounded-sm mx-auto"
       >
-        Or download a sample file first
+        {{ $t("button.downloadSample") }}
       </a>
     </template>
   </UModal>

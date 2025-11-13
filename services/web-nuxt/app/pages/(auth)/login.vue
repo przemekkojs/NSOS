@@ -2,10 +2,8 @@
 import type { Credentials } from "@/api/modules/auth";
 import { useLogin } from "~/composables/useAuth";
 import LoginForm from "~~/features/auth/components/LoginForm.vue";
-import { useUserStore } from "~~/features/auth/stores/user-store";
-import { useRouter } from "@typed-router";
-
-const router = useRouter();
+import { useUserStore } from "~/stores/user-store";
+import { navigateTo } from "@typed-router";
 
 useHead({
   title: "Login",
@@ -20,9 +18,7 @@ async function onSuccess(credentials: Credentials) {
   const user = await login(credentials);
   userStore.$patch(user);
 
-  await router.push({
-    path: "/",
-  });
+  await navigateTo("/");
 }
 </script>
 <template>

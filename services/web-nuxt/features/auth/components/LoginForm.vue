@@ -30,13 +30,14 @@ async function onSubmit(event: FormSubmitEvent<LoginSchema>) {
     :schema="loginFormSchema"
     :state
     class="flex flex-col gap-4"
-    @submit="onSubmit"
+    @submit.prevent="onSubmit"
   >
     <UFormField :label="$t('form.label.email')" name="email" required>
       <UInput
         id="email"
         v-model="state.email"
         class="w-full"
+        type="email"
         data-testid="email-input"
         :placeholder="$t('form.placeholder.email')"
       />

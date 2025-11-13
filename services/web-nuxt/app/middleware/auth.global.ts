@@ -1,4 +1,4 @@
-import { useUserStore } from "~~/features/auth/stores/user-store";
+import { useUserStore } from "~/stores/user-store";
 import { navigateTo } from "@typed-router";
 
 const authRoutes = [

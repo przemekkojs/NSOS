@@ -1,5 +1,5 @@
 import type { NavigationGuardWithThis } from "vue-router";
-import { useUserStore } from "~~/features/auth/stores/user-store";
+import { useUserStore } from "~/stores/user-store";
 
 const authRoutes = ["/login", "/register"];
 

@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import type { Credentials } from "@/api/modules/auth";
 import { useRegister } from "~/composables/useAuth";
-import { useUserStore } from "~~/features/auth/stores/user-store";
+import { useUserStore } from "~/stores/user-store";
 import RegisterForm from "~~/features/auth/components/RegisterForm.vue";
-import { useRouter } from "@typed-router";
-
-const router = useRouter();
+import { navigateTo } from "@typed-router";
 
 useHead({
   title: "Register",
@@ -22,9 +20,7 @@ async function onSuccess(credentials: Credentials) {
   // TODO: replace this with email confirmation but it's enough for now
   userStore.$patch(user);
 
-  await router.push({
-    path: "/",
-  });
+  await navigateTo("/");
 }
 </script>
 <template>

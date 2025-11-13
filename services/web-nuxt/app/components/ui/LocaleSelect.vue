@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { en, pl } from '@nuxt/ui/locale'
-
-const locales = [en, pl]
-
-const { locale } = useI18n()
+const { locale, locales, setLocale } = useI18n();
 </script>
 
 <template>
-  <ULocaleSelect v-model="locale" :locales />
+  <ULocaleSelect
+    :model-value="locale"
+    :locales="Object.values(locales)"
+    @update:model-value="setLocale($event)"
+  />
 </template>

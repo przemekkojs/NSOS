@@ -9,15 +9,8 @@ import { useStorage } from "@vueuse/core";
 import { useNotifications } from "~~/features/notifications/useNotifications";
 
 const toast = useToast();
-const open = ref(true);
 const { t } = useI18n();
 const { unreadCount } = useNotifications();
-
-const setOpen = (value: boolean) => {
-  return () => {
-    open.value = value;
-  };
-};
 
 const links = computed<NavigationMenuItem[][]>(() => [
   [
@@ -26,38 +19,32 @@ const links = computed<NavigationMenuItem[][]>(() => [
       label: t("navigation.dashboard"),
       icon: "i-lucide-layout-dashboard",
       to: "/",
-      onSelect: setOpen(false),
     },
     {
       label: t("navigation.schedule"),
       icon: "i-lucide-calendar",
       to: "/harmonogram",
-      onSelect: setOpen(false),
     },
     {
       label: t("navigation.employees"),
       icon: "i-lucide-users",
       to: "/employees",
-      onSelect: setOpen(false),
     },
     {
       label: t("navigation.institutions"),
       icon: "i-lucide-building-2",
       to: "/institutions",
-      onSelect: setOpen(false),
     },
     {
       label: t("navigation.courses"),
       icon: "i-lucide-book-open",
       to: "/courses",
-      onSelect: setOpen(false),
     },
     {
       label: t("navigation.inbox"),
       icon: "i-lucide-inbox",
       to: "/inbox",
       badge: unreadCount.value > 0 ? unreadCount.value.toString() : undefined,
-      onSelect: setOpen(false),
     },
     {
       label: t("navigation.settings"),
@@ -135,7 +122,6 @@ onMounted(() => {
     <UDashboardGroup unit="rem" storage="local">
       <UDashboardSidebar
         id="default"
-        v-model:open="open"
         collapsible
         resizable
         class="bg-elevated/25"

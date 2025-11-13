@@ -32,7 +32,7 @@ async function onSubmit(event: FormSubmitEvent<LoginSchema>) {
 </script>
 <template>
   <UForm
-    data-testid="login-form"
+    data-testid="register-form"
     :schema="loginFormSchema"
     :state
     class="flex flex-col gap-4"
@@ -43,6 +43,7 @@ async function onSubmit(event: FormSubmitEvent<LoginSchema>) {
         id="email"
         v-model="state.email"
         class="w-full"
+        type="email"
         data-testid="email-input"
         :placeholder="$t('form.placeholder.email')"
       />
@@ -62,6 +63,7 @@ async function onSubmit(event: FormSubmitEvent<LoginSchema>) {
 
     <UButton
       type="submit"
+      data-testid="register-submit"
       class="w-full mt-6 text-white text-center inline-block text-1xl font-bold"
     >
       {{ $t("button.register") }}

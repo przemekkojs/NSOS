@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useInviteUser } from "~/composables/useUsers";
-import type { FormSubmitEvent } from "@nuxt/ui";
 import * as z from "zod";
 
 const open = ref(false);
@@ -35,8 +34,7 @@ const { t } = useI18n();
 
 const { mutateAsync: invite } = useInviteUser();
 
-async function onSubmit(event: FormSubmitEvent<InviteForm>) {
-  event.preventDefault();
+async function onSubmit() {
   await invite(state.emails);
 
   open.value = false;
@@ -51,10 +49,10 @@ async function onSubmit(event: FormSubmitEvent<InviteForm>) {
 }
 </script>
 <template>
-  <UModal v-model:open="open">
+  <UModal v-model:open="open" method="post">
     <UButton :label="$t('button.invite')" trailing-icon="i-lucide-user-plus" />
     <template #content>
-      <UForm class="p-4 space-y-4" :schema @submit="onSubmit">
+      <UForm class="p-4 space-y-4" :schema @submit.prevent="onSubmit">
         <UFormField label="Email" name="email">
           <UInputMenu
             v-model="state.emails"
