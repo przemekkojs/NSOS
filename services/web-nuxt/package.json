@@ -7,22 +7,52 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "typecheck": "nuxt typecheck"
   },
   "dependencies": {
+    "@fullcalendar/core": "^6.1.19",
+    "@fullcalendar/daygrid": "^6.1.19",
+    "@fullcalendar/interaction": "^6.1.19",
+    "@fullcalendar/vue3": "^6.1.19",
     "@nuxt/content": "^3.8.0",
-    "@nuxt/eslint": "^1.10.0",
     "@nuxt/image": "^2.0.0",
     "@nuxt/scripts": "^0.13.0",
-    "@nuxt/test-utils": "^3.20.1",
     "@nuxt/ui": "^4.1.0",
     "@nuxtjs/i18n": "^10.2.0",
-    "@unhead/vue": "^2.0.19",
+    "@pinia/nuxt": "^0.11.3",
+    "@tanstack/vue-query": "^5.91.0",
+    "@vueuse/nuxt": "^14.0.0",
     "better-sqlite3": "^12.4.1",
-    "eslint": "^9.39.1",
+    "dompurify": "^3.3.0",
+    "marked": "^17.0.0",
     "nuxt": "^4.2.1",
-    "typescript": "^5.9.3",
+    "nuxt-typed-router": "^4.0.2",
+    "papaparse": "^5.5.3",
+    "pinia": "^3.0.4",
+    "prettier": "^3.6.2",
     "vue": "^3.5.24",
-    "vue-router": "^4.6.3"
+    "vue-router": "^4.6.3",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^10.1.0",
+    "@nuxt/eslint": "^1.10.0",
+    "@nuxt/test-utils": "^3.20.1",
+    "@types/papaparse": "^5.5.0",
+    "@vue/test-utils": "^2.4.6",
+    "eslint": "^9.39.1",
+    "happy-dom": "^20.0.10",
+    "msw": "^2.12.1",
+    "playwright-core": "^1.56.1",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }

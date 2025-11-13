@@ -1,5 +1,4 @@
 <script setup lang="ts">
-// import { useUserStore } from '@/features/auth/stores/user-store'
 import type { DropdownMenuItem } from '@nuxt/ui'
 import { useColorMode } from '@vueuse/core'
 import { useLogout } from '../composables/useAuth'
@@ -11,7 +10,6 @@ defineProps<{
 
 const colorMode = useColorMode()
 const appConfig = useAppConfig()
-// const userStore = useUserStore()
 const { mutateAsync: logout } = useLogout()
 
 const colors = [
