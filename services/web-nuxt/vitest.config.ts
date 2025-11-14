@@ -1,24 +1,30 @@
-import { defineVitestConfig } from "@nuxt/test-utils/config";
+import { defineConfig } from "vitest/config";
+import { defineVitestProject } from "@nuxt/test-utils/config";
 
-export default defineVitestConfig({
+export default defineConfig({
   test: {
-    environment: "nuxt",
-    globals: true,
-    setupFiles: ["./test/setup.ts"],
-    environmentOptions: {
-      nuxt: {
-        domEnvironment: "happy-dom",
+    projects: [
+      {
+        test: {
+          name: "unit",
+          include: ["test/{e2e,unit}/*.{test,spec}.ts"],
+          environment: "node",
+        },
       },
-    },
-    exclude: [
-      "**/e2e/**",
-      "**/node_modules/**",
-      "**/.nuxt/**",
-      "**/coverage/**",
-    ],
-    include: [
-      "**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}",
-      "!**/node_modules/**",
+      await defineVitestProject({
+        test: {
+          name: "nuxt",
+          setupFiles: ["./test/nuxt/setup.ts"],
+          exclude: [
+            "**/e2e/**",
+            "**/node_modules/**",
+            "**/.nuxt/**",
+            "**/coverage/**",
+          ],
+          include: ["app/**/*.nuxt.{test,spec}.ts"],
+          environment: "nuxt",
+        },
+      }),
     ],
   },
 });

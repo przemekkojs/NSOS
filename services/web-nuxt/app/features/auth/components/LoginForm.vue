@@ -1,27 +1,18 @@
 <script setup lang="ts">
 import PasswordField from "~/components/ui/PasswordField.vue";
-
-import z from "zod";
-
-const loginFormSchema = z.object({
-  email: z.email(),
-  password: z.string(), // FIXME: refine for client side validation also
-});
-
-type LoginSchema = z.output<typeof loginFormSchema>;
+import { loginFormSchema, type LoginDto } from "../schemas";
 
 defineEmits<{
-  (e: "success", credentials: LoginSchema): void;
+  (e: "success", credentials: LoginDto): void;
 }>();
 
-const state = ref<Partial<LoginSchema>>({
+const state = ref<Partial<LoginDto>>({
   email: "",
   password: "",
 });
 </script>
 <template>
   <UForm
-    data-testid="login-form"
     :schema="loginFormSchema"
     :state
     class="flex flex-col gap-4"

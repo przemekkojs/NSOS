@@ -14,6 +14,7 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "@vueuse/nuxt",
     "nuxt-typed-router",
+    "@nuxt/test-utils/module",
   ],
   runtimeConfig: {
     public: {

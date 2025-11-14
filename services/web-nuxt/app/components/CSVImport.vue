@@ -40,12 +40,12 @@ async function handleFileUpload(file: File | null | undefined) {
     </template>
     <template #footer>
       <a
-        href="/samples/users.example.csv"
+        href="/samples/users-example.csv"
         download
         :title="$t('feature.csv.downloadTemplate')"
         class="bg-primary px-4 py-1 rounded-sm mx-auto"
       >
-        {{ $t("button.downloadSample") }}
+        {{ $t("feature.csv.downloadTemplate") }}
       </a>
     </template>
   </UModal>

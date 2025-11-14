@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { mount } from "@vue/test-utils";
+import { flushPromises, mount } from "@vue/test-utils";
 import RegisterForm from "./RegisterForm.vue";
 
 describe("RegisterForm", () => {
@@ -33,10 +33,7 @@ describe("RegisterForm", () => {
     await wrapper.find("#password").setValue("password123");
     await wrapper.find("#confirm-password").setValue("password123");
     await wrapper.find("form").trigger("submit");
-
-    await wrapper
-      .find('[data-testid="register-form"]')
-      .trigger("submit.prevent");
+    await flushPromises();
 
     const emitted = wrapper.emitted("success");
 
@@ -66,7 +63,7 @@ describe("RegisterForm", () => {
 
     await wrapper.find("#email").setValue("");
     await wrapper.find("#password").setValue("password123");
-    await wrapper.find('[data-testid="register-submit"]').trigger("click");
+    await wrapper.find('button[type="submit"]').trigger("click");
 
     expect(wrapper.emitted("success")).toBeFalsy();
   });
@@ -76,7 +73,7 @@ describe("RegisterForm", () => {
 
     await wrapper.find("#email").setValue("test@mail.com");
     await wrapper.find("#password").setValue("");
-    await wrapper.find('[data-testid="register-submit"]').trigger("click");
+    await wrapper.find('button[type="submit"]').trigger("click");
 
     expect(wrapper.emitted("success")).toBeFalsy();
   });

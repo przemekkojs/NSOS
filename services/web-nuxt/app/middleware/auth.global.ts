@@ -1,19 +1,39 @@
 import { useUserStore } from "~/stores/user-store";
 import { navigateTo } from "@typed-router";
 
-const authRoutes = [
+const _authRoutes = [
   "/login",
   "/register",
   "/forgot-password",
   "/reset-password",
 ];
 
-export default defineNuxtRouteMiddleware((to) => {
-  const userStore = useUserStore();
+function getLocalizedPaths(paths: string[]) {
+  const nuxtApp = useNuxtApp();
+  const locale = nuxtApp.$i18n.locale.value;
+  const defaultLocale = nuxtApp.$i18n.defaultLocale;
 
-  if (!userStore.isAuthenticated && !authRoutes.includes(to.path)) {
-    return navigateTo("/login");
+  if (locale === defaultLocale) {
+    return paths;
+  }
+
+  return paths.map((path) => `/${locale}${path}`);
+}
+
+export default defineNuxtRouteMiddleware(async (to, from) => {
+  const userStore = useUserStore();
+  const localeRoute = useLocaleRoute();
+  const nuxtApp = useNuxtApp();
+  const locale = nuxtApp.$i18n.locale.value;
+  const loginRoute = localeRoute({ name: "login" }, locale);
+  const defaultRoute = localeRoute({ name: "index" }, locale);
+  const authRoutes = getLocalizedPaths(_authRoutes);
+
+  if (to.path === from.path) {
+    return;
+  } else if (!userStore.isAuthenticated && !authRoutes.includes(to.path)) {
+    return navigateTo(loginRoute.fullPath);
   } else if (userStore.isAuthenticated && authRoutes.includes(to.path)) {
-    return navigateTo("/");
+    return navigateTo(defaultRoute.fullPath);
   }
 });

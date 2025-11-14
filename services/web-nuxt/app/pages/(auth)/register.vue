@@ -3,7 +3,6 @@ import type { Credentials } from "@/api/modules/auth";
 import { useRegister } from "~/composables/useAuth";
 import { useUserStore } from "~/stores/user-store";
 import RegisterForm from "~/features/auth/components/RegisterForm.vue";
-import { navigateTo } from "@typed-router";
 
 useHead({
   title: "Register",
@@ -14,13 +13,15 @@ definePageMeta({
 
 const { mutateAsync: register } = useRegister();
 const userStore = useUserStore();
+const navigateTo = useNavigateTo();
+
 async function onSuccess(credentials: Credentials) {
   const user = await register(credentials);
 
   // TODO: replace this with email confirmation but it's enough for now
   userStore.$patch(user);
 
-  await navigateTo("/");
+  await navigateTo({ name: "index" });
 }
 </script>
 <template>

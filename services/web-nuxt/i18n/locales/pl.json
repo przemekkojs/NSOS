@@ -205,5 +205,10 @@
       "read": "Przeczytane",
       "unread": "Nieprzeczytane"
     }
+  },
+  "validation": {
+    "invalid": "Nieprawidłowa wartość",
+    "invalidEmail": "Wprowadź prawidłowy adres email",
+    "required": "To pole jest wymagane"
   }
 }

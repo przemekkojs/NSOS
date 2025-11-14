@@ -1,5 +1,5 @@
 import { beforeEach, describe, it, expect } from "vitest";
-import { mount, type VueWrapper } from "@vue/test-utils";
+import { flushPromises, mount, type VueWrapper } from "@vue/test-utils";
 import LoginForm from "./LoginForm.vue";
 
 describe("LoginForm", () => {
@@ -23,12 +23,12 @@ describe("LoginForm", () => {
     expect(passwordInput.element.value).toBe("");
   });
 
-  it("emits success event wwith valid credentials", async () => {
+  it("emits success event with valid credentials", async () => {
     await wrapper.find("#email").setValue("test@mail.com");
     await wrapper.find("#password").setValue("password123");
-    await wrapper.find("form").trigger("submit");
 
-    await wrapper.find('[data-testid="login-form"]').trigger("submit.prevent");
+    await wrapper.find("form").trigger("submit");
+    await flushPromises();
 
     const emitted = wrapper.emitted("success");
 
@@ -53,8 +53,8 @@ describe("LoginForm", () => {
   it("does not submit with empty email", async () => {
     await wrapper.find("#email").setValue("");
     await wrapper.find("#password").setValue("password123");
-    await wrapper.find('button[type="submit"]').trigger("click");
-    await wrapper.vm.$nextTick();
+
+    await wrapper.find("form").trigger("submit");
 
     expect(wrapper.emitted("success")).toBeFalsy();
   });
@@ -62,14 +62,14 @@ describe("LoginForm", () => {
   it("does not submit with empty password", async () => {
     await wrapper.find("#email").setValue("test@mail.com");
     await wrapper.find("#password").setValue("");
-    await wrapper.find('button[type="submit"]').trigger("click");
-    await wrapper.vm.$nextTick();
+
+    await wrapper.find("form").trigger("submit");
 
     expect(wrapper.emitted("success")).toBeFalsy();
   });
 
   it("prevents default form submission", async () => {
-    const form = wrapper.find('[data-testid="login-form"]');
+    const form = wrapper.find("form");
     const submitEvent = new Event("submit", { cancelable: true });
 
     form.element.dispatchEvent(submitEvent);

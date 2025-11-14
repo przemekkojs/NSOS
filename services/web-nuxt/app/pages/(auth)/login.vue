@@ -3,7 +3,6 @@ import type { Credentials } from "@/api/modules/auth";
 import { useLogin } from "~/composables/useAuth";
 import LoginForm from "~/features/auth/components/LoginForm.vue";
 import { useUserStore } from "~/stores/user-store";
-import { navigateTo } from "@typed-router";
 
 useHead({
   title: "Login",
@@ -14,11 +13,13 @@ definePageMeta({
 
 const { mutateAsync: login } = useLogin();
 const userStore = useUserStore();
+const navigateTo = useNavigateTo();
+
 async function onSuccess(credentials: Credentials) {
   const user = await login(credentials);
   userStore.$patch(user);
 
-  await navigateTo("/");
+  await navigateTo({ name: "index" });
 }
 </script>
 <template>

@@ -1,7 +1,7 @@
 import { describe, beforeEach, it, expect } from "vitest";
 import CreateInstitutionForm from "./CreateInstitutionForm.vue";
 import { testForm } from "../../../../test/utils/form";
-import { mount, type VueWrapper } from "@vue/test-utils";
+import { flushPromises, mount, type VueWrapper } from "@vue/test-utils";
 
 describe("CreateInstitutionForm", () => {
   let wrapper: VueWrapper<unknown>;
@@ -50,9 +50,8 @@ describe("CreateInstitutionForm", () => {
     await wrapper.find("#code").setValue(formData.code);
     await wrapper.find("#address").setValue(formData.address);
 
-    await wrapper
-      .find('[data-testid="create-institution-form"]')
-      .trigger("submit.prevent");
+    await wrapper.find("form").trigger("submit");
+    await flushPromises();
 
     const emitted = wrapper.emitted("success");
     expect(emitted).toHaveLength(1);

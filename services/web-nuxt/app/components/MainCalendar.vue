@@ -19,12 +19,12 @@ const options = ref<CalendarOptions>({
     console.info("select", arg);
   },
   events: [
-    { title: "event 1", date: "2025-11-10" },
+    { title: "event 1", date: new Date().toISOString().split("T")[0] },
     {
       title: "event 2",
-      date: "2025-11-07",
-      start: "2025-11-11T12:30:00",
-      end: "2025-11-11T14:30:00",
+      date: new Date().toISOString().split("T")[0],
+      start: new Date().toISOString(),
+      end: new Date(Date.now() + 3600 * 1000).toISOString(),
     },
   ],
   viewClassNames: "h-full",

@@ -2,7 +2,6 @@
 import type { DropdownMenuItem } from "@nuxt/ui";
 import { useColorMode } from "@vueuse/core";
 import { useLogout } from "../composables/useAuth";
-import { navigateTo } from "@typed-router";
 
 import { useUserStore } from "~/stores/user-store";
 defineProps<{
@@ -12,6 +11,7 @@ defineProps<{
 const colorMode = useColorMode();
 const appConfig = useAppConfig();
 const { mutateAsync: logout } = useLogout();
+const navigateTo = useNavigateTo();
 
 const colors = [
   "red",
@@ -181,7 +181,9 @@ const items = computed<DropdownMenuItem[][]>(() => [
       async onSelect() {
         await logout();
         userStore.$reset();
-        await navigateTo("/login");
+        await navigateTo({
+          name: "login",
+        });
       },
     },
   ],

@@ -9,7 +9,7 @@ defineEmits<{
   (e: "cancel"): void;
 }>();
 
-const state = reactive<Partial<CreateInstitutionDto>>({
+const state = ref<Partial<CreateInstitutionDto>>({
   name: "",
   code: "",
   address: "",
@@ -18,9 +18,11 @@ const state = reactive<Partial<CreateInstitutionDto>>({
 <template>
   <UForm
     :state
+    :schema="createInstitutionSchema"
     class="space-y-2"
     data-testid="create-institution-form"
     @submit.prevent="$emit('success', $event.data)"
+    @error="console.error"
   >
     <UFormField :label="$t('form.label.institutionName')" name="name" required>
       <UInput id="name" v-model="state.name" />
