@@ -6,7 +6,7 @@ import UserMenu from "~/components/UserMenu.vue";
 import LocaleSelect from "~/components/ui/LocaleSelect.vue";
 import NotificationsSlideover from "~/components/NotificationsSlideover.vue";
 import { useStorage } from "@vueuse/core";
-import { useNotifications } from "~~/features/notifications/useNotifications";
+import { useNotifications } from "~/features/notifications/useNotifications";
 
 const toast = useToast();
 const { t } = useI18n();

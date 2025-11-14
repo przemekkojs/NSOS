@@ -1,19 +1,21 @@
-import { describe, it, expect } from "vitest";
-import { mount } from "@vue/test-utils";
+import { beforeEach, describe, it, expect } from "vitest";
+import { mount, type VueWrapper } from "@vue/test-utils";
 import LoginForm from "./LoginForm.vue";
 
 describe("LoginForm", () => {
-  it("renders all form fields", async () => {
-    const wrapper = mount(LoginForm);
+  let wrapper: VueWrapper<unknown>;
 
+  beforeEach(() => {
+    wrapper = mount(LoginForm);
+  });
+
+  it("renders all form fields", async () => {
     expect(wrapper.find('input[type="email"]#email').exists()).toBe(true);
     expect(wrapper.find('input[type="password"]#password').exists()).toBe(true);
     expect(wrapper.find('button[type="submit"]').exists()).toBe(true);
   });
 
   it("initializes with empty fields", async () => {
-    const wrapper = mount(LoginForm);
-
     const emailInput = wrapper.find<HTMLInputElement>("#email");
     const passwordInput = wrapper.find<HTMLInputElement>("#password");
 
@@ -22,8 +24,6 @@ describe("LoginForm", () => {
   });
 
   it("emits success event wwith valid credentials", async () => {
-    const wrapper = mount(LoginForm);
-
     await wrapper.find("#email").setValue("test@mail.com");
     await wrapper.find("#password").setValue("password123");
     await wrapper.find("form").trigger("submit");
@@ -42,8 +42,6 @@ describe("LoginForm", () => {
   });
 
   it("validates email format", async () => {
-    const wrapper = mount(LoginForm);
-
     await wrapper.find("#email").setValue("invalid-email");
     await wrapper.find("#password").setValue("password123");
     await wrapper.find("form").trigger("submit");
@@ -53,30 +51,24 @@ describe("LoginForm", () => {
   });
 
   it("does not submit with empty email", async () => {
-    const wrapper = mount(LoginForm);
-
     await wrapper.find("#email").setValue("");
     await wrapper.find("#password").setValue("password123");
-    await wrapper.find('[data-testid="login-submit"]').trigger("click");
+    await wrapper.find('button[type="submit"]').trigger("click");
     await wrapper.vm.$nextTick();
 
     expect(wrapper.emitted("success")).toBeFalsy();
   });
 
   it("does not submit with empty password", async () => {
-    const wrapper = mount(LoginForm);
-
     await wrapper.find("#email").setValue("test@mail.com");
     await wrapper.find("#password").setValue("");
-    await wrapper.find('[data-testid="login-submit"]').trigger("click");
+    await wrapper.find('button[type="submit"]').trigger("click");
     await wrapper.vm.$nextTick();
 
     expect(wrapper.emitted("success")).toBeFalsy();
   });
 
   it("prevents default form submission", async () => {
-    const wrapper = mount(LoginForm);
-
     const form = wrapper.find('[data-testid="login-form"]');
     const submitEvent = new Event("submit", { cancelable: true });
 

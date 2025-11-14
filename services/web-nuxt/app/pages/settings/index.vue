@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useA11yStore } from "~~/features/a11y/stores/a11y-store";
+import { useA11yStore } from "~/features/a11y/stores/a11y-store";
 
 const a11y = useA11yStore();
 const items = [

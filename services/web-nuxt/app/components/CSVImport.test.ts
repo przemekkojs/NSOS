@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { mount } from "@vue/test-utils";
 import CSVImport from "./CSVImport.vue";
 
-vi.mock("~~/features/imports/utils", () => ({
+vi.mock("~/features/imports/utils", () => ({
   parseCSV: vi.fn(),
 }));
 
@@ -60,7 +60,7 @@ describe("CSVImport", () => {
       { name: "Jane Smith", email: "jane@example.com" },
     ];
 
-    const { parseCSV } = await import("~~/features/imports/utils");
+    const { parseCSV } = await import("~/features/imports/utils");
     vi.mocked(parseCSV).mockResolvedValue(mockData);
 
     const wrapper = mount(CSVImport);
@@ -87,7 +87,7 @@ describe("CSVImport", () => {
       { name: "Jane Smith", email: "jane@example.com" },
     ];
 
-    const { parseCSV } = await import("~~/features/imports/utils");
+    const { parseCSV } = await import("~/features/imports/utils");
     vi.mocked(parseCSV).mockResolvedValue(mockData);
 
     const wrapper = mount(CSVImport);
@@ -112,7 +112,7 @@ describe("CSVImport", () => {
   it("closes modal after successful upload", async () => {
     const mockData = [{ name: "John Doe" }];
 
-    const { parseCSV } = await import("~~/features/imports/utils");
+    const { parseCSV } = await import("~/features/imports/utils");
     vi.mocked(parseCSV).mockResolvedValue(mockData);
 
     const wrapper = mount(CSVImport);

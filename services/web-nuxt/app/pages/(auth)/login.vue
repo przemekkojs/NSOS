@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Credentials } from "@/api/modules/auth";
 import { useLogin } from "~/composables/useAuth";
-import LoginForm from "~~/features/auth/components/LoginForm.vue";
+import LoginForm from "~/features/auth/components/LoginForm.vue";
 import { useUserStore } from "~/stores/user-store";
 import { navigateTo } from "@typed-router";
 

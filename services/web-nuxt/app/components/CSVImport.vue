@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="TRow extends unknown = unknown">
-import { parseCSV } from "~~/features/imports/utils";
+import { parseCSV } from "~/features/imports/utils";
 
 const props = defineProps<{
   label?: string;

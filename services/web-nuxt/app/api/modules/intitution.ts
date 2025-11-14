@@ -3,7 +3,7 @@ import { apiClient } from "../client";
 import type {
   CreateInstitutionDto,
   UpdateInstitutionDto,
-} from "~~/features/institutions/schemas";
+} from "~/features/institutions/schemas";
 
 export const institutionApi = {
   getAll: (params?: { page?: number; limit?: number }) =>

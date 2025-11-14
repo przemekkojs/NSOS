@@ -2,7 +2,7 @@
 import type { Credentials } from "@/api/modules/auth";
 import { useRegister } from "~/composables/useAuth";
 import { useUserStore } from "~/stores/user-store";
-import RegisterForm from "~~/features/auth/components/RegisterForm.vue";
+import RegisterForm from "~/features/auth/components/RegisterForm.vue";
 import { navigateTo } from "@typed-router";
 
 useHead({

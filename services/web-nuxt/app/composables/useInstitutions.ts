@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import { institutionApi } from "~/api/modules/intitution";
-import type { UpdateInstitutionDto } from "~~/features/institutions/schemas";
+import type { UpdateInstitutionDto } from "~/features/institutions/schemas";
 
 export const institutionKeys = {
   all: ["institutions"] as const,

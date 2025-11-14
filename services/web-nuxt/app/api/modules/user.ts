@@ -1,5 +1,5 @@
 import { apiClient } from "../client";
-import type { CreateUserDto, UpdateUserDto } from "~~/features/users/schemas";
+import type { CreateUserDto, UpdateUserDto } from "~/features/users/schemas";
 import type { User } from "~/types/api";
 
 export const userApi = {

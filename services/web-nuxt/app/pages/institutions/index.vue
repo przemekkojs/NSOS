@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useInstitutions } from "~/composables/useInstitutions";
 import { useTableActions } from "~/composables/useTableActions";
-import CreateInstitutionModal from "~~/features/institutions/components/CreateInstitutionModal.vue";
+import CreateInstitutionModal from "~/features/institutions/components/CreateInstitutionModal.vue";
 // TODO: replace with correct Institution type when available
 import type { Institution } from "~/mocks/fixtures/institutions";
 import type { TableColumn } from "@nuxt/ui";

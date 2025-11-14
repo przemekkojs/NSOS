@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { useTableActions } from "~/composables/useTableActions";
-import InviteModal from "~~/features/users/components/InviteModal.vue";
+import InviteModal from "~/features/users/components/InviteModal.vue";
 import type { TableColumn } from "@nuxt/ui";
 import CSVImport from "~/components/CSVImport.vue";
 import { useCreateUser, useUsers } from "~/composables/useUsers";
 import type { User } from "~/types/api";
-import { userHeaderUserAdapter } from "~~/features/users/adapters";
-import type { UserHeader } from "~~/features/users/schemas";
+import { userHeaderUserAdapter } from "~/features/users/adapters";
+import type { UserHeader } from "~/features/users/schemas";
 
 const { data, isFetching } = useUsers();
 const { mutate: create } = useCreateUser();

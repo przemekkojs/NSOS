@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useDashboard } from "~/composables/useDashboard";
 import { formatTimeAgo } from "@vueuse/core";
-import type { NSOSNotification } from "~~/features/notifications/useNotifications";
+import type { NSOSNotification } from "~/features/notifications/useNotifications";
 
 const { isNotificationsSlideoverOpen } = useDashboard();
 
