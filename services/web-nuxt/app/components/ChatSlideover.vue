@@ -67,7 +67,17 @@ const sanitize = (text: string) => {
             // FIXME: replace with actual user avatar
             avatar: { src: 'https://github.com/benjamincanac.png' },
           }"
-          :assistant="{ icon: 'i-lucide-bot', side: 'left', variant: 'naked' }"
+          :assistant="{
+            icon: 'i-lucide-bot',
+            side: 'left',
+            variant: 'outline',
+            actions: [
+              {
+                label: $t('feature.chat.copyToClipboard'),
+                icon: 'i-lucide-copy',
+              },
+            ],
+          }"
         >
           <template #content="{ message }">
             <div v-html="sanitize(getTextFromMessage(message))" />

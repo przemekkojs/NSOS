@@ -11,7 +11,11 @@ class ApiClient {
     endpoint: string,
     options: RequestInit = {}
   ): Promise<T> {
-    const url = `${this.baseURL}${endpoint}`;
+    let url = `${this.baseURL}${endpoint}`;
+
+    if (!url.endsWith("/")) {
+      url = url + "/";
+    }
 
     const csrftoken = document.cookie
       .split("; ")

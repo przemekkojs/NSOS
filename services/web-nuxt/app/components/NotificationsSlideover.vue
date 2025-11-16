@@ -6,6 +6,9 @@ import type { NSOSNotification } from "~/features/notifications/useNotifications
 const { isNotificationsSlideoverOpen } = useDashboard();
 
 const notifications = ref<NSOSNotification[]>([]);
+
+// NOTE: placeholder until avatar support is added
+const avatar = computed<string | null>(() => null);
 </script>
 
 <template>
@@ -19,7 +22,8 @@ const notifications = ref<NSOSNotification[]>([]);
       >
         <UChip color="error" :show="!notification.read" inset>
           <UAvatar
-            :src="notification.sender.avatar"
+            v-if="avatar"
+            :src="avatar"
             :alt="notification.sender.email"
             size="md"
           />

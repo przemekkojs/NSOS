@@ -1,5 +1,5 @@
 import { describe, beforeEach, it, expect } from "vitest";
-import CreateInstitutionForm from "./CreateInstitutionForm.vue";
+import CreateInstitutionForm from "./InstitutionForm.vue";
 import { testForm } from "../../../../test/utils/form";
 import { flushPromises, mount, type VueWrapper } from "@vue/test-utils";
 

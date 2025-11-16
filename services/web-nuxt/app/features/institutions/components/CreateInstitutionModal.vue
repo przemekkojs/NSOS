@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import CreateInstitutionForm from "~/features/institutions/components/CreateInstitutionForm.vue";
+import CreateInstitutionForm from "~/features/institutions/components/InstitutionForm.vue";
 import type { CreateInstitutionDto } from "../schemas";
 import { useCreateInstitution } from "~/composables/useInstitutions";
 

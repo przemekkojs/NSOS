@@ -29,6 +29,7 @@ const authHandlers = [
     return HttpResponse.json(
       {
         ...user,
+        role: "admin",
         email: data.email,
       },
       {
@@ -44,6 +45,7 @@ const authHandlers = [
     return HttpResponse.json(
       {
         ...user,
+        role: "admin",
         email: data.email,
       },
       {
@@ -83,7 +85,7 @@ const employeesHandlers = [
     }
   }),
   http.post(apiUrl("/users/invite"), () => {
-    return new HttpResponse(null, { status: 204 });
+    return HttpResponse.json(null, { status: 204 });
   }),
   http.post(apiUrl("/users"), async ({ request }) => {
     const users = (await request.json()) as object[];

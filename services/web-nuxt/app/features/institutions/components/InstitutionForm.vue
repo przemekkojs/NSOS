@@ -4,12 +4,17 @@ import {
   type CreateInstitutionDto,
 } from "~/features/institutions/schemas";
 
+const { institution = {} } = defineProps<{
+  institution?: Partial<CreateInstitutionDto>;
+}>();
+
 defineEmits<{
   (e: "success", institution: CreateInstitutionDto): void;
   (e: "cancel"): void;
 }>();
 
 const state = ref<Partial<CreateInstitutionDto>>({
+  ...institution,
   name: "",
   code: "",
   address: "",

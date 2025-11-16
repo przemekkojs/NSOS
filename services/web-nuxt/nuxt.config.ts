@@ -22,7 +22,12 @@ export default defineNuxtConfig({
       apiGatewayUrl: process.env.NUXT_PUBLIC_API_GATEWAY_URL,
     },
   },
-  css: ["~/assets/css/main.css", "~/assets/css/fullcalendar.css"],
+  css: [
+    "~/assets/css/main.css",
+    "~/assets/css/fullcalendar.css",
+    "driver.js/dist/driver.css",
+    "~/assets/css/driver-overrides.css",
+  ],
   i18n: {
     locales: [
       {
@@ -39,12 +44,6 @@ export default defineNuxtConfig({
     defaultLocale: "pl",
   },
   vite: {
-    server: {
-      headers: {
-        // "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
-        // "Cross-Origin-Embedder-Policy": "credentialless",
-      },
-    },
     optimizeDeps: {
       include: [
         "@vue/devtools-core",

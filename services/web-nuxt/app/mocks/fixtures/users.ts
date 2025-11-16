@@ -1,15 +1,21 @@
-import type { User } from "~/types/api";
+import type { User } from "~/api/schemas";
+import { permissions } from "~/api/schemas";
 import { createFactory } from "./factory-builder";
 import { faker } from "@faker-js/faker";
-
-const roles = ["admin", "employee", "student"] as const;
 
 export const createUsers = createFactory<User>((overrides = {}) => {
   const user: User = {
     id: faker.number.int(),
     email: faker.internet.email(),
-    role: faker.helpers.arrayElement(roles),
-    avatar: faker.image.avatar(),
+    first_name: faker.person.firstName(),
+    last_name: faker.person.lastName(),
+    is_active: true,
+    is_staff: false,
+    is_superuser: false,
+    username: faker.internet.username(),
+    date_joined: faker.date.past().toISOString(),
+    groups: [],
+    permissions: [...permissions],
   };
 
   return Object.assign(user, overrides);

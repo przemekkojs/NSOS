@@ -1,4 +1,4 @@
-import type { Faculty } from "~/types/api";
+import type { Faculty } from "~/api/schemas";
 import { faker } from "@faker-js/faker";
 import { createFactory } from "./factory-builder";
 

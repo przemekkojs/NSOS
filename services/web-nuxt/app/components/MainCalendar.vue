@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import FullCalendar from "@fullcalendar/vue3";
 import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import type { CalendarOptions } from "@fullcalendar/core/index.js";
 
@@ -9,9 +10,10 @@ const handleDateClick: CalendarOptions["dateClick"] = (arg) => {
 };
 
 const options = ref<CalendarOptions>({
-  plugins: [dayGridPlugin, interactionPlugin],
-  initialView: "dayGridWeek",
+  plugins: [timeGridPlugin, dayGridPlugin, interactionPlugin],
+  initialView: "timeGridWeek",
   dateClick: handleDateClick,
+  nowIndicator: true,
   eventClick: () => {
     console.info("click");
   },

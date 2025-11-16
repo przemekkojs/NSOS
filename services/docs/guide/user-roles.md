@@ -1,13 +1,14 @@
 # User Roles
 
-NSOS is designed with two primary user roles, each with specific permissions and responsibilities. Understanding these roles helps ensure smooth system operation and proper workload management.
+NSOS is designed with three primary user roles, each with specific permissions and responsibilities. Understanding these roles helps ensure smooth system operation.
 
 ## Role Overview
 
 | Role              | Access Level       | Primary Purpose                                    | Key Actions                  |
 | ----------------- | ------------------ | -------------------------------------------------- | ---------------------------- |
 | **Administrator** | Full system access | Manage teachers, assignments, and monitor overtime | Create, Read, Update, Delete |
-| **Teacher**       | Personal data only | View schedule and workload                         | Read only                    |
+| **Lecturer**      | Personal data only | View schedule and workload                         | Read only                    |
+| **Student**       |  -                 | View schedule                                      | Read only                    |
 
 ## Administrator Role
 
@@ -19,6 +20,7 @@ NSOS is designed with two primary user roles, each with specific permissions and
 
 #### 1. Teacher Account Management
 
+- Invite new lecturers
 - Create new teacher accounts
 - Update teacher information (position, pensum, contact details)
 - Deactivate or archive teacher accounts

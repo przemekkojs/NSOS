@@ -12,6 +12,7 @@ const colorMode = useColorMode();
 const appConfig = useAppConfig();
 const { mutateAsync: logout } = useLogout();
 const navigateTo = useNavigateTo();
+const { t } = useI18n();
 
 const colors = [
   "red",
@@ -36,52 +37,38 @@ const neutrals = ["slate", "gray", "zinc", "neutral", "stone"];
 
 const userStore = useUserStore();
 
-const user = computed(() => {
-  if (userStore.$state.role === "unauthenticated") {
-    return undefined;
-  }
-
-  return {
-    name: userStore.$state.email,
-    avatar: {
-      src: userStore.$state.avatar,
-      alt: userStore.$state.email,
-    },
-  };
-});
-
 const items = computed<DropdownMenuItem[][]>(() => [
   [
     {
       type: "label",
-      label: user.value?.name,
-      avatar: user.value?.avatar,
+      label: userStore.$state?.email || "Guest",
+      avatar: undefined,
     },
   ],
   [
     {
-      label: "Profile",
+      label: t("menu.profile"),
       icon: "i-lucide-user",
       to: "/profile",
     },
     {
-      label: "Billing",
+      label: t("menu.billing"),
       icon: "i-lucide-credit-card",
       to: "/billing",
     },
     {
-      label: "Settings",
+      label: t("menu.settings"),
       icon: "i-lucide-settings",
       to: "/settings",
     },
   ],
   [
     {
-      label: "Theme",
+      label: t("menu.theme"),
       icon: "i-lucide-palette",
       children: [
         {
-          label: "Primary",
+          label: t("menu.primary"),
           slot: "chip",
           chip: appConfig.ui.colors.primary,
           content: {
@@ -102,7 +89,7 @@ const items = computed<DropdownMenuItem[][]>(() => [
           })),
         },
         {
-          label: "Neutral",
+          label: t("menu.neutral"),
           slot: "chip",
           chip:
             appConfig.ui.colors.neutral === "neutral"
@@ -128,11 +115,11 @@ const items = computed<DropdownMenuItem[][]>(() => [
       ],
     },
     {
-      label: "Appearance",
+      label: t("menu.appearance"),
       icon: "i-lucide-sun-moon",
       children: [
         {
-          label: "Light",
+          label: t("menu.light"),
           icon: "i-lucide-sun",
           type: "checkbox",
           checked: colorMode.value === "light",
@@ -143,7 +130,7 @@ const items = computed<DropdownMenuItem[][]>(() => [
           },
         },
         {
-          label: "Dark",
+          label: t("menu.dark"),
           icon: "i-lucide-moon",
           type: "checkbox",
           checked: colorMode.value === "dark",
@@ -161,13 +148,13 @@ const items = computed<DropdownMenuItem[][]>(() => [
   ],
   [
     {
-      label: "Documentation",
+      label: t("menu.documentation"),
       icon: "i-lucide-book-open",
       to: "https://ui.nuxt.com/docs/getting-started/installation/vue",
       target: "_blank",
     },
     {
-      label: "GitHub repository",
+      label: t("menu.githubRepository"),
       icon: "simple-icons:github",
       to: "https://github.com",
       target: "_blank",
@@ -175,7 +162,7 @@ const items = computed<DropdownMenuItem[][]>(() => [
   ],
   [
     {
-      label: "Log out",
+      label: t("menu.logout"),
       icon: "i-lucide-log-out",
       "data-testid": "user-menu-logout",
       async onSelect() {
@@ -200,8 +187,7 @@ const items = computed<DropdownMenuItem[][]>(() => [
   >
     <UButton
       v-bind="{
-        ...user,
-        label: collapsed ? undefined : user?.name,
+        label: collapsed ? undefined : userStore.$state?.email,
         trailingIcon: collapsed ? undefined : 'i-lucide-chevrons-up-down',
       }"
       color="neutral"

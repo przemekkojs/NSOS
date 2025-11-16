@@ -13,7 +13,7 @@ export function useNavigateTo() {
     to: TypedRouteLocationRawFromName<TR, string>
   ) => {
     const route = localeRoute(to, locale.value);
-    await _navigateTo(route.fullPath);
+    await _navigateTo(route.path);
   };
 
   return navigateTo;

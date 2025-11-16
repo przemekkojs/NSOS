@@ -6,52 +6,58 @@ import UserMenu from "~/components/UserMenu.vue";
 import LocaleSelect from "~/components/ui/LocaleSelect.vue";
 import NotificationsSlideover from "~/components/NotificationsSlideover.vue";
 import { useStorage } from "@vueuse/core";
-import { useNotifications } from "~/features/notifications/useNotifications";
+// import { useNotifications } from "~/features/notifications/useNotifications";
 
 const toast = useToast();
 const { t } = useI18n();
-const { unreadCount } = useNotifications();
+// const { unreadCount } = useNotifications();
+const unreadCount = ref(0); // FIXME: Temporary workaround until notifications are implemented
+
+const user = useUserStore();
 
 const links = computed<NavigationMenuItem[][]>(() => [
+  [],
   [
-    { awesome: "something" },
-    {
+    user.hasPermission("teaching.view_schedule") && {
       label: t("navigation.dashboard"),
       icon: "i-lucide-layout-dashboard",
       to: "/",
     },
-    {
+    user.hasPermission("teaching.view_schedule") && {
       label: t("navigation.schedule"),
       icon: "i-lucide-calendar",
       to: "/harmonogram",
     },
-    {
+    user.hasPermission("users.view_user") && {
       label: t("navigation.employees"),
       icon: "i-lucide-users",
       to: "/employees",
     },
-    {
+    // @ts-expect-error the permission doesn't exist yet but it's fine
+    user.hasPermission("institutions.view_institution") && {
       label: t("navigation.institutions"),
       icon: "i-lucide-building-2",
       to: "/institutions",
     },
-    {
+    user.hasPermission("teaching.view_course") && {
       label: t("navigation.courses"),
       icon: "i-lucide-book-open",
       to: "/courses",
     },
-    {
+    // @ts-expect-error the permission doesn't exist yet but it's fine
+    user.hasPermission("inbox.view_inbox") && {
       label: t("navigation.inbox"),
       icon: "i-lucide-inbox",
       to: "/inbox",
       badge: unreadCount.value > 0 ? unreadCount.value.toString() : undefined,
     },
-    {
+    // @ts-expect-error the permission doesn't exist yet but it's fine
+    user.hasPermission("institution.change_institution") && {
       label: t("navigation.settings"),
       to: "/settings",
       icon: "i-lucide-settings",
     },
-  ],
+  ].filter((a) => !!a),
   [
     {
       label: t("navigation.feedback"),
@@ -64,6 +70,11 @@ const links = computed<NavigationMenuItem[][]>(() => [
       icon: "i-lucide-info",
       to: "http://localhost:5174/",
       target: "_blank",
+    },
+    {
+      label: t("navigation.support"),
+      icon: "i-lucide-life-buoy",
+      to: "/support",
     },
   ],
 ]);

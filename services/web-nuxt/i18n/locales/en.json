@@ -17,12 +17,17 @@
     "confirm": "Confirm",
     "create": "Create",
     "delete": "Delete",
+    "done": "Ready",
     "edit": "Edit",
     "invite": "Invite",
     "login": "Log In",
+    "next": "Next",
     "no": "No",
+    "previous": "Back",
     "register": "Create Account",
+    "reset": "Reset",
     "save": "Save",
+    "update": "Update",
     "yes": "Yes"
   },
   "common": {
@@ -35,9 +40,13 @@
     "or": "or",
     "searchResults": "{count} result | {count} results"
   },
+  "dev": {
+    "resetTours": "Reset tours"
+  },
   "feature": {
     "chat": {
       "ariaLabel": "Chat with AI assistant",
+      "copyToClipboard": "Copy to clipboard",
       "placeholder": "Ask a question or enter a command...",
       "title": "AI Chat",
       "tooltip": "AI Chat Assistant"
@@ -76,16 +85,23 @@
       "institutionCode": "Code",
       "institutionName": "Institution Name",
       "password": "Password",
-      "weeklyHours": "Weekly Hours"
+      "weeklyHours": "Weekly Hours",
+      "avatar": "Avatar",
+      "faculty": "Faculty",
+      "position": "Position",
+      "status": "Status"
     },
     "placeholder": {
       "confirmPassword": "Re-enter your password",
       "email": "e.g. john.doe{'@'}mail.com",
+      "filterEmails": "Filter emails",
       "institutionAddress": "e.g. Krakowskie Przedmieście 26/28",
       "institutionCode": "e.g. UW001",
       "institutionName": "e.g. University of Warsaw",
       "password": "Enter your password",
-      "search": "Search..."
+      "search": "Search...",
+      "position": "e.g. Lecturer",
+      "faculty": "e.g. Faculty of Mathematics, Informatics and Mechanics"
     },
     "validation": {
       "invalidEmail": "Please enter a valid email address",
@@ -132,7 +148,8 @@
     "institutions": "Institutions",
     "schedule": "Schedule",
     "settings": "Settings",
-    "sourceCode": "View page source"
+    "sourceCode": "View page source",
+    "support": "Support"
   },
   "page": {
     "course": {
@@ -206,7 +223,32 @@
       "unread": "Unread"
     }
   },
+  "tours": {
+    "inviteUsers": {
+      "enterAnotherEmployee": {
+        "description": "You can enter multiple employees by separating their addresses with commas.",
+        "title": "Move on"
+      },
+      "enterEmployeeEmail": {
+        "description": "Enter the email address of the employee you want to invite. \nPlease make sure this is a valid email address.",
+        "title": "Enter the employee's email address"
+      },
+      "inviteNewEmployee": {
+        "description": "Click this button to open the employee invitation form.",
+        "title": "Invite New Employee"
+      },
+      "navigateToEmployees": {
+        "description": "Click here to go to the Employees section where you can manage employee accounts",
+        "title": "Navigate to Employees"
+      },
+      "sendInvitation": {
+        "description": "Click this button to send an invitation to selected employees.",
+        "title": "Send an invitation"
+      }
+    }
+  },
   "validation": {
+    "invalid": "Invalid value",
     "invalidEmail": "Please enter a valid email address",
     "required": "This field is required"
   }

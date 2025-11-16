@@ -20,6 +20,8 @@ function getLocalizedPaths(paths: string[]) {
   return paths.map((path) => `/${locale}${path}`);
 }
 
+const bypassAuth = ["/support"];
+
 export default defineNuxtRouteMiddleware(async (to, from) => {
   const userStore = useUserStore();
   const localeRoute = useLocaleRoute();
@@ -28,7 +30,9 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   const loginRoute = localeRoute({ name: "login" }, locale);
   const defaultRoute = localeRoute({ name: "index" }, locale);
   const authRoutes = getLocalizedPaths(_authRoutes);
-
+  // if (bypassAuth.some((path) => to.path.startsWith(path))) {
+  //   return;
+  // }
   if (to.path === from.path) {
     return;
   } else if (!userStore.isAuthenticated && !authRoutes.includes(to.path)) {

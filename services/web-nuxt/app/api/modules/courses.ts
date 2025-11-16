@@ -1,6 +1,6 @@
 import * as z from "zod";
 import { apiClient } from "../client";
-import type { Faculty } from "~/types/api";
+import type { Faculty } from "~/api/schemas";
 
 export interface Course {
   id: number;

@@ -5,7 +5,7 @@ const { locale, locales, setLocale, defaultLocale } = useI18n();
 <template>
   <ULocaleSelect
     :model-value="locale"
-    :locales="Object.values(locales)"
+    :locales="Object.values(locales) as any"
     @update:model-value="setLocale(($event as 'pl' | 'en') || defaultLocale)"
   />
 </template>

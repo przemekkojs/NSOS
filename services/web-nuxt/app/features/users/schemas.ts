@@ -1,30 +1,31 @@
-import z from 'zod'
+import z from "zod";
 
 /**
  * Make sure users.example.csv looks like this interface
  */
 export interface UserHeader {
-  email: string
-  avatar: string
-  userType: string
-  indexNumber: string
-  fieldOfStudy: string
-  yearOfStudy: string
-  semester: string
-  faculty: string
-  position: string
-  status: string
+  email: string;
+  avatar: string;
+  userType: string;
+  indexNumber: string;
+  fieldOfStudy: string;
+  yearOfStudy: string;
+  semester: string;
+  faculty: string;
+  position: string;
+  status: string;
 }
 
 /* create */
 
 export const createLecturerSchema = z.object({
   email: z.email(),
-  avatar: z.url().optional(),
+  // avatar: z.url().optional(),
+  avatar: z.file().optional(),
   faculty: z.string(),
   position: z.string(),
-  status: z.enum(['active', 'inactive', 'retired']),
-})
+  status: z.literal(["active", "inactive", "retired"]),
+});
 
 export const createStudentSchema = z.object({
   email: z.email(),
@@ -34,19 +35,28 @@ export const createStudentSchema = z.object({
   yearOfStudy: z.number().min(1).max(10),
   semester: z.string(),
   faculty: z.string(),
-})
+});
 
-export const createUserSchema = z.union([createLecturerSchema, createStudentSchema])
+export const createUserSchema = z.union([
+  createLecturerSchema,
+  createStudentSchema,
+]);
 
-export type CreateLecturerDto = z.infer<typeof createLecturerSchema>
-export type CreateStudentDto = z.infer<typeof createStudentSchema>
-export type CreateUserDto = z.infer<typeof createUserSchema>
+export type CreateLecturerDto = z.infer<typeof createLecturerSchema>;
+export type CreateStudentDto = z.infer<typeof createStudentSchema>;
+export type CreateUserDto = z.infer<typeof createUserSchema>;
 
 /** update */
 
 export const updateUserSchema = z.union([
   createLecturerSchema.partial(),
   createStudentSchema.partial(),
-])
+]);
 
-export type UpdateUserDto = z.infer<typeof updateUserSchema>
+export type UpdateUserDto = z.infer<typeof updateUserSchema>;
+
+export const inviteUsersSchema = z.object({
+  emails: z.array(z.email()).min(1),
+});
+
+export type InviteUsersDto = z.infer<typeof inviteUsersSchema>;

@@ -8,6 +8,7 @@ import type { TableColumn } from "@nuxt/ui";
 
 const { data: institutions, isFetching } = useInstitutions();
 const getDropdownActions = useTableActions();
+const userStore = useUserStore();
 const { t, locale } = useI18n();
 
 const columns = computed<TableColumn<Institution>[]>(() => [
@@ -20,7 +21,10 @@ const columns = computed<TableColumn<Institution>[]>(() => [
 </script>
 <template>
   <div class="flex gap-2">
-    <CreateInstitutionModal />
+    <!-- FIXME: the institutions do not exist for now  -->
+    <CreateInstitutionModal
+      v-if="userStore.hasPermission('university.add_faculty')"
+    />
   </div>
   <UTable :key="locale" :data="institutions" :loading="isFetching" :columns>
     <template #actions-cell="{ row }">

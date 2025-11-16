@@ -1,5 +1,5 @@
 import { apiClient } from "../client";
-import type { User } from "~/types/api";
+import type { User } from "~/api/schemas";
 
 export interface Credentials {
   email: string;
@@ -7,14 +7,17 @@ export interface Credentials {
 }
 
 export const authApi = {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   login: (data: Credentials) =>
-    apiClient.post<User>("/auth/login", data, {
+    // FIXME: Temporary workaround until we have proper auth
+    apiClient.get<User>("/api/users/users/1/", {
       credentials: "include",
     }),
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   register: (data: Credentials) =>
-    apiClient.post<User>("/auth/register", data, {
+    apiClient.get<User>("/api/users/users/1/", {
       credentials: "include",
     }),
-  logout: () => apiClient.post("/auth/logout"),
+  logout: () => apiClient.post("/auth/logout/"),
 };

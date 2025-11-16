@@ -1,4 +1,4 @@
-import type { Position } from "~/types/api";
+import type { Position } from "~/api/schemas";
 import { createFactory } from "./factory-builder";
 import { faker } from "@faker-js/faker";
 
@@ -8,7 +8,7 @@ export const createPosition = createFactory<Position>((overrides = {}) => {
   const position: Position = {
     id: faker.number.int(),
     name: faker.person.jobTitle(),
-    hourlyRate: faker.number.int({ min: 80, max: 160 }),
+    hourly_rate: faker.number.int({ min: 80, max: 160 }),
     workload: faker.helpers.arrayElement(workloads),
   };
 
