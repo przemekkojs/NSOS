@@ -2,21 +2,17 @@
 FROM node:22-alpine AS build-stage
 WORKDIR /app
 
-ARG VITE_API_GATEWAY_URL
-ARG VITE_MSW
+ARG NUXT_PUBLIC_API_GATEWAY_URL
+ARG NUXT_PUBLIC_MSW_ENABLED
 
-ENV VITE_API_GATEWAY_URL=${VITE_API_GATEWAY_URL}
-ENV VITE_MSW=${VITE_MSW}
+ENV NUXT_PUBLIC_API_GATEWAY_URL=${NUXT_PUBLIC_API_GATEWAY_URL}
+ENV NUXT_PUBLIC_MSW_ENABLED=${NUXT_PUBLIC_MSW_ENABLED}
 
-RUN corepack enable
-RUN corepack prepare yarn@4 --activate
+COPY package*.json ./
 
-COPY package*.json yarn.lock .yarnrc.yml ./
-COPY .yarn ./.yarn
-
-RUN yarn install --immutable
+RUN npm install
 COPY . .
-RUN yarn build
+RUN npm run build
 
 # Production stage
 FROM nginx:stable-alpine AS production-stage

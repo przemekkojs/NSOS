@@ -1,14 +1,30 @@
-import { fileURLToPath } from 'node:url'
-import { mergeConfig, defineConfig, configDefaults } from 'vitest/config'
-import viteConfig from './vite.config'
+import { defineConfig } from "vitest/config";
+import { defineVitestProject } from "@nuxt/test-utils/config";
 
-export default mergeConfig(
-  viteConfig,
-  defineConfig({
-    test: {
-      environment: 'jsdom',
-      exclude: [...configDefaults.exclude, 'e2e/**'],
-      root: fileURLToPath(new URL('./', import.meta.url)),
-    },
-  }),
-)
+export default defineConfig({
+  test: {
+    projects: [
+      {
+        test: {
+          name: "unit",
+          include: ["test/{e2e,unit}/*.{test,spec}.ts"],
+          environment: "node",
+        },
+      },
+      await defineVitestProject({
+        test: {
+          name: "nuxt",
+          setupFiles: ["./test/nuxt/setup.ts"],
+          exclude: [
+            "**/e2e/**",
+            "**/node_modules/**",
+            "**/.nuxt/**",
+            "**/coverage/**",
+          ],
+          include: ["app/**/*.nuxt.{test,spec}.ts"],
+          environment: "nuxt",
+        },
+      }),
+    ],
+  },
+});
