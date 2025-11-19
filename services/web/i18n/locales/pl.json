@@ -27,6 +27,7 @@
     "register": "Utwórz konto",
     "reset": "Resetuj",
     "save": "Zapisz",
+    "submit": "Wyślij",
     "update": "Aktualizuj",
     "yes": "Tak"
   },
@@ -75,20 +76,31 @@
       "password": "Musi mieć co najmniej 8 znaków"
     },
     "label": {
+      "name": "Name",
+      "description": "Description",
+      "announcements": "Ogłoszenia",
       "avatar": "Awatar",
+      "colorBlindMode": "Tryb dla daltonistów",
       "confirmPassword": "Potwierdź hasło",
       "courseGroup": "Grupa kursów",
       "courseName": "Nazwa kursu",
       "courseType": "Typ kursu",
+      "disableAnimations": "Wyłącz animacje",
       "ects": "Punkty ECTS",
       "email": "Email",
       "faculty": "Wydział",
+      "firstName": "Imię",
+      "fontScale": "Skala czcionki",
       "institutionAddress": "Adres",
       "institutionCode": "Kod",
       "institutionName": "Nazwa instytucji",
+      "lastName": "Nazwisko",
+      "lineHeight": "Wysokość linii",
       "password": "Hasło",
       "position": "Stanowisko",
+      "reduceMotion": "Zmniejsz ruch",
       "status": "Status",
+      "tooltipDuration": "Czas trwania podpowiedzi",
       "weeklyHours": "Godziny tygodniowo"
     },
     "placeholder": {
@@ -96,12 +108,33 @@
       "email": "np. jan.kowalski{'@'}mail.pl",
       "faculty": "np. Wydział Matematyki, Informatyki i Mechaniki",
       "filterEmails": "Filtruj e-maile",
+      "firstName": "np. Jan",
       "institutionAddress": "np. Krakowskie Przedmieście 26/28",
       "institutionCode": "np. UW001",
       "institutionName": "np. Uniwersytet Warszawski",
+      "lastName": "np. Kowalski",
       "password": "Wprowadź hasło",
       "position": "np. Profesor nadzwyczajny",
       "search": "Szukaj..."
+    },
+    "selectItem": {
+      "1": "x1",
+      "1125": "x1.125",
+      "125": "x1.25",
+      "1375": "x1.375",
+      "15": "x1.5",
+      "compact": "Kompaktowy",
+      "deuteranopia": "Deuteranopia",
+      "long": "Uporczywy",
+      "loose": "Luźny",
+      "monochrome": "Monochromia",
+      "none": "Nic",
+      "normal": "Normalna",
+      "protanopia": "Protanopia",
+      "relaxed": "Zrelaksowany",
+      "short": "Krótki",
+      "tritanopia": "Tritanopia",
+      "persistent": "Stały"
     },
     "validation": {
       "invalidEmail": "Wprowadź prawidłowy adres email",
@@ -110,6 +143,19 @@
       "passwordTooShort": "Hasło musi mieć co najmniej 8 znaków",
       "required": "To pole jest wymagane"
     }
+  },
+  "menu": {
+    "appearance": "Wygląd",
+    "dark": "Ciemny",
+    "documentation": "Dokumentacja",
+    "githubRepository": "Repozytorium GitHub",
+    "light": "Jasny",
+    "logout": "Wyloguj się",
+    "neutral": "Neutralny",
+    "primary": "Podstawowy",
+    "profile": "Profil",
+    "settings": "Ustawienia",
+    "theme": "Motyw"
   },
   "message": {
     "confirm": {
@@ -141,6 +187,8 @@
     "courses": "Kursy",
     "dashboard": "Panel główny",
     "employees": "Pracownicy",
+    "faculties": "Wydziały",
+    "shortcuts": "Skróty klawiszowe",
     "feedback": "Opinie",
     "goTo": "Idź do",
     "help": "Pomoc",
@@ -207,6 +255,7 @@
       "courseGroup": "Grupa kursów",
       "courseType": "Typ",
       "date": "Data",
+      "description": "Opis",
       "ects": "ECTS",
       "email": "Email",
       "faculty": "Wydział",
@@ -222,6 +271,10 @@
       "read": "Przeczytane",
       "unread": "Nieprzeczytane"
     }
+  },
+  "tabs": {
+    "accessibility": "Dostępność",
+    "account": "Konto"
   },
   "tours": {
     "inviteUsers": {

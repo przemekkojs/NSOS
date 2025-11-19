@@ -1,62 +1,61 @@
 <script setup lang="ts">
-import type { DropdownMenuItem } from '@nuxt/ui'
+import type { DropdownMenuItem } from "@nuxt/ui";
 
 defineProps<{
-  collapsed?: boolean
-}>()
+  collapsed?: boolean;
+}>();
 
 const teams = ref([
   {
-    label: 'Vue',
+    label: "Vue",
     avatar: {
-      src: 'https://github.com/vuejs.png',
-      alt: 'Vue',
+      src: "https://github.com/vuejs.png",
+      alt: "Vue",
     },
   },
   {
-    label: 'Vite',
+    label: "Vite",
     avatar: {
-      src: 'https://github.com/vitejs.png',
-      alt: 'Vite',
+      src: "https://github.com/vitejs.png",
+      alt: "Vite",
     },
   },
   {
-    label: 'Vitest',
+    label: "Vitest",
     avatar: {
-      src: 'https://github.com/vitest-dev.png',
-      alt: 'Vitest',
+      src: "https://github.com/vitest-dev.png",
+      alt: "Vitest",
     },
   },
-])
-const selectedTeam = ref(teams.value[0])
+]);
+const selectedTeam = ref(teams.value[0]);
+const { t } = useI18n();
 
 const items = computed<DropdownMenuItem[][]>(() => {
   return [
     teams.value.map((team) => ({
       ...team,
       onSelect() {
-        selectedTeam.value = team
+        selectedTeam.value = team;
       },
     })),
     [
       {
-        label: 'Create team',
-        icon: 'i-lucide-circle-plus',
-      },
-      {
-        label: 'Manage teams',
-        icon: 'i-lucide-cog',
+        label: t("page.institution.create.title"),
+        icon: "i-lucide-circle-plus",
+        to: "/institutions/create",
       },
     ],
-  ]
-})
+  ];
+});
 </script>
-
 <template>
   <UDropdownMenu
     :items="items"
     :content="{ align: 'center', collisionPadding: 12 }"
-    :ui="{ content: collapsed ? 'w-40' : 'w-(--reka-dropdown-menu-trigger-width)' }"
+    :ui="{
+      content: collapsed ? 'w-40' : 'w-(--reka-dropdown-menu-trigger-width)',
+    }"
   >
     <UButton
       v-bind="{

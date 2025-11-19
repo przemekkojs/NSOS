@@ -1,20 +1,21 @@
 import { faker } from "@faker-js/faker";
-import type { Course } from "~/api/modules/courses";
+import { CourseSchema, type Course } from "~/api/schemas";
 import { createFactory } from "./factory-builder";
-import { courseTypes } from "~/api/modules/courses";
 import { createFaculty } from "./faculties";
 
 const COURSE_NAMES = ["ABC"];
+
+const courseTypes = Array.from(CourseSchema.shape.course_type.values);
 
 export const createCourses = createFactory<Course>((overrides = {}) => {
   const course: Course = {
     id: faker.number.int(),
     name: faker.helpers.arrayElement(COURSE_NAMES),
-    weeklyHours: faker.number.int({
+    weekly_hours: faker.number.int({
       min: 1,
       max: 6,
     }),
-    weeksCount: faker.number.int({
+    weeks_count: faker.number.int({
       min: 7,
       max: 15,
     }),
@@ -22,9 +23,10 @@ export const createCourses = createFactory<Course>((overrides = {}) => {
       min: 0,
       max: 6,
     }),
-    courseGroup: faker.word.noun(),
-    courseType: faker.helpers.arrayElement(courseTypes),
-    faculty: createFaculty(),
+    course_code: faker.string.alpha(6),
+    course_group: faker.word.noun(),
+    course_type: faker.helpers.arrayElement(courseTypes),
+    faculty: createFaculty().id,
   };
 
   return Object.assign(course, overrides);

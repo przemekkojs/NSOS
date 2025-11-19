@@ -27,6 +27,7 @@
     "register": "Create Account",
     "reset": "Reset",
     "save": "Save",
+    "submit": "Submit",
     "update": "Update",
     "yes": "Yes"
   },
@@ -60,7 +61,10 @@
       "downloadTemplate": "Download CSV Template",
       "dropFile": "Drop your CSV file here, or click to select",
       "export": "Export CSV",
-      "import": "Import CSV"
+      "import": "Import CSV",
+      "success": "Successfully imported",
+      "successDescription": "Successfully imported {count} rows from CSV file.",
+      "noRows": "CSV is empty"
     },
     "notifications": {
       "ariaLabel": "Open notifications",
@@ -75,33 +79,46 @@
       "password": "Must be at least 8 characters"
     },
     "label": {
+      "name": "Name",
+      "description": "Description",
+      "announcements": "Announcements",
+      "avatar": "Avatar",
       "confirmPassword": "Confirm Password",
       "courseGroup": "Course Group",
       "courseName": "Course Name",
       "courseType": "Course Type",
       "ects": "ECTS Credits",
-      "email": "Email",
+      "email": "Email | Emails",
+      "faculty": "Faculty",
+      "firstName": "First Name",
       "institutionAddress": "Address",
       "institutionCode": "Code",
       "institutionName": "Institution Name",
+      "lastName": "Last Name",
       "password": "Password",
-      "weeklyHours": "Weekly Hours",
-      "avatar": "Avatar",
-      "faculty": "Faculty",
       "position": "Position",
-      "status": "Status"
+      "status": "Status",
+      "weeklyHours": "Weekly Hours",
+      "colorBlindMode": "Colorblind mode",
+      "disableAnimations": "Disable animations",
+      "fontScale": "Font scale",
+      "lineHeight": "Line height",
+      "reduceMotion": "Reduce motion",
+      "tooltipDuration": "Tooltip duration"
     },
     "placeholder": {
       "confirmPassword": "Re-enter your password",
       "email": "e.g. john.doe{'@'}mail.com",
+      "faculty": "e.g. Faculty of Mathematics, Informatics and Mechanics",
       "filterEmails": "Filter emails",
+      "firstName": "e.g. John",
       "institutionAddress": "e.g. Krakowskie Przedmieście 26/28",
       "institutionCode": "e.g. UW001",
       "institutionName": "e.g. University of Warsaw",
+      "lastName": "e.g. Doe",
       "password": "Enter your password",
-      "search": "Search...",
       "position": "e.g. Lecturer",
-      "faculty": "e.g. Faculty of Mathematics, Informatics and Mechanics"
+      "search": "Search..."
     },
     "validation": {
       "invalidEmail": "Please enter a valid email address",
@@ -109,7 +126,38 @@
       "passwordMismatch": "Passwords do not match",
       "passwordTooShort": "Password must be at least 8 characters",
       "required": "This field is required"
+    },
+    "selectItem": {
+      "1": "x1",
+      "1125": "x1.125",
+      "125": "x1.25",
+      "1375": "x1.375",
+      "15": "x1.5",
+      "normal": "Normal",
+      "compact": "Compact",
+      "loose": "Loose",
+      "relaxed": "Relaxed",
+      "short": "Short",
+      "long": "Persistent",
+      "none": "None",
+      "protanopia": "Protanopia",
+      "deuteranopia": "Deuteranopia",
+      "tritanopia": "Tritanopia",
+      "monochrome": "Monochrome"
     }
+  },
+  "menu": {
+    "appearance": "Appearance",
+    "dark": "Dark",
+    "documentation": "Documentation",
+    "githubRepository": "GitHub Repository",
+    "light": "Light",
+    "logout": "Log Out",
+    "neutral": "Neutral",
+    "primary": "Primary",
+    "profile": "Profile",
+    "settings": "Settings",
+    "theme": "Theme"
   },
   "message": {
     "confirm": {
@@ -141,6 +189,8 @@
     "courses": "Courses",
     "dashboard": "Dashboard",
     "employees": "Employees",
+    "shortcuts": "Keyboard shortcuts",
+    "faculties": "Faculties",
     "feedback": "Feedback",
     "goTo": "Go to",
     "help": "Help",
@@ -207,6 +257,7 @@
       "courseGroup": "Course Group",
       "courseType": "Type",
       "date": "Date",
+      "description": "Description",
       "ects": "ECTS",
       "email": "Email",
       "faculty": "Faculty",
@@ -222,6 +273,10 @@
       "read": "Read",
       "unread": "Unread"
     }
+  },
+  "tabs": {
+    "accessibility": "Accessibility",
+    "account": "Account"
   },
   "tours": {
     "inviteUsers": {

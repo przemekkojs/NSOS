@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Credentials } from "@/api/modules/auth";
 import { useRegister } from "~/composables/useAuth";
-import { useUserStore } from "~/stores/user-store";
+import { useUserStore } from "~/stores/user";
 import RegisterForm from "~/features/auth/components/RegisterForm.vue";
 
 useHead({
@@ -19,7 +19,7 @@ async function onSuccess(credentials: Credentials) {
   const user = await register(credentials);
 
   // TODO: replace this with email confirmation but it's enough for now
-  userStore.$patch(user);
+  userStore.setUser(user);
 
   await navigateTo({ name: "index" });
 }

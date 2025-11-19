@@ -1,5 +1,9 @@
 <script setup lang="ts">
 const userStore = useUserStore();
+
+definePageMeta({
+  permission: "users.view_user",
+});
 </script>
 <template>
   <h1>Profil</h1>

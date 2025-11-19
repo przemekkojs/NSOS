@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import CreateInstitutionForm from "~/features/institutions/components/InstitutionForm.vue";
-import type { CreateInstitutionDto } from "../schemas";
+import InstitutionForm from "~/features/institutions/components/InstitutionForm.vue";
 import { useCreateInstitution } from "~/composables/useInstitutions";
+import type { InstitutionCreate } from "~/api/schemas";
 
 const { mutate } = useCreateInstitution();
 const open = ref(false);
 const toast = useToast();
 
-function onCreate(value: CreateInstitutionDto) {
+function onCreate(value: InstitutionCreate) {
   open.value = false;
   toast.add({
     title: "Institution created",
@@ -26,7 +26,7 @@ function onCreate(value: CreateInstitutionDto) {
   >
     <UButton>{{ $t("button.create") }}</UButton>
     <template #body>
-      <CreateInstitutionForm @success="onCreate" @cancel="open = false" />
+      <InstitutionForm @success="onCreate" @cancel="open = false" />
     </template>
   </UModal>
 </template>

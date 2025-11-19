@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/vue-query";
 import { userApi } from "~/api/modules/user";
-import type { UpdateUserDto } from "~/features/users/schemas";
+import type { UserCreate } from "~/api/schemas";
 
 export const userKeys = {
   all: ["users"] as const,
@@ -49,7 +49,7 @@ export function useUpdateUser() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, data }: { id: number; data: UpdateUserDto }) =>
+    mutationFn: ({ id, data }: { id: number; data: UserCreate }) =>
       userApi.update(id, data),
     onSuccess: (data, variables) => {
       queryClient.setQueryData(userKeys.detail(variables.id), data);

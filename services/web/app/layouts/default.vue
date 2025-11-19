@@ -11,70 +11,94 @@ import { useStorage } from "@vueuse/core";
 const toast = useToast();
 const { t } = useI18n();
 // const { unreadCount } = useNotifications();
-const unreadCount = ref(0); // FIXME: Temporary workaround until notifications are implemented
 
-const user = useUserStore();
+const {
+  isDashboardSidebarCollapsed,
+  isNotificationsSlideoverOpen,
+  isShortcutsHelpOpen,
+} = useDashboard();
+const { hasPermission } = useUserStore();
+const { isEnabled } = useFeatureFlags();
 
 const links = computed<NavigationMenuItem[][]>(() => [
-  [],
   [
-    user.hasPermission("teaching.view_schedule") && {
+    hasPermission("teaching.view_schedule") && {
       label: t("navigation.dashboard"),
       icon: "i-lucide-layout-dashboard",
       to: "/",
+      kbds: ["g", "d"],
     },
-    user.hasPermission("teaching.view_schedule") && {
+    hasPermission("teaching.view_schedule") && {
       label: t("navigation.schedule"),
       icon: "i-lucide-calendar",
       to: "/harmonogram",
+      kbds: ["g", "h"],
     },
-    user.hasPermission("users.view_user") && {
+    hasPermission("users.view_user") && {
       label: t("navigation.employees"),
       icon: "i-lucide-users",
       to: "/employees",
+      kbds: ["g", "e"],
     },
-    // @ts-expect-error the permission doesn't exist yet but it's fine
-    user.hasPermission("institutions.view_institution") && {
-      label: t("navigation.institutions"),
+    isEnabled("institutions") &&
+      // @ts-expect-error the permission doesn't exist yet but it's fine
+      hasPermission("institutions.view_institution") &&
+      ({
+        label: t("navigation.institutions"),
+        icon: "i-lucide-building-2",
+        to: "/institutions",
+        kbds: ["g", "i"],
+      } satisfies NavigationMenuItem),
+    hasPermission("university.view_faculty") && {
+      // move to institutions/universities children when added
+      label: t("navigation.faculties"),
       icon: "i-lucide-building-2",
-      to: "/institutions",
+      to: "/faculties",
+      kbds: ["g", "f"],
     },
-    user.hasPermission("teaching.view_course") && {
+    hasPermission("teaching.view_course") && {
       label: t("navigation.courses"),
       icon: "i-lucide-book-open",
       to: "/courses",
+      kbds: ["g", "c"],
+      children: [
+        hasPermission("teaching.view_coursegroup") && {
+          label: t("navigation.courseGroups"),
+          to: "/course-groups",
+        },
+      ].filter(truthy),
     },
-    // @ts-expect-error the permission doesn't exist yet but it's fine
-    user.hasPermission("inbox.view_inbox") && {
-      label: t("navigation.inbox"),
-      icon: "i-lucide-inbox",
-      to: "/inbox",
-      badge: unreadCount.value > 0 ? unreadCount.value.toString() : undefined,
-    },
-    // @ts-expect-error the permission doesn't exist yet but it's fine
-    user.hasPermission("institution.change_institution") && {
+    isEnabled("notifications") &&
+      // @ts-expect-error the permission doesn't exist yet but it's fine
+      hasPermission("inbox.view_notifications") && {
+        label: t("navigation.inbox"),
+        icon: "i-lucide-inbox",
+        to: "/inbox",
+        kbds: ["g", "n"],
+        // badge: unreadCount.value > 0 ? unreadCount.value.toString() : undefined,
+      },
+    {
       label: t("navigation.settings"),
       to: "/settings",
       icon: "i-lucide-settings",
+      kbds: ["g", "s"],
     },
   ].filter((a) => !!a),
   [
     {
-      label: t("navigation.feedback"),
-      icon: "i-lucide-message-circle",
-      to: "/feedback",
-      target: "_blank",
-    },
-    {
       label: t("navigation.help"),
       icon: "i-lucide-info",
-      to: "http://localhost:5174/",
+      to: "/help",
       target: "_blank",
     },
     {
-      label: t("navigation.support"),
-      icon: "i-lucide-life-buoy",
-      to: "/support",
+      label: t("navigation.shortcuts"),
+      icon: "i-lucide-command",
+      type: "trigger" as const,
+      class: "cursor-pointer",
+      onSelect: () => {
+        isShortcutsHelpOpen.value = !isShortcutsHelpOpen.value;
+      },
     },
   ],
 ]);
@@ -127,19 +151,24 @@ onMounted(() => {
     ],
   });
 });
+
+definePageMeta({
+  middleware: "1-auth",
+});
 </script>
 <template>
   <ClientOnly>
     <UDashboardGroup unit="rem" storage="local">
       <UDashboardSidebar
         id="default"
+        v-model:collapsed="isDashboardSidebarCollapsed"
         collapsible
         resizable
         class="bg-elevated/25"
         :ui="{ footer: 'lg:border-t lg:border-default' }"
       >
         <template #header="{ collapsed }">
-          <TeamsMenu :collapsed="collapsed" />
+          <TeamsMenu v-if="isEnabled('institutions')" :collapsed="collapsed" />
         </template>
 
         <template #default="{ collapsed }">
@@ -163,6 +192,8 @@ onMounted(() => {
             tooltip
             class="mt-auto"
           />
+
+          <ShortcutsHelp />
         </template>
 
         <template #footer="{ collapsed }">
@@ -180,12 +211,20 @@ onMounted(() => {
             </template>
 
             <template #right>
-              <ChatSlideover />
+              <ChatSlideover v-if="isEnabled('aiChat')" />
               <UTooltip
+                v-if="isEnabled('notifications')"
                 :text="$t('feature.notifications.tooltip')"
                 :shortcuts="['N']"
               >
-                <UButton color="neutral" variant="ghost" square>
+                <UButton
+                  color="neutral"
+                  variant="ghost"
+                  square
+                  @click="
+                    isNotificationsSlideoverOpen = !isNotificationsSlideoverOpen
+                  "
+                >
                   <UChip color="error" inset>
                     <UIcon name="i-lucide-bell" class="size-5 shrink-0" />
                   </UChip>

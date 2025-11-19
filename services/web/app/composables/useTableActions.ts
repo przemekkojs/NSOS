@@ -8,8 +8,51 @@ export function useTableActions() {
   const router = useRouter();
   const { t } = useI18n();
   const { copy } = useClipboard();
+  // const user = useUserStore();
 
-  function getDropdownActions(row: { id: number }): DropdownMenuItem[][] {
+  function getDropdownActions(row: {
+    id: number;
+    view?: MaybeRefOrGetter<boolean>;
+    change?: MaybeRefOrGetter<boolean>;
+    delete?: MaybeRefOrGetter<boolean>;
+  }): DropdownMenuItem[][] {
+    row.view ??= true;
+    row.change ??= true;
+    row.delete ??= true;
+
+    const manageGroup: DropdownMenuItem[] = [
+      row.view && {
+        label: t("table.action.viewDetails"),
+        icon: "i-lucide-eye",
+        onSelect: () => {
+          router.push({
+            path: router.currentRoute.value.path + "/" + row.id,
+          });
+        },
+      },
+      row.change && {
+        label: t("button.edit"),
+        icon: "i-lucide-edit",
+        onSelect: () => {
+          router.push({
+            path: router.currentRoute.value.path + "/" + row.id + "/edit",
+          });
+        },
+      },
+      row.delete && {
+        label: t("button.delete"),
+        icon: "i-lucide-trash",
+        color: "error" as const,
+        onSelect: () => {
+          toast.add({
+            title: "Delete action selected",
+            color: "warning",
+            icon: "i-lucide-alert-circle",
+          });
+        },
+      },
+    ].filter(truthy);
+
     return [
       [
         {
@@ -26,38 +69,7 @@ export function useTableActions() {
           },
         },
       ],
-      [
-        {
-          label: t("table.action.viewDetails"),
-          icon: "i-lucide-eye",
-          onSelect: () => {
-            router.push({
-              path: router.currentRoute.value.path + "/" + row.id,
-            });
-          },
-        },
-        {
-          label: t("button.edit"),
-          icon: "i-lucide-edit",
-          onSelect: () => {
-            router.push({
-              path: router.currentRoute.value.path + "/" + row.id + "/edit",
-            });
-          },
-        },
-        {
-          label: t("button.delete"),
-          icon: "i-lucide-trash",
-          color: "error",
-          onSelect: () => {
-            toast.add({
-              title: "Delete action selected",
-              color: "warning",
-              icon: "i-lucide-alert-circle",
-            });
-          },
-        },
-      ],
+      manageGroup,
     ];
   }
 

@@ -1,9 +1,5 @@
 import { z } from "zod";
 
-// ============================================================================
-// UNIVERSITY MODELS
-// ============================================================================
-
 export const permissions = [
   "admin.add_logentry",
   "admin.change_logentry",
@@ -71,6 +67,20 @@ export type Permission = (typeof permissions)[number];
 
 export const PermissionSchema = z.literal(permissions);
 
+// NOTE: Generated data from Django models below
+
+// ============================================================================
+// UNIVERSITY MODELS
+// ============================================================================
+
+export const InstitutionSchema = z.object({
+  id: z.number(),
+  name: z.string().max(200),
+  description: z.string().nullable(),
+  code: z.string().max(10),
+  address: z.string().max(200),
+});
+
 export const FacultySchema = z.object({
   id: z.number(),
   name: z.string().max(200),
@@ -81,14 +91,14 @@ export const PositionSchema = z.object({
   id: z.number(),
   name: z.string().max(100),
   hourly_rate: z.string().or(z.number()), // DecimalField can be string or number
-  workload: z.enum(["40", "20", "30"]).or(z.number()),
+  workload: z.literal(["40", "20", "30"]).or(z.number()),
 });
 
 export const SemesterSchema = z.object({
   id: z.number(),
   name: z.string().max(50),
   faculty: z.number(), // Foreign key ID
-  type: z.enum(["winter", "summer"]),
+  type: z.literal(["winter", "summer"]),
   academic_year: z
     .string()
     .max(9)
@@ -118,7 +128,7 @@ export const UserSchema = z.object({
 export const LecturerSchema = UserSchema.extend({
   faculty: z.number(), // Foreign key ID
   position: z.number().nullable(),
-  status: z.enum(["active", "inactive", "retired"]),
+  status: z.literal(["active", "inactive", "retired"]),
 });
 
 export const StudentSchema = UserSchema.extend({
@@ -141,7 +151,7 @@ export const CourseSchema = z.object({
   weeks_count: z.number().int().positive(),
   ects: z.string().or(z.number()), // DecimalField
   course_group: z.string().max(50).nullable(),
-  course_type: z.enum(["zal", "zst", "egz", "ekm"]),
+  course_type: z.literal(["zal", "zst", "egz", "ekm"]),
   faculty: z.number(), // Foreign key ID
 });
 
@@ -210,6 +220,8 @@ export const StudentExpandedSchema = StudentSchema.extend({
 // CREATE/UPDATE SCHEMAS (for POST/PUT/PATCH requests)
 // ============================================================================
 
+export const InstitutionCreateSchema = InstitutionSchema.omit({ id: true });
+
 export const FacultyCreateSchema = FacultySchema.omit({ id: true });
 
 export const PositionCreateSchema = PositionSchema.omit({ id: true });
@@ -223,11 +235,12 @@ export const UserCreateSchema = z.object({
   first_name: z.string().optional(),
   last_name: z.string().optional(),
 });
+export const UserUpdateSchema = UserCreateSchema.omit({ password: true });
 
 export const LecturerCreateSchema = UserCreateSchema.extend({
   faculty: z.number(),
   position: z.number().nullable(),
-  status: z.enum(["active", "inactive", "retired"]).default("active"),
+  status: z.literal(["active", "inactive", "retired"]).default("active"),
 });
 
 export const StudentCreateSchema = UserCreateSchema.extend({
@@ -267,13 +280,14 @@ export const RegisterRequestSchema = z.object({
   username: z.string().min(1).max(150),
   email: z.email(),
   password: z.string().min(8),
-  user_type: z.enum(["student", "lecturer"]).optional(),
+  user_type: z.literal(["student", "lecturer"]).optional(),
 });
 
 // ============================================================================
 // TYPE EXPORTS (for TypeScript usage)
 // ============================================================================
 
+export type Institution = z.infer<typeof InstitutionSchema>;
 export type Faculty = z.infer<typeof FacultySchema>;
 export type Position = z.infer<typeof PositionSchema>;
 export type Semester = z.infer<typeof SemesterSchema>;
@@ -291,6 +305,7 @@ export type CourseGroupExpanded = z.infer<typeof CourseGroupExpandedSchema>;
 export type LecturerExpanded = z.infer<typeof LecturerExpandedSchema>;
 export type StudentExpanded = z.infer<typeof StudentExpandedSchema>;
 
+export type InstitutionCreate = z.infer<typeof InstitutionCreateSchema>;
 export type FacultyCreate = z.infer<typeof FacultyCreateSchema>;
 export type PositionCreate = z.infer<typeof PositionCreateSchema>;
 export type SemesterCreate = z.infer<typeof SemesterCreateSchema>;
@@ -302,6 +317,14 @@ export type CourseGroupCreate = z.infer<typeof CourseGroupCreateSchema>;
 export type ClassCreate = z.infer<typeof ClassCreateSchema>;
 export type ScheduleCreate = z.infer<typeof ScheduleCreateSchema>;
 
+export type UserUpdate = z.infer<typeof UserUpdateSchema>;
+
 export type LoginRequest = z.infer<typeof LoginRequestSchema>;
 export type LoginResponse = z.infer<typeof LoginResponseSchema>;
 export type RegisterRequest = z.infer<typeof RegisterRequestSchema>;
+
+export const inviteUsersSchema = z.object({
+  emails: z.array(z.email()).min(1),
+});
+
+export type InviteUsersDto = z.infer<typeof inviteUsersSchema>;

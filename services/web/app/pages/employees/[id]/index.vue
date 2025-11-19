@@ -1,14 +1,41 @@
 <script setup lang="ts">
-import { useUsers } from "~/composables/useUsers";
+import type { TabsItem } from "@nuxt/ui";
 import { useRoute } from "@typed-router";
 
-const { data, isFetching } = useUsers();
+const { t } = useI18n();
 const router = useRoute("employees-id");
+
+const id = Number(router.params.id);
+const { data } = useUser(id);
+
+const tabs = computed<TabsItem[]>(() => [
+  {
+    label: t("tabs.user"),
+    description: "",
+    icon: "i-lucide-user",
+    slot: "user",
+  },
+  {
+    label: t("tabs.permissions"),
+    description: "",
+    icon: "i-lucide-user-lock",
+    slot: "permissions",
+  },
+]);
+
+definePageMeta({
+  // TODO: always allow viewing self
+  permission: "users.view_user",
+});
 </script>
 <template>
-  <h1>Employee: {{ router.params.id }}</h1>
-  <div v-if="isFetching">Loading...</div>
-  <div v-else>
-    <pre>{{ data }}</pre>
-  </div>
+  <UTabs
+    :items="tabs"
+    variant="link"
+    :ui="{ trigger: 'grow' }"
+    class="gap-4 w-full"
+  >
+    <template #permissions> </template>
+  </UTabs>
+  <pre>{{ data }}</pre>
 </template>

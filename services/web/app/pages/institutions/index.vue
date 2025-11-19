@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { useInstitutions } from "~/composables/useInstitutions";
 import { useTableActions } from "~/composables/useTableActions";
-import CreateInstitutionModal from "~/features/institutions/components/CreateInstitutionModal.vue";
+import CreateInstitutionModal from "~/features/institutions/components/InstitutionModal.vue";
 // TODO: replace with correct Institution type when available
 import type { Institution } from "~/mocks/fixtures/institutions";
 import type { TableColumn } from "@nuxt/ui";
 
 const { data: institutions, isFetching } = useInstitutions();
 const getDropdownActions = useTableActions();
-const userStore = useUserStore();
 const { t, locale } = useI18n();
 
 const columns = computed<TableColumn<Institution>[]>(() => [
@@ -18,13 +17,17 @@ const columns = computed<TableColumn<Institution>[]>(() => [
     id: "actions",
   },
 ]);
+
+definePageMeta({
+  // @ts-expect-error change when institution backend is added
+  permission: "university.add_institution",
+});
 </script>
 <template>
   <div class="flex gap-2">
-    <!-- FIXME: the institutions do not exist for now  -->
-    <CreateInstitutionModal
-      v-if="userStore.hasPermission('university.add_faculty')"
-    />
+    <PermissionGuard permission="university.add_faculty">
+      <CreateInstitutionModal />
+    </PermissionGuard>
   </div>
   <UTable :key="locale" :data="institutions" :loading="isFetching" :columns>
     <template #actions-cell="{ row }">

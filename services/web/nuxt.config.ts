@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
-
+  debug: true,
   modules: [
     "@nuxt/content",
     "@nuxt/eslint",
@@ -20,6 +20,35 @@ export default defineNuxtConfig({
     public: {
       mswEnabled: process.env.NUXT_PUBLIC_MSW_ENABLED === "true",
       apiGatewayUrl: process.env.NUXT_PUBLIC_API_GATEWAY_URL,
+      featureFlags: {
+        notifications:
+          process.env.NUXT_PUBLIC_FEATURE_FLAG_NOTIFICATIONS === "true",
+        aiChat: process.env.NUXT_PUBLIC_FEATURE_FLAG_AI_CHAT === "true",
+        institutions:
+          process.env.NUXT_PUBLIC_FEATURE_FLAG_INSTITUTIONS === "true",
+        csvImport: process.env.NUXT_PUBLIC_FEATURE_FLAG_CSV_IMPORT === "true",
+        userAvatars:
+          process.env.NUXT_PUBLIC_FEATURE_FLAG_USER_AVATARS === "true",
+      },
+    },
+  },
+  routeRules: {
+    "/help/**": { prerender: true },
+  },
+  app: {
+    head: {
+      htmlAttrs: {
+        lang: "pl",
+      },
+      title: "NSOS - Nowoczesny System Obsługi Studiów",
+      link: [
+        {
+          rel: "apple-touch-icon",
+          sizes: "180x180",
+          href: "/apple-touch-icon.png",
+        },
+      ],
+      meta: [{ name: "theme-color", content: "#3b82f6" }],
     },
   },
   css: [
@@ -41,6 +70,7 @@ export default defineNuxtConfig({
         file: "en.json",
       },
     ],
+    strategy: "prefix_except_default",
     defaultLocale: "pl",
   },
   vite: {
@@ -59,10 +89,13 @@ export default defineNuxtConfig({
         "zod",
         "papaparse",
         "@fullcalendar/vue3",
+        "@fullcalendar/core",
         "@fullcalendar/daygrid",
         "@fullcalendar/interaction",
+        "@fullcalendar/timegrid",
         "marked",
         "dompurify",
+        "driver.js",
       ],
     },
   },

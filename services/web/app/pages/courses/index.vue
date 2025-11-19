@@ -2,7 +2,7 @@
 import { useTableActions } from "~/composables/useTableActions";
 import { useCourses } from "~/composables/useCourses";
 import type { TableColumn } from "@nuxt/ui";
-import type { Course } from "~/api/modules/courses";
+import type { Course } from "~/api/schemas";
 
 const { data, isFetching } = useCourses();
 
@@ -31,6 +31,10 @@ const columns = computed<TableColumn<Course>[]>(() => [
     id: "actions",
   },
 ]);
+
+definePageMeta({
+  permission: "teaching.view_course",
+});
 </script>
 <template>
   <UTable :data="data" :loading="isFetching" :columns>

@@ -8,6 +8,9 @@ const id = Number(route.params.id);
 const { data, isFetching } = useCourse(id);
 // const toast = useToast()
 // const router = useRouter()
+definePageMeta({
+  permission: "teaching.view_course",
+});
 </script>
 <template>
   <h1>Employee: {{ id }}</h1>

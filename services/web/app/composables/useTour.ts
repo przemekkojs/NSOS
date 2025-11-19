@@ -3,11 +3,7 @@ import { driver, type Driver, type DriverHook, type Popover } from "driver.js";
 const NAVIGATION_TIMEOUT = 3000;
 const CHECK_INTERVAL = 100;
 
-function onHighlighted(
-  element: Element | undefined,
-  driverObj: Driver
-  //   nextSelector: string
-) {
+function onHighlighted(element: Element | undefined, driverObj: Driver) {
   const nextIndex = driverObj.hasNextStep()
     ? driverObj.getActiveIndex()
     : undefined;
@@ -57,6 +53,24 @@ const onNextClick: DriverHook = (element, _, options) => {
   }
 };
 
+/**
+ *
+ * TODO: more tours
+ * - CRUD user
+ *
+ * - CRUD position (teacher)
+ *
+ * - CRUD students to courses
+ *
+ * - CRUD institution
+ *
+ * - CRUD course
+ *
+ * - harmonogram
+ * - optimize something
+ * - explain statistics
+ * - onboarding
+ */
 export const useTour = () => {
   const { t } = useI18n();
 
@@ -121,6 +135,7 @@ export const useTour = () => {
           ...popoverBase,
           title: t("tours.inviteUsers.enterAnotherEmployee.title"),
           description: t("tours.inviteUsers.enterAnotherEmployee.description"),
+          onPopoverRender(popover, opts) {},
         },
       },
       {

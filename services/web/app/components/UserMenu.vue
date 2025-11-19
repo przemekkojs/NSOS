@@ -3,7 +3,7 @@ import type { DropdownMenuItem } from "@nuxt/ui";
 import { useColorMode } from "@vueuse/core";
 import { useLogout } from "../composables/useAuth";
 
-import { useUserStore } from "~/stores/user-store";
+import { useUserStore } from "~/stores/user";
 defineProps<{
   collapsed?: boolean;
 }>();
@@ -35,13 +35,13 @@ const colors = [
 ];
 const neutrals = ["slate", "gray", "zinc", "neutral", "stone"];
 
-const userStore = useUserStore();
+const { user } = useUserStore();
 
 const items = computed<DropdownMenuItem[][]>(() => [
   [
     {
       type: "label",
-      label: userStore.$state?.email || "Guest",
+      label: user?.email || "Guest",
       avatar: undefined,
     },
   ],
@@ -50,11 +50,6 @@ const items = computed<DropdownMenuItem[][]>(() => [
       label: t("menu.profile"),
       icon: "i-lucide-user",
       to: "/profile",
-    },
-    {
-      label: t("menu.billing"),
-      icon: "i-lucide-credit-card",
-      to: "/billing",
     },
     {
       label: t("menu.settings"),
@@ -150,13 +145,13 @@ const items = computed<DropdownMenuItem[][]>(() => [
     {
       label: t("menu.documentation"),
       icon: "i-lucide-book-open",
-      to: "https://ui.nuxt.com/docs/getting-started/installation/vue",
+      to: "",
       target: "_blank",
     },
     {
       label: t("menu.githubRepository"),
       icon: "simple-icons:github",
-      to: "https://github.com",
+      to: "https://github.com/przemekkojs/NSOS",
       target: "_blank",
     },
   ],
@@ -167,7 +162,6 @@ const items = computed<DropdownMenuItem[][]>(() => [
       "data-testid": "user-menu-logout",
       async onSelect() {
         await logout();
-        userStore.$reset();
         await navigateTo({
           name: "login",
         });
@@ -176,6 +170,7 @@ const items = computed<DropdownMenuItem[][]>(() => [
   ],
 ]);
 </script>
+<!-- TODO: add avatar -->
 
 <template>
   <UDropdownMenu
@@ -187,8 +182,12 @@ const items = computed<DropdownMenuItem[][]>(() => [
   >
     <UButton
       v-bind="{
-        label: collapsed ? undefined : userStore.$state?.email,
+        label: collapsed ? undefined : user?.email,
         trailingIcon: collapsed ? undefined : 'i-lucide-chevrons-up-down',
+      }"
+      :avatar="{
+        alt: $t('user.avatar'),
+        text: (user?.first_name ?? '') + (user?.last_name ?? ''),
       }"
       color="neutral"
       variant="ghost"

@@ -1,19 +1,16 @@
 <script setup lang="ts">
-import {
-  createInstitutionSchema,
-  type CreateInstitutionDto,
-} from "~/features/institutions/schemas";
+import { InstitutionCreateSchema, type InstitutionCreate } from "~/api/schemas";
 
 const { institution = {} } = defineProps<{
-  institution?: Partial<CreateInstitutionDto>;
+  institution?: Partial<InstitutionCreate>;
 }>();
 
 defineEmits<{
-  (e: "success", institution: CreateInstitutionDto): void;
+  (e: "success", institution: InstitutionCreate): void;
   (e: "cancel"): void;
 }>();
 
-const state = ref<Partial<CreateInstitutionDto>>({
+const state = ref<Partial<InstitutionCreate>>({
   ...institution,
   name: "",
   code: "",
@@ -23,7 +20,7 @@ const state = ref<Partial<CreateInstitutionDto>>({
 <template>
   <UForm
     :state
-    :schema="createInstitutionSchema"
+    :schema="InstitutionCreateSchema"
     class="space-y-2"
     data-testid="create-institution-form"
     @submit.prevent="$emit('success', $event.data)"

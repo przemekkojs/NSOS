@@ -2,17 +2,16 @@
 import { useTableActions } from "~/composables/useTableActions";
 import InviteModal from "~/features/users/components/InviteModal.vue";
 import type { TableColumn } from "@nuxt/ui";
-import CSVImport from "~/components/CSVImport.vue";
 import { useCreateUser, useUsers } from "~/composables/useUsers";
 import type { User } from "~/api/schemas";
 import { userHeaderUserAdapter } from "~/features/users/adapters";
-import type { UserHeader } from "~/features/users/schemas";
+import type { UserHeader } from "~/api/csv-import";
 
 const { data, isFetching } = useUsers();
 const { mutate: create } = useCreateUser();
-const { hasPermission } = useUserStore();
 
 const getDropdownActions = useTableActions();
+const { isEnabled } = useFeatureFlags();
 const { t } = useI18n();
 
 const columns = computed<TableColumn<User>[]>(() => [
@@ -39,27 +38,47 @@ const columnFilters = ref([
 
 const table = useTemplateRef("table");
 
+const inviteModalOpen = ref(false);
+defineShortcuts({
+  i: () => {
+    inviteModalOpen.value = !inviteModalOpen.value;
+  },
+});
+
 function onImported(importedData: UserHeader[]) {
   const adaptedData = importedData.map(userHeaderUserAdapter);
-  create(adaptedData);
+  for (const adaptedDataItem of adaptedData) {
+    // TODO: create
+    create(adaptedDataItem);
+  }
 }
+
+definePageMeta({
+  permission: "users.view_user",
+});
 </script>
 <template>
-  <div class="flex gap-2">
-    <InviteModal v-if="hasPermission('users.add_user')" />
-    <!-- @vue-generic {UserHeader} -->
-    <CSVImport v-if="hasPermission('users.add_user')" @proceed="onImported" />
+  <div class="flex justify-between">
+    <UInput
+      :model-value="
+        table?.tableApi.getColumn('email')?.getFilterValue() as string
+      "
+      class="max-w-sm"
+      :placeholder="$t('form.placeholder.filterEmails')"
+      @update:model-value="
+        table?.tableApi?.getColumn('email')?.setFilterValue($event)
+      "
+    />
+    <div class="flex gap-2">
+      <PermissionGuard permission="users.add_user">
+        <InviteModal v-model:open="inviteModalOpen" />
+      </PermissionGuard>
+      <PermissionGuard permission="users.add_user">
+        <!-- @vue-generic {UserHeader} -->
+        <CSVImport v-if="isEnabled('csvImport')" @proceed="onImported" />
+      </PermissionGuard>
+    </div>
   </div>
-  <UInput
-    :model-value="
-      table?.tableApi.getColumn('email')?.getFilterValue() as string
-    "
-    class="max-w-sm"
-    :placeholder="$t('form.placeholder.filterEmails')"
-    @update:model-value="
-      table?.tableApi?.getColumn('email')?.setFilterValue($event)
-    "
-  />
   <UTable
     ref="table"
     v-model:column-filters="columnFilters"

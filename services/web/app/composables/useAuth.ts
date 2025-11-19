@@ -1,6 +1,6 @@
 import { authApi } from "~/api/modules/auth";
 import { useMutation } from "@tanstack/vue-query";
-import { useUserStore } from "~/stores/user-store";
+import { useUserStore } from "~/stores/user";
 
 export function useLogin() {
   const userStore = useUserStore();
@@ -29,10 +29,21 @@ export function useRegister() {
 
 export function useLogout() {
   const userStore = useUserStore();
+  const navigateTo = useNavigateTo();
+  const toast = useToast();
   return useMutation({
     mutationFn: authApi.logout,
-    onSuccess() {
+    // TODO: move that to global error handler
+    async onError() {
+      toast.add({
+        color: "error",
+        title: "Logout Failed",
+        description: "An error occurred while logging out. Please try again.",
+      });
+    },
+    async onSuccess() {
       userStore.logout();
+      await navigateTo({ path: "/login" });
     },
   });
 }

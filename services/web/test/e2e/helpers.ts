@@ -28,7 +28,7 @@ export async function forceLogin(page: Page) {
   await page.fill("#email", user.email);
   await page.fill("#password", user.password);
 
-  const [response] = await Promise.all([
+  await Promise.all([
     page.waitForResponse(
       (resp) =>
         resp.url().includes("/auth/login") && resp.request().method() === "POST"
@@ -36,9 +36,6 @@ export async function forceLogin(page: Page) {
     page.click('button[type="submit"]'),
   ]);
 
-  console.log("Response status:", response.status());
-
-  // await page.click('button[type="submit"]');
   await page.waitForURL("/");
 }
 

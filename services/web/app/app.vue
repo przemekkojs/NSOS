@@ -1,19 +1,38 @@
 <script setup lang="ts">
-import { onErrorCaptured } from "vue";
+const { locale } = useI18n();
 
-if (import.meta.client) {
-  const originalSetAttribute = Element.prototype.setAttribute;
-  Element.prototype.setAttribute = function (name, value) {
-    if (
-      typeof value === "string" &&
-      (/[\n\r]/.test(value) || value.includes("\u0000"))
-    ) {
-      console.error("Invalid attribute detected:", name, value);
-      debugger; // This will pause execution
-    }
-    return originalSetAttribute.call(this, name, value);
-  };
-}
+useHead({
+  title: "NSOS",
+  htmlAttrs: {
+    lang: locale.value,
+  },
+  link: [
+    {
+      rel: "icon",
+      type: "image/x-icon",
+      href: "/favicon.ico",
+    },
+  ],
+});
+
+const siteUrl = "https://domain.example.com"; // Replace with your actual URL
+const siteName = "NSOS";
+const siteDescription =
+  "Nowoczesny System Obsługi Studiów - zarządzanie kursami, planem zajęć i ocenami";
+
+useSeoMeta({
+  title: "NSOS - Nasz System Obsługi Studiów",
+  description: siteDescription,
+  ogTitle: siteName,
+  ogDescription: siteDescription,
+  ogImage: `${siteUrl}/og-image.png`,
+  ogUrl: siteUrl,
+  ogType: "website",
+  twitterTitle: siteName,
+  twitterDescription: siteDescription,
+  twitterImage: `${siteUrl}/og-image.png`,
+  twitterCard: "summary_large_image",
+});
 </script>
 <template>
   <UApp>

@@ -20,6 +20,8 @@ const input = ref<string>("");
 const status = ref<"ready" | "streaming">("ready");
 const error = ref<Error | undefined>();
 
+const { isAIChatOpen } = useDashboard();
+
 function onSubmit() {
   const trimmedInput = input.value.trim();
   if (trimmedInput) {
@@ -46,7 +48,7 @@ const sanitize = (text: string) => {
 };
 </script>
 <template>
-  <USlideover>
+  <USlideover v-model:open="isAIChatOpen">
     <UTooltip :text="$t('feature.chat.tooltip')" :shortcuts="['C']">
       <UButton
         icon="i-lucide-bot-message-square"
@@ -65,7 +67,7 @@ const sanitize = (text: string) => {
             side: 'right',
             variant: 'soft',
             // FIXME: replace with actual user avatar
-            avatar: { src: 'https://github.com/benjamincanac.png' },
+            // avatar: { src: user.avatarUrl },
           }"
           :assistant="{
             icon: 'i-lucide-bot',

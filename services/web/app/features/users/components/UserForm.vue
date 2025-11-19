@@ -1,28 +1,34 @@
 <script setup lang="ts">
-import { createLecturerSchema, type CreateLecturerDto } from "../schemas";
+import { type UserCreate, UserCreateSchema } from "~/api/schemas";
 
 const { initialValues = {} } = defineProps<{
-  initialValues?: Partial<CreateLecturerDto>;
+  initialValues?: Partial<UserCreate>;
 }>();
 
 defineEmits<{
-  (e: "success", credentials: CreateLecturerDto): void;
+  (e: "submit", data: UserCreate): void;
 }>();
 
-defineSlots<{
-  leader: {
-    state: Partial<CreateLecturerDto>;
-  };
-}>();
-
-const state = ref<Partial<CreateLecturerDto>>({
-  ...initialValues,
+// TODO: change the types here
+const state = ref<Partial<UserCreate>>({
   email: "",
-  avatar: undefined,
-  faculty: "",
-  position: "",
-  status: "active",
+  ...initialValues,
 });
+
+watch(
+  () => initialValues,
+  (newValues) => {
+    if (newValues && Object.keys(newValues).length > 0) {
+      state.value = {
+        ...state.value,
+        ...newValues,
+      };
+    }
+  },
+  { immediate: true, deep: true }
+);
+
+const { isEnabled } = useFeatureFlags();
 
 const statusItems = [
   { label: "Active", value: "active" },
@@ -32,10 +38,10 @@ const statusItems = [
 </script>
 <template>
   <UForm
-    :schema="createLecturerSchema"
+    :schema="UserCreateSchema"
     :state
     class="flex flex-col gap-4 max-w-lg"
-    @submit.prevent="$emit('success', $event.data)"
+    @submit.prevent="$emit('submit', $event.data)"
   >
     <UFormField :label="$t('form.label.email')" name="email" required>
       <UInput
@@ -45,28 +51,58 @@ const statusItems = [
         :placeholder="$t('form.placeholder.email')"
       />
     </UFormField>
-    <UFormField :label="$t('form.label.avatar')" name="avatar">
-      <UFileUpload
-        v-model="state.avatar"
-        accept="image/*"
-        class="cursor-pointer"
+    <UFormField :label="$t('form.label.firstName')" name="first-name" required>
+      <UInput
+        id="first-name"
+        v-model="state.first_name"
+        :placeholder="$t('form.placeholder.firstName')"
       />
     </UFormField>
-    <UFormField :label="$t('form.label.faculty')" name="faculty" required>
+    <UFormField :label="$t('form.label.lastName')" name="last-name" required>
+      <UInput
+        id="last-name"
+        v-model="state.last_name"
+        :placeholder="$t('form.placeholder.lastName')"
+      />
+    </UFormField>
+    <UFormField
+      v-if="isEnabled('userAvatars')"
+      :label="$t('form.label.avatar')"
+      name="avatar"
+    >
+      <!-- TODO: add state.avatar when feature is implemented -->
+      <UFileUpload accept="image/*" class="cursor-pointer" />
+    </UFormField>
+    <UFormField
+      v-if="isLecturer(state)"
+      :label="$t('form.label.faculty')"
+      name="faculty"
+      required
+    >
       <UInput
         id="faculty"
         v-model="state.faculty"
         :placeholder="$t('form.placeholder.faculty')"
       />
     </UFormField>
-    <UFormField :label="$t('form.label.position')" name="position" required>
+    <UFormField
+      v-if="isLecturer(state)"
+      :label="$t('form.label.position')"
+      name="position"
+      required
+    >
       <UInput
         id="position"
         v-model="state.position"
         :placeholder="$t('form.placeholder.position')"
       />
     </UFormField>
-    <UFormField :label="$t('form.label.status')" name="status" required>
+    <UFormField
+      v-if="isLecturer(state)"
+      :label="$t('form.label.status')"
+      name="status"
+      required
+    >
       <USelect v-model="state.status" :items="statusItems" />
     </UFormField>
 

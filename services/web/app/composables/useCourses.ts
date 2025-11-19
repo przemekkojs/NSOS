@@ -1,5 +1,6 @@
-import { courseApi, type UpdateCourseDto } from "~/api/modules/courses";
+import { courseApi } from "~/api/modules/courses";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
+import type { CourseCreate } from "~/api/schemas";
 
 export const coursesKeys = {
   all: ["courses"] as const,
@@ -36,7 +37,7 @@ export function useCreateCourse() {
 export function useUpdateCourse() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, data }: { id: number; data: UpdateCourseDto }) =>
+    mutationFn: ({ id, data }: { id: number; data: CourseCreate }) =>
       courseApi.update(id, data),
     onSuccess: (data, variables) => {
       queryClient.setQueryData(coursesKeys.detail(variables.id), data);

@@ -9,15 +9,27 @@ const emit = defineEmits<{
 }>();
 const open = ref(false);
 const toast = useToast();
+const { t } = useI18n();
 
 async function handleFileUpload(file: File | null | undefined) {
   if (!file) return;
 
   const data = await parseCSV<TRow>(file);
+
+  if (data.length === 0) {
+    toast.add({
+      title: t("feature.csv.noRows"),
+      description: undefined,
+      color: "error",
+    });
+    return;
+  }
+
   open.value = false;
   toast.add({
-    title: "CSV Imported",
-    description: `Successfully imported ${data.length} rows from CSV file.`,
+    title: t("feature.csv.success"),
+    description: t("feature.csv.successDescription"),
+    // description: `Successfully imported ${data.length} rows from CSV file.`,
     color: "success",
   });
   emit("proceed", data);
