@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { navigateTo } from "@typed-router";
-import type { FacultyCreate } from "~/api/schemas";
+import type { FacultyCreate } from "~/lib/api/schemas";
 
 const { mutateAsync: create } = useCreateFaculty();
 

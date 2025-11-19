@@ -1,9 +1,9 @@
-import type { UserHeader } from "~/api/csv-import";
+import type { UserHeader } from "~/lib/api/csv-import";
 import {
   LecturerCreateSchema,
   StudentCreateSchema,
   type UserCreate,
-} from "~/api/schemas";
+} from "~/lib/api/schemas";
 
 export const userHeaderUserAdapter = (header: UserHeader): UserCreate => {
   if (header.userType === "lecturer") {

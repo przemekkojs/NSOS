@@ -1,5 +1,5 @@
 import { apiClient } from "../client";
-import type { User, UserUpdate } from "~/api/schemas";
+import type { User, UserUpdate } from "~/lib/api/schemas";
 
 const basePath = "/api/users/users";
 

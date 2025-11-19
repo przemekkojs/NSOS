@@ -1,4 +1,4 @@
-import type { Position } from "~/api/schemas";
+import type { Position } from "~/lib/api/schemas";
 import { createFactory } from "./factory-builder";
 import { faker } from "@faker-js/faker";
 

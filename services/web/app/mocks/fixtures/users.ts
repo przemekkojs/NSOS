@@ -1,5 +1,5 @@
-import type { User } from "~/api/schemas";
-import { permissions } from "~/api/schemas";
+import type { User } from "~/lib/api/schemas";
+import { permissions } from "~/lib/api/schemas";
 import { createFactory } from "./factory-builder";
 import { faker } from "@faker-js/faker";
 

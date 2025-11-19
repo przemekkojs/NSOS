@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/vue-query";
-import { facultyApi } from "~/api/modules/faculty";
-import type { FacultyCreate } from "~/api/schemas";
+import { facultyApi } from "~/lib/api/modules/faculty";
+import type { FacultyCreate } from "~/lib/api/schemas";
 
 export const facultyKeys = {
   all: ["faculties"] as const,

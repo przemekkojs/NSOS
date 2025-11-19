@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { CourseSchema, type Course } from "~/api/schemas";
+import { CourseSchema, type Course } from "~/lib/api/schemas";
 import { createFactory } from "./factory-builder";
 import { createFaculty } from "./faculties";
 

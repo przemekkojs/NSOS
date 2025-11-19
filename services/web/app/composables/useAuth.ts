@@ -1,4 +1,4 @@
-import { authApi } from "~/api/modules/auth";
+import { authApi } from "~/lib/api/modules/auth";
 import { useMutation } from "@tanstack/vue-query";
 import { useUserStore } from "~/stores/user";
 

@@ -1,6 +1,6 @@
-import { courseApi } from "~/api/modules/courses";
+import { courseApi } from "~/lib/api/modules/courses";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
-import type { CourseCreate } from "~/api/schemas";
+import type { CourseCreate } from "~/lib/api/schemas";
 
 export const coursesKeys = {
   all: ["courses"] as const,

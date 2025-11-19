@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useInviteUser } from "~/composables/useUsers";
-import type { InviteUsersDto } from "~/api/schemas";
+import type { InviteUsersDto } from "~/lib/api/schemas";
 import * as z from "zod";
-import { inviteUsersSchema } from "~/api/schemas";
+import { inviteUsersSchema } from "~/lib/api/schemas";
 
 const emit = defineEmits<{
   (e: "success"): void;

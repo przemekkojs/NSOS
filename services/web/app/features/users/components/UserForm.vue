@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type UserCreate, UserCreateSchema } from "~/api/schemas";
+import { type UserCreate, UserCreateSchema } from "~/lib/api/schemas";
 
 const { initialValues = {} } = defineProps<{
   initialValues?: Partial<UserCreate>;

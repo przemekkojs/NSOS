@@ -2,7 +2,7 @@
 import { useTableActions } from "~/composables/useTableActions";
 import { useCourses } from "~/composables/useCourses";
 import type { TableColumn } from "@nuxt/ui";
-import type { Course } from "~/api/schemas";
+import type { Course } from "~/lib/api/schemas";
 
 const { data, isFetching } = useCourses();
 

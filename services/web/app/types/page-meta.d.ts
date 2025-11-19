@@ -1,4 +1,4 @@
-import type { Permission } from "~/api/schemas";
+import type { Permission } from "~/lib/api/schemas";
 
 declare module "nuxt/app" {
   export interface PageMeta {

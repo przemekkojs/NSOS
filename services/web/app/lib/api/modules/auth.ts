@@ -1,5 +1,5 @@
 import { apiClient } from "../client";
-import type { User } from "~/api/schemas";
+import type { User } from "~/lib/api/schemas";
 
 export interface Credentials {
   email: string;

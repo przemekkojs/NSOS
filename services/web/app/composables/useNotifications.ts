@@ -1,4 +1,4 @@
-import type { User } from "~/api/schemas";
+import type { User } from "~/lib/api/schemas";
 import { useStorage, useWebSocket } from "@vueuse/core";
 import { computed, watch } from "vue";
 

@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/vue-query";
-import { userApi } from "~/api/modules/user";
-import type { UserCreate } from "~/api/schemas";
+import { userApi } from "~/lib/api/modules/user";
+import type { UserCreate } from "~/lib/api/schemas";
 
 export const userKeys = {
   all: ["users"] as const,

@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { InstitutionCreateSchema, type InstitutionCreate } from "~/api/schemas";
+import {
+  InstitutionCreateSchema,
+  type InstitutionCreate,
+} from "~/lib/api/schemas";
 
 const { institution = {} } = defineProps<{
   institution?: Partial<InstitutionCreate>;

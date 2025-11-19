@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Permission } from "~/api/schemas";
+import type { Permission } from "~/lib/api/schemas";
 const { permission = undefined } = defineProps<{
   permission?: Permission;
 }>();

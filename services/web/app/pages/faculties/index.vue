@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { TableColumn } from "@nuxt/ui";
-import type { Faculty } from "~/api/schemas";
+import type { Faculty } from "~/lib/api/schemas";
 
 const { t } = useI18n();
 const { data, isFetching } = useFaculties();

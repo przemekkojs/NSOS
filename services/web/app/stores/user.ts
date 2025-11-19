@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import type { User, Lecturer, Student, Permission } from "~/api/schemas";
+import type { User, Lecturer, Student, Permission } from "~/lib/api/schemas";
 
 export function isUser(obj: unknown): obj is User {
   if (typeof obj !== "object" || obj === null) {

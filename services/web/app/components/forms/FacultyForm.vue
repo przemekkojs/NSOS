@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { FacultyCreateSchema, type FacultyCreate } from "~/api/schemas";
+import { FacultyCreateSchema, type FacultyCreate } from "~/lib/api/schemas";
 
 defineEmits<{
   (e: "submit", data: FacultyCreate): void;

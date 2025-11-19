@@ -1,5 +1,5 @@
 import { apiClient } from "../client";
-import type { Faculty, FacultyCreate } from "~/api/schemas";
+import type { Faculty, FacultyCreate } from "~/lib/api/schemas";
 
 const basePath = "/api/university/faculties";
 
