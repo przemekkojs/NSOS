@@ -1,4 +1,4 @@
-import { ref, watch } from "vue";
+import { watch } from "vue";
 import { useRoute, useRouter } from "@typed-router";
 import { createSharedComposable } from "@vueuse/core";
 
@@ -24,7 +24,6 @@ export type Shortcut = (typeof shortcuts)[number];
 const _useDashboard = () => {
   const route = useRoute();
   const router = useRouter();
-  const { isEnabled } = useFeatureFlags();
 
   const [isNotificationsSlideoverOpen, toggleNotifications] = useToggle(false);
   const [isDashboardSidebarCollapsed, toggleSidebar] = useToggle(false);

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useLogin } from "~/composables/useAuth";
+import { useLogin } from "~/composables/api/useAuth";
 import LoginForm from "~/features/auth/components/LoginForm.vue";
 
 useHead({

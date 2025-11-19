@@ -2,7 +2,7 @@
 import { useTableActions } from "~/composables/useTableActions";
 import InviteModal from "~/features/users/components/InviteModal.vue";
 import type { TableColumn } from "@nuxt/ui";
-import { useCreateUser, useUsers } from "~/composables/useUsers";
+import { useCreateUser, useUsers } from "~/composables/api/useUsers";
 import type { User } from "~/lib/api/schemas";
 import { userHeaderUserAdapter } from "~/features/users/adapters";
 import type { UserHeader } from "~/lib/api/csv-import";

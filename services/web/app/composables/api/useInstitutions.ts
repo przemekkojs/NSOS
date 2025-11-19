@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import { institutionApi } from "~/lib/api/modules/intitution";
-import type { UpdateInstitutionDto } from "~/features/institutions/schemas";
+import type { InstitutionCreate } from "~/lib/api/schemas";
 
 export const institutionKeys = {
   all: ["institutions"] as const,
@@ -40,7 +40,7 @@ export function useCreateInstitution() {
 export function useUpdateInstitution() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, data }: { id: number; data: UpdateInstitutionDto }) =>
+    mutationFn: ({ id, data }: { id: number; data: InstitutionCreate }) =>
       institutionApi.update(id, data),
     onSuccess: (data, variables) => {
       queryClient.setQueryData(institutionKeys.detail(variables.id), data);

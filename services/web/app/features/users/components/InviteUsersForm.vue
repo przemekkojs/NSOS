@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useInviteUser } from "~/composables/useUsers";
+import { useInviteUser } from "~/composables/api/useUsers";
 import type { InviteUsersDto } from "~/lib/api/schemas";
 import * as z from "zod";
 import { inviteUsersSchema } from "~/lib/api/schemas";

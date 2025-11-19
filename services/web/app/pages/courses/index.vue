@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useTableActions } from "~/composables/useTableActions";
-import { useCourses } from "~/composables/useCourses";
+import { useCourses } from "~/composables/api/useCourses";
 import type { TableColumn } from "@nuxt/ui";
 import type { Course } from "~/lib/api/schemas";
 

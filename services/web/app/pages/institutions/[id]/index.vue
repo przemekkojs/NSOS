@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useInstitution } from "~/composables/useInstitutions";
+import { useInstitution } from "~/composables/api/useInstitutions";
 import { useRoute } from "@typed-router";
 
 const route = useRoute("institutions-id");

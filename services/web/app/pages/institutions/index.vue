@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useInstitutions } from "~/composables/useInstitutions";
+import { useInstitutions } from "~/composables/api/useInstitutions";
 import { useTableActions } from "~/composables/useTableActions";
 import CreateInstitutionModal from "~/features/institutions/components/InstitutionModal.vue";
 // TODO: replace with correct Institution type when available

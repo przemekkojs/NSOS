@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useCourse } from "~/composables/useCourses";
+import { useCourse } from "~/composables/api/useCourses";
 import { useRoute } from "@typed-router";
 const route = useRoute("courses-id");
 

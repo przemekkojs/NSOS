@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { DropdownMenuItem } from "@nuxt/ui";
 import { useColorMode } from "@vueuse/core";
-import { useLogout } from "../composables/useAuth";
+import { useLogout } from "../composables/api/useAuth";
 
 import { useUserStore } from "~/stores/user";
 defineProps<{

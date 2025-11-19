@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import InstitutionForm from "~/features/institutions/components/InstitutionForm.vue";
-import { useCreateInstitution } from "~/composables/useInstitutions";
+import { useCreateInstitution } from "~/composables/api/useInstitutions";
 import type { InstitutionCreate } from "~/lib/api/schemas";
 
 const { mutate } = useCreateInstitution();

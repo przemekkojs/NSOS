@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { NSOSNotification } from "~/composables/useNotifications";
+import type { NSOSNotification } from "~/composables/api/useNotifications";
 import type { DropdownMenuItem, TableColumn } from "@nuxt/ui";
 import { useStorage } from "@vueuse/core";
 
