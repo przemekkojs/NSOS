@@ -51,6 +51,9 @@ export default defineNuxtConfig({
       meta: [{ name: "theme-color", content: "#3b82f6" }],
     },
   },
+  imports: {
+    dirs: ["~/composables/**"],
+  },
   css: [
     "~/assets/css/main.css",
     "~/assets/css/fullcalendar.css",

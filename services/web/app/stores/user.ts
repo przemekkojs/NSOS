@@ -23,7 +23,8 @@ export function isStudent(obj: unknown): obj is Student {
 export const useUserStore = defineStore(
   "user",
   () => {
-    const user = ref<User>();
+    const user = ref<User | null>();
+    const isLoaded = ref(false);
 
     const isAuthenticated = computed((): boolean => {
       return isUser(user.value);
@@ -74,6 +75,7 @@ export const useUserStore = defineStore(
       logout,
       setUser,
       fullName,
+      isLoaded,
     };
   },
   {

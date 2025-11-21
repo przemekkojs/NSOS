@@ -3,6 +3,7 @@ import { useInviteUser } from "~/composables/api/useUsers";
 import type { InviteUsersDto } from "~/lib/api/schemas";
 import * as z from "zod";
 import { inviteUsersSchema } from "~/lib/api/schemas";
+import type { FormSubmitEvent } from "@nuxt/ui";
 
 const emit = defineEmits<{
   (e: "success"): void;
@@ -46,7 +47,7 @@ function onCreate(item: string) {
   searchTerm.value = "";
 }
 
-async function onSubmit() {
+async function onSubmit({ data }: FormSubmitEvent<InviteUsersDto>) {
   const emails = data.emails;
   await invite(emails);
 

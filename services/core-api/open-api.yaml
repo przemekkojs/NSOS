@@ -1,0 +1,1555 @@
+openapi: 3.1.0
+info:
+  title: Main Project API
+  version: "1.0.0"
+  description: >
+    Auto-generated OpenAPI 3.1 spec from your Django REST Framework
+    serializers/views/urls. Endpoints are public (no auth configured).
+    Each operation contains `x-django-permissions` hint listing
+    Django model permissions you provided.
+servers:
+  - url: http://localhost:8000
+    description: Local dev
+
+paths:
+  /api/university/faculties/:
+    get:
+      summary: List Faculties
+      operationId: listFaculties
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Faculty'
+      x-django-permissions: ["university.view_faculty"]
+    post:
+      summary: Create Faculty
+      operationId: createFaculty
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FacultyCreate'
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Faculty'
+      x-django-permissions: ["university.add_faculty"]
+
+  /api/university/faculties/{id}/:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Retrieve Faculty
+      operationId: retrieveFaculty
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Faculty'
+        "404":
+          $ref: '#/components/responses/NotFound'
+      x-django-permissions: ["university.view_faculty"]
+    put:
+      summary: Update Faculty
+      operationId: updateFaculty
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FacultyCreate'
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Faculty'
+      x-django-permissions: ["university.change_faculty"]
+    patch:
+      summary: Partial update Faculty
+      operationId: partialUpdateFaculty
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FacultyCreate'
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Faculty'
+      x-django-permissions: ["university.change_faculty"]
+    delete:
+      summary: Delete Faculty
+      operationId: deleteFaculty
+      responses:
+        "204":
+          description: No Content
+      x-django-permissions: ["university.delete_faculty"]
+
+  /api/university/positions/:
+    get:
+      summary: List Positions
+      operationId: listPositions
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Position'
+      x-django-permissions: ["university.view_position"]
+    post:
+      summary: Create Position
+      operationId: createPosition
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PositionCreate'
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Position'
+      x-django-permissions: ["university.add_position"]
+
+  /api/university/positions/{id}/:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Retrieve Position
+      operationId: retrievePosition
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Position'
+        "404":
+          $ref: '#/components/responses/NotFound'
+      x-django-permissions: ["university.view_position"]
+    put:
+      summary: Update Position
+      operationId: updatePosition
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PositionCreate'
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Position'
+      x-django-permissions: ["university.change_position"]
+    patch:
+      summary: Partial update Position
+      operationId: partialUpdatePosition
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PositionCreate'
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Position'
+      x-django-permissions: ["university.change_position"]
+    delete:
+      summary: Delete Position
+      operationId: deletePosition
+      responses:
+        "204":
+          description: No Content
+      x-django-permissions: ["university.delete_position"]
+
+  /api/university/semesters/:
+    get:
+      summary: List Semesters
+      operationId: listSemesters
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Semester'
+      x-django-permissions: ["university.view_semester"]
+    post:
+      summary: Create Semester
+      operationId: createSemester
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SemesterCreate'
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Semester'
+      x-django-permissions: ["university.add_semester"]
+
+  /api/university/semesters/{id}/:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Retrieve Semester
+      operationId: retrieveSemester
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Semester'
+        "404":
+          $ref: '#/components/responses/NotFound'
+      x-django-permissions: ["university.view_semester"]
+    put:
+      summary: Update Semester
+      operationId: updateSemester
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SemesterCreate'
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Semester'
+      x-django-permissions: ["university.change_semester"]
+    patch:
+      summary: Partial update Semester
+      operationId: partialUpdateSemester
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SemesterCreate'
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Semester'
+      x-django-permissions: ["university.change_semester"]
+    delete:
+      summary: Delete Semester
+      operationId: deleteSemester
+      responses:
+        "204":
+          description: No Content
+      x-django-permissions: ["university.delete_semester"]
+
+  # ---------- users ----------
+  /api/users/users/:
+    get:
+      summary: List Users
+      operationId: listUsers
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+      x-django-permissions: ["users.view_user"]
+    post:
+      summary: Create User
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+      x-django-permissions: ["users.add_user"]
+
+  /api/users/users/{id}/:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Retrieve User
+      operationId: retrieveUser
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "404":
+          $ref: '#/components/responses/NotFound'
+      x-django-permissions: ["users.view_user"]
+    put:
+      summary: Update User
+      operationId: updateUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+      x-django-permissions: ["users.change_user"]
+    patch:
+      summary: Partial update User
+      operationId: partialUpdateUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+      x-django-permissions: ["users.change_user"]
+    delete:
+      summary: Delete User
+      operationId: deleteUser
+      responses:
+        "204":
+          description: No Content
+      x-django-permissions: ["users.delete_user"]
+
+  /api/users/lecturers/:
+    get:
+      summary: List Lecturers
+      operationId: listLecturers
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Lecturer'
+      x-django-permissions: ["users.view_lecturer"]
+    post:
+      summary: Create Lecturer
+      operationId: createLecturer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LecturerCreate'
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lecturer'
+      x-django-permissions: ["users.add_lecturer"]
+
+  /api/users/lecturers/{id}/:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Retrieve Lecturer
+      operationId: retrieveLecturer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lecturer'
+        "404":
+          $ref: '#/components/responses/NotFound'
+      x-django-permissions: ["users.view_lecturer"]
+    put:
+      summary: Update Lecturer
+      operationId: updateLecturer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LecturerCreate'
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lecturer'
+      x-django-permissions: ["users.change_lecturer"]
+    patch:
+      summary: Partial update Lecturer
+      operationId: partialUpdateLecturer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LecturerCreate'
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lecturer'
+      x-django-permissions: ["users.change_lecturer"]
+    delete:
+      summary: Delete Lecturer
+      operationId: deleteLecturer
+      responses:
+        "204":
+          description: No Content
+      x-django-permissions: ["users.delete_lecturer"]
+
+  /api/users/students/:
+    get:
+      summary: List Students
+      operationId: listStudents
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Student'
+      x-django-permissions: ["users.view_student"]
+    post:
+      summary: Create Student
+      operationId: createStudent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentCreate'
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+      x-django-permissions: ["users.add_student"]
+
+  /api/users/students/{id}/:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Retrieve Student
+      operationId: retrieveStudent
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        "404":
+          $ref: '#/components/responses/NotFound'
+      x-django-permissions: ["users.view_student"]
+    put:
+      summary: Update Student
+      operationId: updateStudent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentCreate'
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+      x-django-permissions: ["users.change_student"]
+    patch:
+      summary: Partial update Student
+      operationId: partialUpdateStudent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentCreate'
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+      x-django-permissions: ["users.change_student"]
+    delete:
+      summary: Delete Student
+      operationId: deleteStudent
+      responses:
+        "204":
+          description: No Content
+      x-django-permissions: ["users.delete_student"]
+
+  # ---------- teaching ----------
+  /api/teaching/courses/:
+    get:
+      summary: List Courses
+      operationId: listCourses
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Course'
+      x-django-permissions: ["teaching.view_course"]
+    post:
+      summary: Create Course
+      operationId: createCourse
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CourseCreate'
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+      x-django-permissions: ["teaching.add_course"]
+
+  /api/teaching/courses/{id}/:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Retrieve Course
+      operationId: retrieveCourse
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+        "404":
+          $ref: '#/components/responses/NotFound'
+      x-django-permissions: ["teaching.view_course"]
+    put:
+      summary: Update Course
+      operationId: updateCourse
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CourseCreate'
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+      x-django-permissions: ["teaching.change_course"]
+    patch:
+      summary: Partial update Course
+      operationId: partialUpdateCourse
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CourseCreate'
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+      x-django-permissions: ["teaching.change_course"]
+    delete:
+      summary: Delete Course
+      operationId: deleteCourse
+      responses:
+        "204":
+          description: No Content
+      x-django-permissions: ["teaching.delete_course"]
+
+  /api/teaching/course-groups/:
+    get:
+      summary: List Course Groups
+      operationId: listCourseGroups
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CourseGroup'
+      x-django-permissions: ["teaching.view_coursegroup"]
+    post:
+      summary: Create Course Group
+      operationId: createCourseGroup
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CourseGroupCreate'
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseGroup'
+      x-django-permissions: ["teaching.add_coursegroup"]
+
+  /api/teaching/course-groups/{id}/:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Retrieve Course Group
+      operationId: retrieveCourseGroup
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseGroup'
+        "404":
+          $ref: '#/components/responses/NotFound'
+      x-django-permissions: ["teaching.view_coursegroup"]
+    put:
+      summary: Update Course Group
+      operationId: updateCourseGroup
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CourseGroupCreate'
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseGroup'
+      x-django-permissions: ["teaching.change_coursegroup"]
+    patch:
+      summary: Partial update Course Group
+      operationId: partialUpdateCourseGroup
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CourseGroupCreate'
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseGroup'
+      x-django-permissions: ["teaching.change_coursegroup"]
+    delete:
+      summary: Delete Course Group
+      operationId: deleteCourseGroup
+      responses:
+        "204":
+          description: No Content
+      x-django-permissions: ["teaching.delete_coursegroup"]
+
+  /api/teaching/classes/:
+    get:
+      summary: List Classes
+      operationId: listClasses
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Class'
+      x-django-permissions: ["teaching.view_class"]
+    post:
+      summary: Create Class
+      operationId: createClass
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClassCreate'
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Class'
+      x-django-permissions: ["teaching.add_class"]
+
+  /api/teaching/classes/{id}/:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Retrieve Class
+      operationId: retrieveClass
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Class'
+        "404":
+          $ref: '#/components/responses/NotFound'
+      x-django-permissions: ["teaching.view_class"]
+    put:
+      summary: Update Class
+      operationId: updateClass
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClassCreate'
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Class'
+      x-django-permissions: ["teaching.change_class"]
+    patch:
+      summary: Partial update Class
+      operationId: partialUpdateClass
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClassCreate'
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Class'
+      x-django-permissions: ["teaching.change_class"]
+    delete:
+      summary: Delete Class
+      operationId: deleteClass
+      responses:
+        "204":
+          description: No Content
+      x-django-permissions: ["teaching.delete_class"]
+
+  /api/teaching/schedules/:
+    get:
+      summary: List Schedules
+      operationId: listSchedules
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Schedule'
+      x-django-permissions: ["teaching.view_schedule"]
+    post:
+      summary: Create Schedule
+      operationId: createSchedule
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleCreate'
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+      x-django-permissions: ["teaching.add_schedule"]
+
+  /api/teaching/schedules/{id}/:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Retrieve Schedule
+      operationId: retrieveSchedule
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+        "404":
+          $ref: '#/components/responses/NotFound'
+      x-django-permissions: ["teaching.view_schedule"]
+    put:
+      summary: Update Schedule
+      operationId: updateSchedule
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleCreate'
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+      x-django-permissions: ["teaching.change_schedule"]
+    patch:
+      summary: Partial update Schedule
+      operationId: partialUpdateSchedule
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleCreate'
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+      x-django-permissions: ["teaching.change_schedule"]
+    delete:
+      summary: Delete Schedule
+      operationId: deleteSchedule
+      responses:
+        "204":
+          description: No Content
+      x-django-permissions: ["teaching.delete_schedule"]
+
+components:
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  schemas:
+    # ---------- university ----------
+    Faculty:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+      required:
+        - id
+        - name
+
+    FacultyCreate:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+      required:
+        - name
+
+    Position:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+        hourly_rate:
+          type: string
+          description: Decimal as string (DRF DecimalField)
+          example: "123.45"
+        workload:
+          type: integer
+          description: One of the defined workload choices (20,30,40)
+          enum: [40,20,30]
+      required:
+        - id
+        - name
+        - hourly_rate
+        - workload
+
+    PositionCreate:
+      type: object
+      properties:
+        name:
+          type: string
+        hourly_rate:
+          type: string
+          example: "123.45"
+        workload:
+          type: integer
+          enum: [40,20,30]
+      required:
+        - name
+        - hourly_rate
+        - workload
+
+    Semester:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+        faculty:
+          type: integer
+          description: Faculty PK
+        type:
+          type: string
+          enum: [winter, summer]
+        academic_year:
+          type: string
+          description: e.g. "2025/2026"
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+      required:
+        - id
+        - name
+        - faculty
+        - type
+        - academic_year
+        - start_date
+        - end_date
+
+    SemesterCreate:
+      type: object
+      properties:
+        name:
+          type: string
+        faculty:
+          type: integer
+        type:
+          type: string
+          enum: [winter, summer]
+        academic_year:
+          type: string
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+      required:
+        - name
+        - faculty
+        - type
+        - academic_year
+        - start_date
+        - end_date
+
+    # ---------- users ----------
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        first_name:
+          type: string
+        last_name:
+          type: string
+        groups:
+          type: array
+          items:
+            type: string
+        permissions:
+          type: array
+          items:
+            type: string
+        is_staff:
+          type: boolean
+        is_superuser:
+          type: boolean
+      required:
+        - id
+        - username
+        - email
+
+    UserCreate:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        first_name:
+          type: string
+        last_name:
+          type: string
+        password:
+          type: string
+      required:
+        - username
+        - email
+        - password
+
+    Lecturer:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        first_name:
+          type: string
+        last_name:
+          type: string
+        faculty:
+          type: integer
+        position:
+          type: integer
+          nullable: true
+        status:
+          type: string
+          enum: [active, inactive, retired]
+      required:
+        - id
+        - username
+        - email
+        - faculty
+        - status
+
+    LecturerCreate:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        first_name:
+          type: string
+        last_name:
+          type: string
+        password:
+          type: string
+        faculty:
+          type: integer
+        position:
+          type: integer
+        status:
+          type: string
+          enum: [active, inactive, retired]
+      required:
+        - username
+        - email
+        - password
+        - faculty
+
+    Student:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        first_name:
+          type: string
+        last_name:
+          type: string
+        index_number:
+          type: string
+        field_of_study:
+          type: string
+        year_of_study:
+          type: integer
+        semester:
+          type: integer
+          nullable: true
+        faculty:
+          type: integer
+      required:
+        - id
+        - username
+        - email
+        - index_number
+        - field_of_study
+        - year_of_study
+        - faculty
+
+    StudentCreate:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        first_name:
+          type: string
+        last_name:
+          type: string
+        password:
+          type: string
+        index_number:
+          type: string
+        field_of_study:
+          type: string
+        year_of_study:
+          type: integer
+        semester:
+          type: integer
+        faculty:
+          type: integer
+      required:
+        - username
+        - email
+        - password
+        - index_number
+        - field_of_study
+        - year_of_study
+        - faculty
+
+    # ---------- teaching ----------
+    Course:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        course_code:
+          type: string
+        name:
+          type: string
+        weekly_hours:
+          type: string
+          description: Decimal as string
+          example: "2.5"
+        weeks_count:
+          type: integer
+        ects:
+          type: string
+          description: Decimal as string
+          example: "3.0"
+        course_group:
+          type: string
+          nullable: true
+        course_type:
+          type: string
+          enum: [zal, zst, egz, ekm]
+        faculty:
+          type: integer
+      required:
+        - id
+        - course_code
+        - name
+        - weekly_hours
+        - weeks_count
+        - course_type
+        - faculty
+
+    CourseCreate:
+      type: object
+      properties:
+        course_code:
+          type: string
+        name:
+          type: string
+        weekly_hours:
+          type: string
+        weeks_count:
+          type: integer
+        ects:
+          type: string
+        course_group:
+          type: string
+        course_type:
+          type: string
+          enum: [zal, zst, egz, ekm]
+        faculty:
+          type: integer
+      required:
+        - course_code
+        - name
+        - weekly_hours
+        - weeks_count
+        - course_type
+        - faculty
+
+    CourseGroup:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        course:
+          type: integer
+        name:
+          type: string
+        lecturer:
+          type: integer
+          nullable: true
+        weekday:
+          type: string
+        start_time:
+          type: string
+          format: time
+        end_time:
+          type: string
+          format: time
+        room:
+          type: string
+        semester:
+          type: integer
+      required:
+        - id
+        - course
+        - name
+        - weekday
+        - start_time
+        - end_time
+        - room
+        - semester
+
+    CourseGroupCreate:
+      type: object
+      properties:
+        course:
+          type: integer
+        name:
+          type: string
+        lecturer:
+          type: integer
+        weekday:
+          type: string
+        start_time:
+          type: string
+          format: time
+        end_time:
+          type: string
+          format: time
+        room:
+          type: string
+        semester:
+          type: integer
+      required:
+        - course
+        - name
+        - weekday
+        - start_time
+        - end_time
+        - room
+        - semester
+
+    Class:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        lecturer:
+          type: integer
+        course_group:
+          type: integer
+        date_held:
+          type: string
+          format: date
+      required:
+        - id
+        - lecturer
+        - course_group
+        - date_held
+
+    ClassCreate:
+      type: object
+      properties:
+        lecturer:
+          type: integer
+        course_group:
+          type: integer
+        date_held:
+          type: string
+          format: date
+      required:
+        - lecturer
+        - course_group
+        - date_held
+
+    Schedule:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        lecturer:
+          type: integer
+          nullable: true
+        student:
+          type: integer
+          nullable: true
+        course_group:
+          type: integer
+        date:
+          type: string
+          format: date
+        start_time:
+          type: string
+          format: time
+        end_time:
+          type: string
+          format: time
+      required:
+        - id
+        - course_group
+        - date
+        - start_time
+        - end_time
+
+    ScheduleCreate:
+      type: object
+      properties:
+        lecturer:
+          type: integer
+        student:
+          type: integer
+        course_group:
+          type: integer
+        date:
+          type: string
+          format: date
+        start_time:
+          type: string
+          format: time
+        end_time:
+          type: string
+          format: time
+      required:
+        - course_group
+        - date
+        - start_time
+        - end_time
+
+    # ---------- errors ----------
+    Error:
+      type: object
+      properties:
+        detail:
+          type: string
+
+  # custom extension: map of permissions available in the system (provided list)
+  x-django:
+    permissions:
+      - admin.add_logentry
+      - admin.change_logentry
+      - admin.delete_logentry
+      - admin.view_logentry
+      - auth.add_group
+      - auth.add_permission
+      - auth.change_group
+      - auth.change_permission
+      - auth.delete_group
+      - auth.delete_permission
+      - auth.view_group
+      - auth.view_permission
+      - contenttypes.add_contenttype
+      - contenttypes.change_contenttype
+      - contenttypes.delete_contenttype
+      - contenttypes.view_contenttype
+      - sessions.add_session
+      - sessions.change_session
+      - sessions.delete_session
+      - sessions.view_session
+      - teaching.add_class
+      - teaching.add_course
+      - teaching.add_coursegroup
+      - teaching.add_schedule
+      - teaching.change_class
+      - teaching.change_course
+      - teaching.change_coursegroup
+      - teaching.change_schedule
+      - teaching.delete_class
+      - teaching.delete_course
+      - teaching.delete_coursegroup
+      - teaching.delete_schedule
+      - teaching.view_class
+      - teaching.view_course
+      - teaching.view_coursegroup
+      - teaching.view_schedule
+      - university.add_faculty
+      - university.add_position
+      - university.add_semester
+      - university.change_faculty
+      - university.change_position
+      - university.change_semester
+      - university.delete_faculty
+      - university.delete_position
+      - university.delete_semester
+      - university.view_faculty
+      - university.view_position
+      - university.view_semester
+      - users.add_lecturer
+      - users.add_student
+      - users.add_user
+      - users.change_lecturer
+      - users.change_student
+      - users.change_user
+      - users.delete_lecturer
+      - users.delete_student
+      - users.delete_user
+      - users.view_lecturer
+      - users.view_student
+      - users.view_user

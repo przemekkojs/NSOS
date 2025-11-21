@@ -6,11 +6,10 @@ import UserMenu from "~/components/UserMenu.vue";
 import LocaleSelect from "~/components/ui/LocaleSelect.vue";
 import NotificationsSlideover from "~/components/NotificationsSlideover.vue";
 import { useStorage } from "@vueuse/core";
-// import { useNotifications } from "~/features/notifications/useNotifications";
 
 const toast = useToast();
 const { t } = useI18n();
-// const { unreadCount } = useNotifications();
+const { unreadCount } = useNotifications();
 
 const {
   isDashboardSidebarCollapsed,
@@ -39,16 +38,19 @@ const links = computed<NavigationMenuItem[][]>(() => [
       icon: "i-lucide-users",
       to: "/employees",
       kbds: ["g", "e"],
+      // "data-tour": "invite-employee",
+      // "data-tour-step": 1,
+      "data-tour-step": "invite-employee-1",
     },
     isEnabled("institutions") &&
-      // @ts-expect-error the permission doesn't exist yet but it's fine
-      hasPermission("institutions.view_institution") &&
-      ({
-        label: t("navigation.institutions"),
-        icon: "i-lucide-building-2",
-        to: "/institutions",
-        kbds: ["g", "i"],
-      } satisfies NavigationMenuItem),
+    // @ts-expect-error the permission doesn't exist yet but it's fine
+    hasPermission("institutions.view_institution") &&
+    ({
+      label: t("navigation.institutions"),
+      icon: "i-lucide-building-2",
+      to: "/institutions",
+      kbds: ["g", "i"],
+    } satisfies NavigationMenuItem),
     hasPermission("university.view_faculty") && {
       // move to institutions/universities children when added
       label: t("navigation.faculties"),
@@ -69,14 +71,14 @@ const links = computed<NavigationMenuItem[][]>(() => [
       ].filter(truthy),
     },
     isEnabled("notifications") &&
-      // @ts-expect-error the permission doesn't exist yet but it's fine
-      hasPermission("inbox.view_notifications") && {
-        label: t("navigation.inbox"),
-        icon: "i-lucide-inbox",
-        to: "/inbox",
-        kbds: ["g", "n"],
-        // badge: unreadCount.value > 0 ? unreadCount.value.toString() : undefined,
-      },
+    // @ts-expect-error the permission doesn't exist yet but it's fine
+    hasPermission("inbox.view_notifications") && {
+      label: t("navigation.inbox"),
+      icon: "i-lucide-inbox",
+      to: "/inbox",
+      kbds: ["g", "n"],
+      // badge: unreadCount.value > 0 ? unreadCount.value.toString() : undefined,
+    },
     {
       label: t("navigation.settings"),
       to: "/settings",
@@ -116,7 +118,7 @@ const groups = computed(() => [
       {
         id: "source",
         label: t("navigation.sourceCode"),
-        icon: "simple-icons:github",
+        icon: "i-lucide-github",
         to: `https://github.com/przemekkojs/NSOS`,
         target: "_blank",
       },
@@ -151,47 +153,23 @@ onMounted(() => {
     ],
   });
 });
-
-definePageMeta({
-  middleware: "1-auth",
-});
 </script>
 <template>
   <ClientOnly>
     <UDashboardGroup unit="rem" storage="local">
       <UDashboardSidebar
-        id="default"
-        v-model:collapsed="isDashboardSidebarCollapsed"
-        collapsible
-        resizable
-        class="bg-elevated/25"
-        :ui="{ footer: 'lg:border-t lg:border-default' }"
-      >
+id="default" v-model:collapsed="isDashboardSidebarCollapsed" collapsible resizable
+        class="bg-elevated/25" :ui="{ footer: 'lg:border-t lg:border-default' }">
         <template #header="{ collapsed }">
           <TeamsMenu v-if="isEnabled('institutions')" :collapsed="collapsed" />
         </template>
 
         <template #default="{ collapsed }">
-          <UDashboardSearchButton
-            :collapsed="collapsed"
-            class="bg-transparent ring-default"
-          />
+          <UDashboardSearchButton :collapsed="collapsed" class="bg-transparent ring-default" />
 
-          <UNavigationMenu
-            :collapsed="collapsed"
-            :items="links[0]"
-            orientation="vertical"
-            tooltip
-            popover
-          />
+          <UNavigationMenu :collapsed="collapsed" :items="links[0]" orientation="vertical" tooltip popover />
 
-          <UNavigationMenu
-            :collapsed="collapsed"
-            :items="links[1]"
-            orientation="vertical"
-            tooltip
-            class="mt-auto"
-          />
+          <UNavigationMenu :collapsed="collapsed" :items="links[1]" orientation="vertical" tooltip class="mt-auto" />
 
           <ShortcutsHelp />
         </template>
@@ -213,19 +191,13 @@ definePageMeta({
             <template #right>
               <ChatSlideover v-if="isEnabled('aiChat')" />
               <UTooltip
-                v-if="isEnabled('notifications')"
-                :text="$t('feature.notifications.tooltip')"
-                :shortcuts="['N']"
-              >
+v-if="isEnabled('notifications')" :text="$t('feature.notifications.tooltip')"
+                :shortcuts="['N']">
                 <UButton
-                  color="neutral"
-                  variant="ghost"
-                  square
-                  @click="
-                    isNotificationsSlideoverOpen = !isNotificationsSlideoverOpen
-                  "
-                >
-                  <UChip color="error" inset>
+color="neutral" variant="ghost" square @click="
+                  isNotificationsSlideoverOpen = !isNotificationsSlideoverOpen
+                  ">
+                  <UChip :show="unreadCount > 0" color="error" inset>
                     <UIcon name="i-lucide-bell" class="size-5 shrink-0" />
                   </UChip>
                 </UButton>

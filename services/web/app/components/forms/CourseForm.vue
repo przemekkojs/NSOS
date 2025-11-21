@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type * as z from "zod";
 import { CourseCreateSchema } from "~/lib/api/schemas";
-import type { FieldOverrides } from "./Form.vue";
+import type { FieldOverrides } from "../Form.vue";
 
 defineEmits<{
   (e: "submit", data: z.infer<typeof CourseCreateSchema>): void;

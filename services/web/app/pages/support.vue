@@ -1,10 +1,13 @@
 <script setup lang="ts">
+import { useInviteEmployeeTour } from "~/features/tours/invite-employee";
+
 const toursStore = useUserToursStore();
-const inviteTour = useTour();
+// const inviteTour = useTour();
+const inviteTour = useInviteEmployeeTour();
 </script>
 <template>
   <PermissionGuard permission="users.add_user">
-    <UButton @click="inviteTour.drive()">{{
+    <UButton @click="inviteTour?.drive()">{{
       $t("tours.inviteUsers.title")
     }}</UButton>
   </PermissionGuard>

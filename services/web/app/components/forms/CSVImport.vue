@@ -1,8 +1,10 @@
 <script setup lang="ts" generic="TRow extends unknown = unknown">
-import { parseCSV } from "~/features/imports/utils";
+import * as z from "zod";
 
 const props = defineProps<{
   label?: string;
+  sampleHref?: string;
+  schema?: z.ZodObject;
 }>();
 const emit = defineEmits<{
   (e: "proceed", res: TRow[]): void;
@@ -15,6 +17,13 @@ async function handleFileUpload(file: File | null | undefined) {
   if (!file) return;
 
   const data = await parseCSV<TRow>(file);
+
+  if (!props.schema) return;
+
+  const rowSchema = z.array(props.schema);
+  const parseResult = rowSchema.safeParse(data);
+
+  console.info(parseResult);
 
   if (data.length === 0) {
     toast.add({
@@ -50,9 +59,9 @@ async function handleFileUpload(file: File | null | undefined) {
         />
       </UForm>
     </template>
-    <template #footer>
+    <template v-if="sampleHref" #footer>
       <a
-        href="/samples/users-example.csv"
+        :href="sampleHref"
         download
         :title="$t('feature.csv.downloadTemplate')"
         class="bg-primary px-4 py-1 rounded-sm mx-auto"

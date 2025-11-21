@@ -1,9 +1,15 @@
-import { driver, type Driver, type DriverHook, type Popover } from "driver.js";
+import {
+  type Driver,
+  driver,
+  type Config,
+  type DriverHook,
+  type Popover,
+} from "driver.js";
 
 const NAVIGATION_TIMEOUT = 3000;
 const CHECK_INTERVAL = 100;
 
-function onHighlighted(element: Element | undefined, driverObj: Driver) {
+const onHighlighted: DriverHook = (element, _, { driver: driverObj }) => {
   const nextIndex = driverObj.hasNextStep()
     ? driverObj.getActiveIndex()
     : undefined;
@@ -39,7 +45,7 @@ function onHighlighted(element: Element | undefined, driverObj: Driver) {
     setTimeout(() => clearInterval(checkElement), NAVIGATION_TIMEOUT);
   };
   element?.addEventListener("click", clickHandler);
-}
+};
 
 const onNextClick: DriverHook = (element, _, options) => {
   if (options.state.activeIndex === undefined) {
@@ -71,7 +77,18 @@ const onNextClick: DriverHook = (element, _, options) => {
  * - explain statistics
  * - onboarding
  */
-export const useTour = () => {
+type TourId = "invite-employee";
+
+/**
+ * Remember to add "data-tour" and "data-tour-step" attributes to step elements
+ * or override manually
+ *
+ * data-tour is one of TourId
+ * data-tour-step is step index
+ */
+export const useTour = (options: Config & { id: TourId }) => {
+  const { id, ...config } = options;
+
   const { t } = useI18n();
 
   const popoverBase: Partial<Popover> = {
@@ -85,68 +102,26 @@ export const useTour = () => {
   const driverObj = driver({
     showProgress: true,
     popoverClass: "driverjs-theme",
-    steps: [
-      {
-        element: "a[href='/employees']",
-        onHighlighted(element) {
-          onHighlighted(element, driverObj);
-        },
+    steps: config?.steps?.map((step) => {
+      const abc = {
+        // element: `[data-tour="${id}"][data-tour-step="${index + 1}"]`,
+        // element: `[data-tour-step='${id}-${index + 1}']`,
+        element: 'a[href="/employees"]',
+        onHighlighted,
+        ...step,
         popover: {
           ...popoverBase,
-          title: t("tours.inviteUsers.navigateToEmployees.title"),
-          // title: "ABC",
-          description: t("tours.inviteUsers.navigateToEmployees.description"),
-          side: "right",
-          onNextClick: onNextClick,
+          onNextClick,
+          ...step.popover,
         },
-      },
-      {
-        element: "#invite-employee-button",
-        onHighlighted(element) {
-          onHighlighted(element, driverObj);
-        },
-        popover: {
-          ...popoverBase,
-          title: t("tours.inviteUsers.inviteNewEmployee.title"),
-          description: t("tours.inviteUsers.inviteNewEmployee.description"),
-          onNextClick: onNextClick,
-        },
-      },
-      {
-        element: "#invite-employee-field",
-        popover: {
-          ...popoverBase,
-          title: t("tours.inviteUsers.enterEmployeeEmail.title"),
-          description: t("tours.inviteUsers.enterEmployeeEmail.description"),
-          onPrevClick() {
-            const escapeEvent = new KeyboardEvent("keydown", {
-              key: "Escape",
-              code: "Escape",
-              bubbles: true,
-            });
-            document.dispatchEvent(escapeEvent);
-            driverObj.movePrevious();
-          },
-        },
-      },
-      {
-        element: "#invite-employee-field",
-        popover: {
-          ...popoverBase,
-          title: t("tours.inviteUsers.enterAnotherEmployee.title"),
-          description: t("tours.inviteUsers.enterAnotherEmployee.description"),
-          onPopoverRender(popover, opts) {},
-        },
-      },
-      {
-        element: "#send-invitation-button",
-        popover: {
-          ...popoverBase,
-          title: t("tours.inviteUsers.sendInvitation.title"),
-          description: t("tours.inviteUsers.sendInvitation.description"),
-        },
-      },
-    ],
+      };
+
+      console.info("abc", abc);
+      console.info(document.querySelector(abc.element.toString()));
+
+      return abc;
+    }),
+    ...config,
   });
 
   return driverObj;

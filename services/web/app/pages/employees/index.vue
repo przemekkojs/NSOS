@@ -3,9 +3,10 @@ import { useTableActions } from "~/composables/useTableActions";
 import InviteModal from "~/features/users/components/InviteModal.vue";
 import type { TableColumn } from "@nuxt/ui";
 import { useCreateUser, useUsers } from "~/composables/api/useUsers";
-import type { User } from "~/lib/api/schemas";
+import { UserCreateSchema, type User } from "~/lib/api/schemas";
 import { userHeaderUserAdapter } from "~/features/users/adapters";
 import type { UserHeader } from "~/lib/api/csv-import";
+import CSVImport from "~/components/forms/CSVImport.vue";
 
 const { data, isFetching } = useUsers();
 const { mutate: create } = useCreateUser();
@@ -75,7 +76,12 @@ definePageMeta({
       </PermissionGuard>
       <PermissionGuard permission="users.add_user">
         <!-- @vue-generic {UserHeader} -->
-        <CSVImport v-if="isEnabled('csvImport')" @proceed="onImported" />
+        <CSVImport
+          v-if="isEnabled('csvImport')"
+          sample-href="/samples/users-example.csv"
+          :schema="UserCreateSchema"
+          @proceed="onImported"
+        />
       </PermissionGuard>
     </div>
   </div>

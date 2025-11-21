@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Credentials } from "@/api/modules/auth";
+import type { Credentials } from "~/lib/api/modules/auth";
 import { useRegister } from "~/composables/api/useAuth";
 import { useUserStore } from "~/stores/user";
 import RegisterForm from "~/features/auth/components/RegisterForm.vue";

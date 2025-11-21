@@ -1,6 +1,6 @@
 import type { User } from "~/lib/api/schemas";
-import { useStorage, useWebSocket } from "@vueuse/core";
-import { computed, watch } from "vue";
+import { useStorage } from "@vueuse/core";
+import { computed } from "vue";
 
 export interface NSOSNotification {
   id: number;
@@ -18,35 +18,35 @@ export const useNotifications = () => {
     return notifications.value.filter((n) => !n.read).length;
   });
 
-  const { data } = useWebSocket("ws://localhost:8000/inbox", {
-    autoReconnect: {
-      delay: 3000,
-      retries: 3,
-      onFailed: () => {
-        alert("WebSocket reconnection failed");
-      },
-    },
-    heartbeat: {
-      message: "ping",
-      interval: 30000,
-    },
-    onConnected: (ws) => {
-      console.log("WebSocket connected:", ws);
-    },
-    onDisconnected: (ws) => {
-      console.log("WebSocket disconnected:", ws);
-    },
-  });
+  // const { data } = useWebSocket("ws://localhost:8000/inbox", {
+  //   autoReconnect: {
+  //     delay: 3000,
+  //     retries: 3,
+  //     onFailed: () => {
+  //       alert("WebSocket reconnection failed");
+  //     },
+  //   },
+  //   heartbeat: {
+  //     message: "ping",
+  //     interval: 30000,
+  //   },
+  //   onConnected: (ws) => {
+  //     console.log("WebSocket connected:", ws);
+  //   },
+  //   onDisconnected: (ws) => {
+  //     console.log("WebSocket disconnected:", ws);
+  //   },
+  // });
 
-  watch(data, (newData) => {
-    if (!newData) return;
+  // watch(data, (newData) => {
+  //   if (!newData) return;
 
-    const parsed = JSON.parse(newData.toString());
+  //   const parsed = JSON.parse(newData.toString());
 
-    if (parsed.type !== "notification") return;
+  //   if (parsed.type !== "notification") return;
 
-    notifications.value.unshift(parsed.data);
-  });
+  //   notifications.value.unshift(parsed.data);
+  // });
 
   const markAsRead = (id: number) => {
     const notification = notifications.value.find((n) => n.id === id);

@@ -1,6 +1,7 @@
 <script lang="ts">
 import type * as z from "zod";
 import type { FormFieldProps } from "./ui/FormVield.vue";
+import type { FormSubmitEvent } from "@nuxt/ui";
 
 export type FieldOverrides<Schema extends z.ZodObject> = Partial<
   Record<keyof z.input<Schema>, Partial<FormFieldProps>>
@@ -49,7 +50,7 @@ watch(
   { immediate: true, deep: true }
 );
 
-async function onSubmit(data: Output) {
+async function onSubmit({ data }: FormSubmitEvent<Output>) {
   emit("submit", data);
 }
 </script>

@@ -18,5 +18,8 @@ db.sqlite3
 # Django migrations
 *.pyc
 *.pyo
+
+# Cache
 __pycache__/
+.mypy_cache/
 

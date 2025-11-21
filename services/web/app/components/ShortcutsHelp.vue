@@ -1,7 +1,9 @@
 <script setup lang="ts">
 const { isShortcutsHelpOpen } = useDashboard();
 
-const items = [
+const { hasPermission } = useUserStore()
+
+const items = computed(() => [
   {
     kbds: ["g", "d"],
     label: "Go to dashboard",
@@ -14,7 +16,7 @@ const items = [
     kbds: ["g", "h"],
     label: "go to harmonogram",
   },
-  {
+  hasPermission('users.view_user') && {
     kbds: ["g", "e"],
     label: "Go to employees",
   },
@@ -22,17 +24,13 @@ const items = [
     kbds: ["g", "i"],
     label: "Go to inbox",
   },
-  {
+  hasPermission('university.view_faculty') && {
     kbds: ["g", "f"],
     label: "Go to faculties",
   },
-  {
+  hasPermission('teaching.view_course') && {
     kbds: ["g", "c"],
     label: "Go to courses",
-  },
-  {
-    kbds: ["g", "n"],
-    label: "Go to notificaitons",
   },
   {
     kbds: ["g", "s"],
@@ -44,7 +42,7 @@ const items = [
   },
   {
     kbds: ["?"],
-    label: "Shot this dialog - shortcuts help",
+    label: "Show this dialog - shortcuts help",
   },
   {
     kbds: ["c"],
@@ -62,11 +60,11 @@ const items = [
     kbds: ["/"],
     label: "Focus search (scoped) TODO: implement",
   },
-  {
-    kbds: ["c-e"],
+  hasPermission('users.add_user') && {
+    kbds: ["c", "e"],
     label: "Create employee",
   },
-].filter(truthy);
+].filter(truthy))
 </script>
 <template>
   <UModal v-model:open="isShortcutsHelpOpen">

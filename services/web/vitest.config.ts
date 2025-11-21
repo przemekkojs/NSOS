@@ -7,7 +7,7 @@ export default defineConfig({
       {
         test: {
           name: "unit",
-          include: ["test/{e2e,unit}/*.{test,spec}.ts"],
+          include: ["test/{e2e,unit}/**/*{node}.{test,spec}.ts"],
           environment: "node",
         },
       },
@@ -21,7 +21,10 @@ export default defineConfig({
             "**/.nuxt/**",
             "**/coverage/**",
           ],
-          include: ["app/**/*.nuxt.{test,spec}.ts"],
+          include: [
+            "app/**/*.nuxt.{test,spec}.ts",
+            "test/nuxt/**/*.{test,spec}.ts"
+          ],
           environment: "nuxt",
         },
       }),
