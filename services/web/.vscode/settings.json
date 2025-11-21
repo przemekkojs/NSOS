@@ -1,0 +1,50 @@
+{
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "*.ts": "${capture}.js",
+    "*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts",
+    "*.jsx": "${capture}.js",
+    "*.tsx": "${capture}.ts",
+    "*.vue": "${capture}.vue, ${capture}.nuxt.spec.ts, ${capture}.nuxt.test.ts, ${capture}.spec.ts, ${capture}.stories.ts, ${capture}.test.ts",
+    "tsconfig.json": "tsconfig.*.json",
+    "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, bun.lockb, bun.lock, eslint.config.*",
+    ".env": ".env.*",
+    "nuxt.config.ts": "playwright.config.ts, vitest.config.ts"
+  },
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "editor.quickSuggestions": {
+    "strings": "on"
+  },
+  "tailwindCSS.classAttributes": ["class", "ui"],
+  "tailwindCSS.experimental.classRegex": [
+    ["ui:\\s*{([^)]*)\\s*}", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.preferences.autoImportFileExcludePatterns": ["vue-router/auto$"],
+
+  "cSpell.words": [
+    "daygrid",
+    "fullcalendar",
+    "NSOS",
+    "papaparse",
+    "unhead",
+    "unplugin"
+  ],
+
+  "i18n-ally.localesPaths": ["i18n/locales"],
+  "i18n-ally.keystyle": "nested",
+  "i18n-ally.enabledFrameworks": ["vue", "vue-sfc"],
+  "i18n-ally.sourceLanguage": "en",
+  "i18n-ally.displayLanguage": "en",
+  "i18n-ally.sortKeys": true,
+  "i18n-ally.enabledParsers": ["json"],
+  "i18n-ally.extract.autoDetect": true,
+  "i18n-ally.regex.usageMatchAppend": [
+    "\\.meta\\s*\\(\\s*\\{[\\s\\S]*?error\\s*:\\s*[\"'`]({key})[\"'`]"
+  ]
+}
