@@ -1,3 +1,4 @@
+import os
 from typing import override, TYPE_CHECKING
 import boto3
 
@@ -42,16 +43,25 @@ class EmailService(SendService):
     def __init__(self):
         self._client = boto3.client(
             "ses",
-            region_name=AWS_REGION,
-            aws_access_key_id=ACCESS_KEY,
-            aws_secret_access_key=SECRET_KEY,
+            region_name=os.getenv("AWS_SES_REGION"),
+            aws_access_key_id=os.getenv("AWS_ACCESS_KEY"),
+            aws_secret_access_key=os.getenv("AWS_SECRET_KEY"),
         )
 
     @override
     def send(self):
+        sender = os.getenv("AWS_SES_SENDER")
+        recipient = os.getenv("AWS_SES_RECIPIENT")
+
+        if recipient is None:
+            raise Exception("AWS_SES_RECIPIENT not set")
+
+        if sender is None:
+            raise Exception("AWS_SES_SENDER not set")
+
         try:
-            self._client.send_email(
-                Destination={"ToAddresses": [RECIPIENT]},
+            response = self._client.send_email(
+                Destination={"ToAddresses": [recipient]},
                 Message={
                     "Body": {
                         "Html": {
@@ -68,9 +78,9 @@ class EmailService(SendService):
                         "Data": SUBJECT,
                     },
                 },
-                Source=SENDER,
+                Source=sender,
             )
         except ClientError as e:
             print(e.response["Error"]["Message"])
         else:
-            print("Email sent! Message ID: ")
+            print(f"Email sent! Message ID: {response['MessageId']}")
