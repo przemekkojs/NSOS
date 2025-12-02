@@ -2,6 +2,7 @@ import os
 import boto3
 from boto3.exceptions import S3UploadFailedError
 from botocore.exceptions import ClientError
+from main.conf import settings
 
 from typing import TYPE_CHECKING
 
@@ -21,12 +22,7 @@ class BucketService:
     _bucket: Bucket
 
     def __init__(self):
-        self._client = boto3.client(
-            "s3",
-            region_name=os.getenv("AWS_S3_REGION"),
-            aws_access_key_id=os.getenv("AWS_ACCESS_KEY"),
-            aws_secret_access_key=os.getenv("AWS_SECRET_KEY"),
-        )
+        self._client = boto3.client("s3", region_name=settings.secrets.AWS_REGION)
 
         self._bucket = boto3.resource("s3").Bucket(USER_BUCKET_NAME)
 
