@@ -1,4 +1,3 @@
-import os
 import boto3
 
 from typing import override, TYPE_CHECKING
