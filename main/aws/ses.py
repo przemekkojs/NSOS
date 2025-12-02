@@ -4,6 +4,7 @@ import boto3
 from typing import override, TYPE_CHECKING
 from botocore.exceptions import ClientError
 from abc import ABC, abstractmethod
+from main.conf import settings
 
 if TYPE_CHECKING:
     from mypy_boto3_ses import SESClient
@@ -43,21 +44,13 @@ class EmailService(SendService):
     def __init__(self):
         self._client = boto3.client(
             "ses",
-            region_name=os.getenv("AWS_SES_REGION"),
-            aws_access_key_id=os.getenv("AWS_ACCESS_KEY"),
-            aws_secret_access_key=os.getenv("AWS_SECRET_KEY"),
+            region_name=settings.secrets.AWS_REGION,
         )
 
     @override
     def send(self):
-        sender = os.getenv("AWS_SES_SENDER")
-        recipient = os.getenv("AWS_SES_RECIPIENT")
-
-        if recipient is None:
-            raise Exception("AWS_SES_RECIPIENT not set")
-
-        if sender is None:
-            raise Exception("AWS_SES_SENDER not set")
+        sender = settings.secrets.AWS_SES_SENDER
+        recipient = settings.secrets.AWS_SES_RECIPIENT
 
         try:
             response = self._client.send_email(

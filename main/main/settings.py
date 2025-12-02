@@ -10,30 +10,26 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
-import os
 from pathlib import Path
-from dotenv import load_dotenv
 from .secrets import get_secrets
-
-load_dotenv(dotenv_path=".env")  # load base .env variables
-load_dotenv(dotenv_path=".env.local")  # load .env overrides
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 secrets = get_secrets("prod/nsos/config")
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("SECRET_KEY")
+SECRET_KEY = secrets.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG", "True") == "True"
+DEBUG = secrets.DEBUG
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
+ALLOWED_HOSTS = secrets.ALLOWED_HOSTS
+
+ENV = secrets.ENV
 
 # Application definition
 
@@ -44,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "corsheaders",
     "allauth",
     "allauth.account",
     "allauth.headless",
@@ -54,6 +51,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -91,26 +89,42 @@ WSGI_APPLICATION = "main.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": f"django.db.backends.{secrets.DB_ENGINE}",
+        "NAME": secrets.DB_NAME,
+        "USER": secrets.DB_USER,
+        "PASSWORD": secrets.DB_PASSWORD,
+        "HOST": secrets.DB_HOST,
+        "PORT": secrets.DB_PORT,
     }
 }
 
 #
 
-CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]
+CSRF_TRUSTED_ORIGINS = secrets.CORS_ALLOWED_ORIGINS
 
 CSRF_COOKIE_SAMESITE = "Lax"
-CSRF_COOKIE_SECURE = False  # True in production with HTTPS
+CSRF_COOKIE_SECURE = ENV != "dev"  # True in production with HTTPS
 CSRF_COOKIE_HTTPONLY = False
 
-CORS_ALLOWED_ORIGINS = ["http://localhost:3000"]
+CORS_ALLOWED_ORIGINS = secrets.CORS_ALLOWED_ORIGINS
 
 CORS_ALLOW_CREDENTIALS = True
 
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
+
 # TODO:
-# SESSION_COOKIE_DOMAIN = "example.com"
-# CSRF_COOKIE_DOMAIN = "example.com"
+SESSION_COOKIE_DOMAIN = f".{secrets.FRONTEND_URL}"
+CSRF_COOKIE_DOMAIN = f".{secrets.FRONTEND_URL}"
 SESSION_COOKIE_HTTPONLY = True
 
 ACCOUNT_LOGIN_METHODS = {"email"}

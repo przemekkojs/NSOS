@@ -3,7 +3,8 @@ import boto3
 import json
 
 from botocore.exceptions import ClientError
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal, cast
+from dataclasses import dataclass
 
 if TYPE_CHECKING:
     from mypy_boto3_secretsmanager import SecretsManagerClient
@@ -11,18 +12,54 @@ else:
     SecretsManagerClient = object
 
 
-def get_secrets(
-    secret_name: str, region_name: str = "eu-central-1"
-) -> dict[str, str | None]:
+@dataclass
+class Secrets:
+    SECRET_KEY: str
+    DB_ENGINE: Literal["sqlite", "postgresql"]
+    DB_USER: str
+    DB_PASSWORD: str
+    DB_NAME: str
+    DB_HOST: str
+    DB_PORT: int
+    DEBUG: bool
+    AWS_SES_SENDER: str
+    AWS_SES_RECIPIENT: str
+    AWS_REGION: str
+    ALLOWED_HOSTS: list[str]
+    CORS_ALLOWED_ORIGINS: list[str]
+    ENV: Literal["dev", "staging", "production"]
+    FRONTEND_URL: str
+
+
+def get_required_env(key: str) -> str:
+    """Get environment variable or raise error if not found."""
+    value = os.getenv(key)
+    if value is None:
+        raise ValueError(f"Required environment variable '{key}' is not set")
+    return value
+
+
+def get_secrets(secret_name: str, region_name: str = "eu-central-1") -> Secrets:
     if os.getenv("USE_LOCAL_ENV", "False") == "True":
-        return {
-            "SECRET_KEY": os.getenv("SECRET_KEY"),
-            "DATABASE_PASSWORD": os.getenv("DATABASE_PASSWORD"),
-            "DEBUG": os.getenv("DEBUG", "True"),
-            "AWS_SES_SENDER": os.getenv("AWS_SES_SENDER"),
-            "AWS_SES_RECIPIENT": os.getenv("AWS_SES_RECIPIENT"),
-            "AWS_SES_REGION": os.getenv("AWS_SES_REGION", "eu-central-1"),
-        }
+        return Secrets(
+            SECRET_KEY=get_required_env("SECRET_KEY"),
+            DB_PASSWORD=get_required_env("DB_PASSWORD"),
+            DB_NAME=get_required_env("DB_NAME"),
+            DB_USER=get_required_env("DB_USER"),
+            DB_HOST=get_required_env("DB_HOST"),
+            DB_PORT=int(get_required_env("DB_PORT")),
+            DEBUG=os.getenv("DEBUG", "False") == "True",
+            AWS_SES_SENDER=get_required_env("AWS_SES_SENDER"),
+            AWS_SES_RECIPIENT=get_required_env("AWS_SES_RECIPIENT"),
+            AWS_REGION=get_required_env("AWS_SES_REGION"),
+            ALLOWED_HOSTS=get_required_env("ALLOWED_HOSTS").split(","),
+            CORS_ALLOWED_ORIGINS=get_required_env('CORS_ALLOWED_ORIGINS').split(','),
+            ENV=cast(Literal["dev", "staging", "production"], os.getenv("ENV", "dev")),
+            DB_ENGINE=cast(
+                Literal["sqlite", "postgresql"], get_required_env("DB_ENGINE")
+            ),
+            FRONTEND_URL=get_required_env("FRONTEND_URL"),
+        )
 
     session = boto3.session.Session()
     client: SecretsManagerClient = session.client(
@@ -31,8 +68,25 @@ def get_secrets(
 
     try:
         get_secret_value_response = client.get_secret_value(SecretId=secret_name)
-        secrets = json.loads(get_secret_value_response["SecretString"])
-        return secrets
+        secret_dict = json.loads(get_secret_value_response["SecretString"])
+
+        return Secrets(
+            SECRET_KEY=secret_dict.get("SECRET_KEY"),
+            DB_ENGINE=secret_dict.get("DB_ENGINE"),
+            DB_PASSWORD=secret_dict.get("DB_PASSWORD"),
+            DB_NAME=secret_dict.get("DB_NAME"),
+            DB_USER=secret_dict.get("DB_USER"),
+            DB_HOST=secret_dict.get("DB_HOST"),
+            DB_PORT=int(secret_dict.get("DB_PORT")),
+            AWS_SES_SENDER=secret_dict.get("AWS_SES_SENDER"),
+            AWS_SES_RECIPIENT=secret_dict.get("AWS_SES_RECIPIENT"),
+            AWS_REGION=secret_dict.get("AWS_SES_REGION"),
+            ALLOWED_HOSTS=secret_dict.get("ALLOWED_HOSTS").split(","),
+            CORS_ALLOWED_ORIGINS=secret_dict.get('CORS_ALLOWED_ORIGINS').split(','),
+            FRONTEND_URL=secret_dict.get("FRONTEND_URL"),
+            ENV="production",
+            DEBUG=False,
+        )
     except ClientError as e:
         # For a list of exceptions thrown, see
         # https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
