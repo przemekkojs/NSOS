@@ -1,0 +1,41 @@
+services:
+  db:
+    image: keinos/sqlite3:latest
+    ports:
+      - "5432:5432"
+    volumes:
+      - sqlite_data:/db
+    networks:
+      - nsos_net
+    
+  django:
+    build:
+      context: ../services/core-api
+      dockerfile: Dockerfile
+    ports: 
+      - "8000:8000"
+    environment:
+      - SECRET_KEY=${CORE_API_SECRET_KEY}
+      - DEBUG=${DEBUG}
+      - ALLOWED_HOSTS=${CORE_API_ALLOWED_HOSTS}
+      - DATABASE_ENGINE=${DATABASE_ENGINE}
+      - DATABASE_USERNAME=${DATABASE_USERNAME}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_HOST=${DATABASE_HOST}
+      - DATABASE_PORT=${DATABASE_PORT}
+    env_file:
+      - .env
+    depends_on:
+      - db
+    restart: unless-stopped
+    networks:
+      - nsos_net
+
+
+networks:
+  nsos_net:
+    driver: bridge
+
+volumes:
+  sqlite_data:
+
