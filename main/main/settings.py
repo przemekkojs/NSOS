@@ -182,10 +182,12 @@ AUTHENTICATION_BACKENDS = [
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
+HEADLESS = ("browser",)
 HEADLESS_FRONTEND_URLS = {
-    "account_confirm_email": "https://app.project.org/account/verify-email/{key}",
-    "account_reset_password_from_key": "https://app.org/account/password/reset/key/{key}",
-    "account_signup": "https://app.org/account/signup",
+    "account_confirm_email": f"{secrets.FRONTEND_URL}/account/verify-email/{{key}}",
+    "account_reset_password": f"{secrets.FRONTEND_URL}/account/password/reset",
+    "account_reset_password_from_key": f"{secrets.FRONTEND_URL}/password/reset/key/{{key}}",
+    "account_signup": f"{secrets.FRONTEND_URL}/account/signup",
 }
 
 # Internationalization
