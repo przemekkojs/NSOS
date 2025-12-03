@@ -27,3 +27,6 @@ db.sqlite3
 
 # REVIEW: remove 
 services/
+
+# cache
+.ruff_cache/
