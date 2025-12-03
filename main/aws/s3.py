@@ -1,57 +1,14 @@
-import os
-import boto3
-from boto3.exceptions import S3UploadFailedError
-from botocore.exceptions import ClientError
-from main.conf import settings
-
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from mypy_boto3_s3 import S3Client
-    from mypy_boto3_s3.service_resource import Bucket
-else:
-    S3Client = object
-    Bucket = object
+from storages.backends.s3boto3 import S3Boto3Storage
 
 
-USER_BUCKET_NAME = "nsos-user-data"
+class PublicMediaStorage(S3Boto3Storage):
+    location = "media/public"
+    default_acl = "public-read"
+    file_verwrite = False
 
 
-class BucketService:
-    _client: S3Client
-    _bucket: Bucket
-
-    def __init__(self):
-        self._client = boto3.client("s3", region_name=settings.secrets.AWS_REGION)
-
-        self._bucket = boto3.resource("s3").Bucket(USER_BUCKET_NAME)
-
-    def put(self):
-        object_name = "?"
-        obj = self._bucket.Object(os.path.basename(object_name))
-        try:
-            obj.upload_file(object_name)
-        except S3UploadFailedError as err:
-            print(f"Couldn't upload file {object_name} to {self._bucket.name}")
-            print(f"\t{err}")
-
-    def delete(self, key: str):
-        try:
-            object = self._bucket.Object(key)
-            object.delete()
-            object.wait_until_not_exists()
-        except ClientError:
-            print(
-                f"Couldn't delete object {object.key} from bucket {self._bucket.name}"
-            )
-            raise
-
-    def generate_presigned_url(self, client_method: str) -> str:
-        try:
-            url = self._client.generate_presigned_url(
-                ClientMethod=client_method,
-            )
-            return url
-        except ClientError:
-            print(f"Couldn't get a presigned URL for client method {client_method}")
-            raise
+class PrivateMediaStorage(S3Boto3Storage):
+    location = "media/private"
+    default_acl = "private"
+    file_overwrite = False
+    custom_domain = False
