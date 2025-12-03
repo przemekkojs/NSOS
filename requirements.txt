@@ -11,7 +11,6 @@ mypy-boto3-s3==1.41.1
 mypy-boto3-secretsmanager==1.41.0
 mypy-boto3-ses==1.41.0
 uvicorn==0.38.0
-a2wsgi==1.10.10
 django-allauth==65.13.1
 psycopg2-binary==2.9.11
 django-cors-headers==4.9.0
