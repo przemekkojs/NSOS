@@ -109,22 +109,37 @@ else:
         }
     }
 
-STORAGES = {
-    "default": {
-        "BACKEND": "storages.backends.s3.S3Storage",
-        "OPTIONS": {
-            "bucket_name": secrets.S3_BUCKET_NAME,
-            "region_name": secrets.AWS_DEFAULT_REGION,
-            "file_overwrite": False,
-            "default_acl": "private",
-        },
-    },
-    "staticfiles": {
-        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
-    },
+static_files = {
+    "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
 }
 
-AWS_STORAGE_BUCKET_NAME = secrets.S3_BUCKET_NAME
+if ENV == 'dev':
+    MEDIA_ROOT = BASE_DIR / "media"
+    STORAGES = {
+        "default": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+            "OPTIONS": {
+                "location": MEDIA_ROOT,
+            },
+        },
+        "staticfiles": static_files,
+    }
+
+else:
+    STORAGES = {
+        "default": {
+            "BACKEND": "storages.backends.s3.S3Storage",
+            "OPTIONS": {
+                "bucket_name": secrets.S3_BUCKET_NAME,
+                "region_name": secrets.AWS_DEFAULT_REGION,
+                "file_overwrite": False,
+                "default_acl": "private",
+            },
+        },
+        "staticfiles": static_files,
+    }
+
+    AWS_STORAGE_BUCKET_NAME = secrets.S3_BUCKET_NAME
 
 
 CSRF_TRUSTED_ORIGINS = secrets.CORS_ALLOWED_ORIGINS
