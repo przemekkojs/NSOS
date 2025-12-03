@@ -1,10 +1,12 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from university.models import Faculty, Semester, Position
+from aws.s3 import PrivateMediaStorage
 
 
 class User(AbstractUser):
     email = models.EmailField(unique=True)
+    avatar = models.FileField(storage=PrivateMediaStorage(), null=True)
 
     class Meta:
         verbose_name = "User"
