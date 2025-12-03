@@ -15,7 +15,7 @@ else:
 @dataclass
 class Secrets:
     SECRET_KEY: str
-    DB_ENGINE: Literal["sqlite", "postgresql"]
+    DB_ENGINE: Literal["sqlite3", "postgresql"]
     DB_USER: str
     DB_PASSWORD: str
     DB_NAME: str
@@ -24,11 +24,13 @@ class Secrets:
     DEBUG: bool
     AWS_SES_SENDER: str
     AWS_SES_RECIPIENT: str
-    AWS_REGION: str
+    AWS_DEFAULT_REGION: str
     ALLOWED_HOSTS: list[str]
     CORS_ALLOWED_ORIGINS: list[str]
     ENV: Literal["dev", "staging", "production"]
     FRONTEND_URL: str
+    S3_BUCKET_NAME: str | None = None
+    AWS_PROFILE: str | None = None
 
 
 def get_required_env(key: str) -> str:
@@ -51,14 +53,16 @@ def get_secrets(secret_name: str, region_name: str = "eu-central-1") -> Secrets:
             DEBUG=os.getenv("DEBUG", "False") == "True",
             AWS_SES_SENDER=get_required_env("AWS_SES_SENDER"),
             AWS_SES_RECIPIENT=get_required_env("AWS_SES_RECIPIENT"),
-            AWS_REGION=get_required_env("AWS_SES_REGION"),
+            AWS_DEFAULT_REGION=get_required_env("AWS_DEFAULT_REGION"),
             ALLOWED_HOSTS=get_required_env("ALLOWED_HOSTS").split(","),
-            CORS_ALLOWED_ORIGINS=get_required_env('CORS_ALLOWED_ORIGINS').split(','),
+            CORS_ALLOWED_ORIGINS=get_required_env("CORS_ALLOWED_ORIGINS").split(","),
             ENV=cast(Literal["dev", "staging", "production"], os.getenv("ENV", "dev")),
             DB_ENGINE=cast(
-                Literal["sqlite", "postgresql"], get_required_env("DB_ENGINE")
+                Literal["sqlite3", "postgresql"], get_required_env("DB_ENGINE")
             ),
             FRONTEND_URL=get_required_env("FRONTEND_URL"),
+            AWS_PROFILE=os.getenv("AWS_PROFILE"),
+            S3_BUCKET_NAME=os.getenv("S3_BUCKET_NAME"),
         )
 
     session = boto3.session.Session()
@@ -80,12 +84,13 @@ def get_secrets(secret_name: str, region_name: str = "eu-central-1") -> Secrets:
             DB_PORT=int(secret_dict.get("DB_PORT")),
             AWS_SES_SENDER=secret_dict.get("AWS_SES_SENDER"),
             AWS_SES_RECIPIENT=secret_dict.get("AWS_SES_RECIPIENT"),
-            AWS_REGION=secret_dict.get("AWS_SES_REGION"),
+            AWS_DEFAULT_REGION=secret_dict.get("AWS_DEFAULT_REGION"),
             ALLOWED_HOSTS=secret_dict.get("ALLOWED_HOSTS").split(","),
-            CORS_ALLOWED_ORIGINS=secret_dict.get('CORS_ALLOWED_ORIGINS').split(','),
+            CORS_ALLOWED_ORIGINS=secret_dict.get("CORS_ALLOWED_ORIGINS").split(","),
             FRONTEND_URL=secret_dict.get("FRONTEND_URL"),
             ENV="production",
             DEBUG=False,
+            S3_BUCKET_NAME=secret_dict.get("S3_BUCKET_NAME"),
         )
     except ClientError as e:
         # For a list of exceptions thrown, see

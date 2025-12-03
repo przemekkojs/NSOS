@@ -10,13 +10,16 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 from .secrets import get_secrets
+from urllib.parse import urlparse
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-secrets = get_secrets("prod/nsos/config")
+SECRET_NAME = os.getenv("AWS_SECRET_NAME", "prod/nsos/config")
+secrets = get_secrets(SECRET_NAME)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -87,18 +90,42 @@ WSGI_APPLICATION = "main.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": f"django.db.backends.{secrets.DB_ENGINE}",
-        "NAME": secrets.DB_NAME,
-        "USER": secrets.DB_USER,
-        "PASSWORD": secrets.DB_PASSWORD,
-        "HOST": secrets.DB_HOST,
-        "PORT": secrets.DB_PORT,
+if secrets.DB_ENGINE == "sqlite3":
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
     }
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": f"django.db.backends.{secrets.DB_ENGINE}",
+            "NAME": secrets.DB_NAME,
+            "USER": secrets.DB_USER,
+            "PASSWORD": secrets.DB_PASSWORD,
+            "HOST": secrets.DB_HOST,
+            "PORT": secrets.DB_PORT,
+        }
+    }
+
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+            "bucket_name": secrets.S3_BUCKET_NAME,
+            "region_name": secrets.AWS_DEFAULT_REGION,
+            "file_overwrite": False,
+            "default_acl": "private",
+        },
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
 }
 
-#
+AWS_STORAGE_BUCKET_NAME = secrets.S3_BUCKET_NAME
+
 
 CSRF_TRUSTED_ORIGINS = secrets.CORS_ALLOWED_ORIGINS
 
@@ -123,8 +150,9 @@ CORS_ALLOW_HEADERS = [
 ]
 
 # TODO:
-SESSION_COOKIE_DOMAIN = f".{secrets.FRONTEND_URL}"
-CSRF_COOKIE_DOMAIN = f".{secrets.FRONTEND_URL}"
+FRONTEND_DOMAIN = urlparse(secrets.FRONTEND_URL).netloc
+SESSION_COOKIE_DOMAIN = FRONTEND_DOMAIN if ENV == "production" else None
+CSRF_COOKIE_DOMAIN = FRONTEND_DOMAIN if ENV == "production" else None
 SESSION_COOKIE_HTTPONLY = True
 
 ACCOUNT_LOGIN_METHODS = {"email"}
