@@ -22,4 +22,5 @@ urlpatterns = [
     path('api/users/', include('users.urls')),
     path('api/university/', include('university.urls')),
     path('api/teaching/', include('teaching.urls')),
+    # path('api-auth/', include('rest_framework.urls')), # to debug auth
 ]

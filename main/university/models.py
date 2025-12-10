@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 class Faculty(models.Model):
@@ -58,3 +59,37 @@ class Semester(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.academic_year})"
+
+
+
+class University(models.Model):
+    name = models.CharField(max_length=200, unique=True)
+    description = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "University"
+        verbose_name_plural = "Universities"
+
+    def __str__(self):
+        return self.name
+
+
+class UniversityMembership(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True, related_name='university_memberships')
+    university = models.ForeignKey(University, on_delete=models.CASCADE, related_name='memberships')
+    position = models.ForeignKey('Position', on_delete=models.SET_NULL, null=True, blank=True)
+
+    workload = models.IntegerField(choices=Position.WORKLOAD_CHOICES, null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+    start_date = models.DateField(null=True, blank=True)
+    end_date = models.DateField(null=True, blank=True)
+
+    class Meta:
+        unique_together = ('user', 'university')
+        verbose_name = "University Membership"
+        verbose_name_plural = "University Memberships"
+
+    def __str__(self):
+        return f"{self.user} @ {self.university}"
+
