@@ -113,7 +113,7 @@ static_files = {
     "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
 }
 
-if ENV == 'dev':
+if ENV == "dev":
     MEDIA_ROOT = BASE_DIR / "media"
     STORAGES = {
         "default": {

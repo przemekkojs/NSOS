@@ -14,5 +14,5 @@ class PositionViewSet(viewsets.ModelViewSet):
 
 
 class SemesterViewSet(viewsets.ModelViewSet):
-    queryset = Semester.objects.select_related('faculty').all()
+    queryset = Semester.objects.select_related("faculty").all()
     serializer_class = SemesterSerializer
