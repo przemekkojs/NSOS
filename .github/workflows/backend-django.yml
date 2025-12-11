@@ -1,0 +1,149 @@
+name: Backend - Django
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "services/core-api/**"
+      - ".github/workflows/backend-django.yml"
+      # NOTE: remove the following when django is moved to its own directory
+      - "main/**"
+      - "scripts/**"
+  pull_request:
+    branches: [main]
+    paths:
+      - "services/core-api/**"
+      - ".github/workflows/backend-django.yml"
+      # NOTE: remove the following when django is moved to its own directory
+      - "main/**"
+      - "scripts/**"
+  workflow_dispatch:
+    inputs:
+      deploy:
+        description: "Deploy to production"
+        required: true
+        type: boolean
+        default: false
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  WORKING_DIR: services/core-api
+  ECR_REPOSITORY: "django-backend" # FIXME: replace with secret
+  # ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+  IMAGE_TAG: ${{ github.sha }}
+
+defaults:
+  run:
+    working-directory: services/core-api
+
+jobs:
+  quality-checks:
+    name: Lint and Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install Ruff
+        run: pip install ruff
+
+      - name: Run Ruff Linter
+        run: ruff check
+
+      - name: Run Ruff Formatter
+        run: ruff format
+
+      - name: Run Django Tests
+        run: python manage.py test
+
+  build:
+    name: Build & Push to ECR
+    runs-on: ubuntu-latest
+    needs: quality-checks
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Configure AWS credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@v5
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+          role-session-name: GitHubActions-DjangoDeploy
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker Image
+        run: |
+          ECR_URI=${{ steps.login-ecr.outputs.registry }}
+          docker buildx build \
+            --platform linux/arm64,linux/amd64 \
+            -t $ECR_URI/$ECR_REPOSITORY:$IMAGE_TAG
+
+      - name: Push Docker Image to ECR
+        run: |
+          ECR_URI=${{ steps.login-ecr.outputs.registry }}
+          docker push $ECR_URI/$ECR_REPOSITORY:$IMAGE_TAG
+
+  deploy:
+    name: Deploy to EC2
+    runs-on: ubuntu-latest
+    needs: build
+    environment: production
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.deploy == 'true')
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Configure AWS credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@v5
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+          role-session-name: GitHubActions-DjangoDeploy
+
+      - name: Send Deployment Command to EC2 via SSM
+        run: |
+          DEPLOYMENT_SCRIPT=$(cat <<EOF
+            DEPLOY_PATH=/path/to/your/app/on/ec2
+            cd \$DEPLOY_PATH
+            
+            git pull origin main 
+            
+            aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_URI
+            
+            docker compose -f docker-compose.prod.yaml pull
+            
+            ECR_REPOSITORY=${{ env.ECR_REPOSITORY }} IMAGE_TAG=${{ env.SHA_TAG }} docker compose -f docker-compose.prod.yaml up -d --remove-orphans
+            
+            docker image prune -f
+          EOF
+          )
+          aws ssm send-command \
+            --instance-ids "${{ secrets.TARGET_EC2_ID }}"
+            --document-name "AWS-RunShellScript" \
+            --parameters commands="$DEPLOYMENT_SCRIPT" \
+            --region ${{ secrets.AWS_REGION }} \
+            --output text
