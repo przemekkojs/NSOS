@@ -1,20 +1,3 @@
-# Virtual environment
-venv/
-env/
-*.env/
-nsosEnv/
-
-# Django
-*.sqlite3
-db.sqlite3
-*.log
-*.pot
-*.py[cod]
-
-# PyCharm / IntelliJ
-.idea/
-
-# Django migrations
-**/migrations/*.pyc
-**/migrations/*.pyo
-**/migrations/__pycache__/
+.env
+.env*.local
+!.env*.example
