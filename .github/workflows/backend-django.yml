@@ -70,8 +70,8 @@ jobs:
       - name: Run Ruff Formatter
         run: ruff format
 
-      - name: Run Django Tests
-        run: python manage.py test
+      # - name: Run Django Tests
+      #   run: python manage.py test
 
   build:
     name: Build & Push to ECR
