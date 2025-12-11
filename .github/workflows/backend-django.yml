@@ -34,14 +34,15 @@ permissions:
   contents: read
 
 env:
-  WORKING_DIR: services/core-api
+  # WORKING_DIR: services/core-api
+  WORKING_DIR: .
   ECR_REPOSITORY: "django-backend" # FIXME: replace with secret
   # ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
   IMAGE_TAG: ${{ github.sha }}
 
 defaults:
   run:
-    working-directory: services/core-api
+    working-directory: .
 
 jobs:
   quality-checks:
