@@ -4,6 +4,7 @@ import json
 
 from rag import RagEngine
 from llm import generate, generate_prompt
+from names import LLM_4
 
 # To jest generalnie TODO TODO TODO
 
@@ -20,6 +21,6 @@ def ask(request, rag:RagEngine):
     else:
         retrieved = rag.retrieve(question)
         prompt:str = generate_prompt(question, retrieved)
-        answer:str = generate(prompt)
+        answer:str = generate(prompt, LLM_4)
 
     return JsonResponse({"answer" : answer})

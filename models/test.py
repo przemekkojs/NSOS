@@ -1,6 +1,7 @@
 from rag import RagEngine
 from llm import generate, generate_prompt
 from docs import fetch_docs
+from names import LLM_4
 
 if __name__ == "__main__":
     raw_docs:list = fetch_docs('przemekkojs', "NSOS")
@@ -13,6 +14,6 @@ if __name__ == "__main__":
     else:
         retrieved:list = rag.retrieve(question)
         prompt:str = generate_prompt(question, retrieved)
-        answer:str = generate(prompt)
+        answer:str = generate(prompt, LLM_4)
     
     print(answer)

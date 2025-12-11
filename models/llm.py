@@ -50,7 +50,14 @@ def query(payload):
 
     return response.json()
 
-def generate(prompt: str) -> str:
+def retrieve_answer(response:dict, model_name:str) -> str:
+    mapping:dict[str, str] = {
+        LLM_4 : response['choices'][0]['message']['content']
+    }
+
+    return mapping[model_name]
+
+def generate(prompt: str, model_name:str) -> str:
     try:
         response = query({
             "messages": [
@@ -59,11 +66,9 @@ def generate(prompt: str) -> str:
                     "content": prompt
                 }
             ],
-            "model": LLM_4
+            "model": model_name
         })
 
-        ans:str = response['choices'][0]['message']['content']
-
-        return ans
+        return retrieve_answer(response, model_name)
     except Exception:
         return "Something went wrong..."
