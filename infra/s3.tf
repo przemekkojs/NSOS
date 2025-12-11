@@ -26,3 +26,4 @@ resource "aws_s3_bucket_cors_configuration" "media" {
     max_age_seconds = 3000
   }
 }
+

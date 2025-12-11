@@ -6,7 +6,7 @@ terraform {
     }
 
     http = {
-      source = "hashicorp/http"
+      source  = "hashicorp/http"
       version = "~> 3.5"
     }
   }
@@ -15,7 +15,7 @@ terraform {
 }
 
 provider "aws" {
-  region = "eu-central-1"
+  region  = "eu-central-1"
   profile = "nsos"
 }
 

@@ -22,13 +22,13 @@ variable "django_secret_key" {
 
 variable "database_engine" {
   description = "Database engine"
-  type = string
-  default = "postgresql"
+  type        = string
+  default     = "postgresql"
 }
 
 variable "database_user" {
   description = "Database user"
-  type = string
+  type        = string
 }
 
 variable "database_password" {
@@ -67,5 +67,36 @@ variable "aws_ses_sender" {
 
 variable "aws_ses_recipient" {
   description = "AWS SES Recipient"
+  type        = string
+}
+
+# GitHub OIDC
+variable "github_org" {
+  description = "GitHub organization"
+  type        = string
+}
+
+variable "github_repo" {
+  description = "GitHub repository"
+  type        = string
+}
+
+variable "s3_bucket_name" {
+  description = "S3 Bucket to send Nuxt application to"
+  type        = string
+}
+
+variable "aws_region" {
+  description = "Default AWS region"
+  type        = string
+}
+
+variable "cloudfront_distribution_id" {
+  description = "Cloudfront distribution for Nuxt app"
+  type        = string
+}
+
+variable "ecr_repository_name" {
+  description = "ECR repository name"
   type        = string
 }

@@ -1,9 +1,9 @@
 #!/bin/bash
 
-apt-get update
+apt-get update -y
 apt-get upgrade -y
 
-apt-get install -y docker.io docker-compose git curl
+apt-get install -y jq curl git docker.io docker-compose
 systemctl enable docker
 systemctl start docker
 
@@ -28,6 +28,14 @@ curl "https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip" -o "awscliv2.zi
 unzip awscliv2.zip
 ./aws/install
 rm -rf aws awscliv2.zip
+
+# Install SSM
+mkdir /tmp/ssm
+cd /tmp/ssm
+wget https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/debian_arm64/amazon-ssm-agent.deb
+sudo dpkg -i amazon-ssm-agent.deb
+sudo systemctl enable amazon-ssm-agent
+sudo systemctl start amazon-ssm-agent
 
 # Setup swap (important for t4g.micro with 1GB RAM)
 fallocate -l 2G /swapfile

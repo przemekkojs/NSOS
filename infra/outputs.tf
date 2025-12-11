@@ -25,15 +25,15 @@ output "ses_verification_token" {
 
 output "secret_arn" {
   description = "ARN of the secrets manager secret"
-  value = aws_secretsmanager_secret.app_config.arn
+  value       = aws_secretsmanager_secret.app_config.arn
 }
 
 output "ec2_django_role_arn" {
   description = "ARN of the secrets manager role"
-  value = aws_iam_role.ec2_django.arn
+  value       = aws_iam_role.ec2_django.arn
 }
 
 output "instance_profile_name" {
   description = "Name of the instance profile (for EC2)"
-  value =aws_iam_instance_profile.ec2_django.name
+  value       = aws_iam_instance_profile.ec2_django.name
 }

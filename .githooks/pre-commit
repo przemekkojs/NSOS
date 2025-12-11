@@ -1,0 +1,18 @@
+#!/bin/sh
+
+INFRA_DIR="infra/"
+
+INFRA_CHANGES=$(git diff --cached --name-only | grep "^$INFRA_DIR" | head -1)
+
+if [ -n "$INFRA_CHANGES" ]; then
+    terraform_status=$(terraform fmt --check $INFRA_DIR)
+
+    if [ $? -ne 0 ]; then
+        echo "Terraform format check failed. Please run 'terraform fmt $INFRA_DIR' and stage the changes"
+        exit 1
+    fi
+
+    echo "Terraform format check passed."
+fi
+
+exit 0

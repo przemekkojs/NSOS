@@ -34,6 +34,47 @@ resource "aws_iam_role" "ec2_django" {
   })
 }
 
+resource "aws_s3_bucket" "artifacts" {
+  bucket = "django-artifacts-bucket"
+}
+
+
+resource "aws_iam_policy" "django_s3_artifact" {
+  name        = "github-actions-django-s3-artifact"
+  description = "Allows GitHub Actions role to read/write deployment artifacts to S3"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "S3ArtifactRW"
+        Effect = "Allow"
+        Action = [
+          "s3:PutObject",
+          "s3:GetObject",
+          "s3:DeleteObject"
+        ]
+        Resource = [
+          "${aws_s3_bucket.artifacts.arn}/deployment/*" # Targets the specific 'deployment' path
+        ]
+      },
+      {
+        Sid    = "S3List"
+        Effect = "Allow"
+        Action = [
+          "s3:ListBucket"
+        ]
+        Resource = aws_s3_bucket.artifacts.arn
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "django_s3_artifact" {
+  role       = aws_iam_role.github_actions_django_deploy.name
+  policy_arn = aws_iam_policy.django_s3_artifact.arn
+}
+
 resource "aws_iam_role_policy" "ec2_django_policy" {
   name = "ec2-django-policy"
   role = aws_iam_role.ec2_django.id
@@ -51,7 +92,9 @@ resource "aws_iam_role_policy" "ec2_django_policy" {
         ]
         Resource = [
           aws_s3_bucket.media.arn,
-          "${aws_s3_bucket.media.arn}/*"
+          "${aws_s3_bucket.media.arn}/*",
+          aws_s3_bucket.artifacts.arn,
+          "${aws_s3_bucket.artifacts.arn}/deployment/*"
         ]
       },
       {
@@ -74,6 +117,11 @@ resource "aws_iam_role_policy" "ec2_django_policy" {
       }
     ]
   })
+}
+
+resource "aws_iam_role_policy_attachment" "ec2_ssm_core" {
+  role       = aws_iam_role.ec2_django.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
 
 resource "aws_iam_instance_profile" "ec2_django" {
@@ -130,24 +178,27 @@ resource "aws_security_group" "django_backend" {
 
 variable "instance_name" {
   description = "The EC2 Django instance's name."
-  type = string
-  default = "Django backend"
+  type        = string
+  default     = "Django backend"
 }
 
 variable "instance_type" {
   description = "The EC2 instance's type."
-  type = string
-  default = "t4g.micro"
+  type        = string
+  default     = "t4g.micro"
 }
 
 resource "aws_instance" "django_backend" {
   ami           = data.aws_ami.debian.id
   instance_type = var.instance_type
+  key_name      = "admin-key-2025"
+
+  iam_instance_profile = aws_iam_instance_profile.ec2_django.name
 
   root_block_device {
-    volume_type = "gp3"
-    volume_size = 30
-    encrypted = true
+    volume_type           = "gp3"
+    volume_size           = 30
+    encrypted             = true
     delete_on_termination = true
   }
 
@@ -170,3 +221,129 @@ resource "aws_eip" "django_backend" {
     Name = "django-backend-eip"
   }
 }
+
+locals {
+  aws_account_id = data.aws_caller_identity.current.account_id
+}
+
+# IAM Policy for ECR push access
+resource "aws_iam_policy" "django_ecr_push" {
+  name        = "github-actions-django-ecr-push"
+  description = "Least privilege policy for pushing Django Docker images to ECR"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "ECRLogin"
+        Effect = "Allow"
+        Action = [
+          "ecr:GetAuthorizationToken",
+        ]
+        Resource = "*" # ECR token generation is not resource-specific
+      },
+      {
+        Sid    = "ECRWrite"
+        Effect = "Allow"
+        Action = [
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:CompleteLayerUpload",
+          "ecr:InitiateLayerUpload",
+          "ecr:PutImage",
+          "ecr:UploadLayerPart"
+        ]
+        Resource = "arn:aws:ecr:${var.aws_region}:${local.aws_account_id}:repository/${var.ecr_repository_name}"
+      },
+      {
+        Sid    = "ECRRepositoryRead",
+        Effect = "Allow",
+        Action = [
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:BatchGetImage",
+          "ecr:DescribeImages"
+        ]
+        Resource = "arn:aws:ecr:${var.aws_region}:${local.aws_account_id}:repository/${var.ecr_repository_name}"
+      }
+    ]
+  })
+}
+
+# IAM Policy for SSM Run Command access
+resource "aws_iam_policy" "django_ssm_deploy" {
+  name        = "github-actions-django-ssm-deploy"
+  description = "Least privilege policy for running deployment commands via SSM"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "SSMSendCommand"
+        Effect = "Allow"
+        Action = "ssm:SendCommand"
+        # Restrict to specific EC2 instance IDs if possible, or use a specific tag/resource ARN
+        Resource = [
+          "arn:aws:ec2:${var.aws_region}:${local.aws_account_id}:instance/${aws_instance.django_backend.id}",
+          "arn:aws:ssm:${var.aws_region}::document/AWS-RunShellScript"
+        ]
+      },
+      {
+        Sid    = "SSMGetCommand"
+        Effect = "Allow"
+        Action = [
+          "ssm:GetCommandInvocation",
+          "ssm:ListCommands"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+# IAM Role for Django Deployment
+resource "aws_iam_role" "github_actions_django_deploy" {
+  name        = "github-actions-django-deploy"
+  description = "Role for GitHub Actions to deploy Django app to ECR and EC2 via SSM"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Federated = aws_iam_openid_connect_provider.github.arn
+        }
+        Action = "sts:AssumeRoleWithWebIdentity"
+        Condition = {
+          StringEquals = {
+            "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
+          }
+          StringLike = {
+            "token.actions.githubusercontent.com:sub" = "repo:${var.github_org}/${var.github_repo}:environment:production"
+          }
+        }
+      }
+    ]
+  })
+
+  tags = {
+    Name = "github-actions-django-deploy"
+  }
+}
+
+# Attach new policies to the new role
+resource "aws_iam_role_policy_attachment" "django_ecr_push" {
+  role       = aws_iam_role.github_actions_django_deploy.name
+  policy_arn = aws_iam_policy.django_ecr_push.arn
+}
+
+resource "aws_iam_role_policy_attachment" "django_ssm_deploy" {
+  role       = aws_iam_role.github_actions_django_deploy.name
+  policy_arn = aws_iam_policy.django_ssm_deploy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "ec2_read_secrets" {
+  role       = aws_iam_role.ec2_django.name
+  policy_arn = aws_iam_policy.read_secrets.arn
+}
+
+
