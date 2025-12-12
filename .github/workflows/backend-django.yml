@@ -39,7 +39,12 @@ env:
   ECR_REPOSITORY: "django-backend" # FIXME: replace with secret
   # ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
   IMAGE_TAG: ${{ github.sha }}
+  SHA_TAG: ${{ github.sha }}
   AWS_DJANGO_ROLE_ARN: "arn:aws:iam::966121466059:role/github-actions-django-deploy" # FIXME: replace with secret
+  TARGET_EC2_ID: "i-0f898d51625a84230"
+  S3_BUCKET_NAME: "django-artifacts-bucket"
+  S3_KEY: "deployment/${{ github.sha }}/docker-compose.prod.yaml"
+  SECRET_ID: "prod/nsos/config"
 
 defaults:
   run:
@@ -59,9 +64,6 @@ jobs:
           python-version: "3.13"
           cache: "pip"
 
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-
       - name: Install Ruff
         run: pip install ruff
 
@@ -69,22 +71,22 @@ jobs:
         run: ruff check
 
       - name: Run Ruff Formatter
-        run: ruff format
+        run: ruff format --check
 
-      # - name: Run Django Tests
-      #   run: python manage.py test
+      - name: Install dependencies
+        run: pip install -r requirements.txt
 
   build:
     name: Build & Push to ECR
     runs-on: ubuntu-latest
     needs: quality-checks
+    # if: github.ref == 'refs/heads/main' || github.event_name == 'workflow-dispatch'
     environment: production
-    # if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
 
-      - name: Configure AWS credentials via OIDC
+      - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v5
         with:
           role-to-assume: ${{ env.AWS_DJANGO_ROLE_ARN }}
@@ -114,8 +116,8 @@ jobs:
     name: Deploy to EC2
     runs-on: ubuntu-latest
     needs: build
+    # if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     environment: production
-    # if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.deploy == 'true')
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -125,28 +127,52 @@ jobs:
         with:
           role-to-assume: ${{ env.AWS_DJANGO_ROLE_ARN }}
           aws-region: ${{ secrets.AWS_REGION }}
-          role-session-name: GitHubActions-DjangoDeploy
+          role-session-name: GitHubActions-DjangoProduction
+
+      - name: Upload docker-compose.prod.yaml to S3
+        run: |
+          aws s3 cp docker-compose.prod.yaml s3://${{ env.S3_BUCKET_NAME }}/${{ env.S3_KEY }}
 
       - name: Send Deployment Command to EC2 via SSM
+        env:
+          ECR_URI: ${{ steps.login-ecr.outputs.registry }}
         run: |
-          DEPLOYMENT_SCRIPT=$(cat <<EOF
-            DEPLOY_PATH=/path/to/your/app/on/ec2
-            cd \$DEPLOY_PATH
-            
-            git pull origin main 
-            
-            aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_URI
-            
-            docker compose -f docker-compose.prod.yaml pull
-            
-            ECR_REPOSITORY=${{ env.ECR_REPOSITORY }} IMAGE_TAG=${{ env.SHA_TAG }} docker compose -f docker-compose.prod.yaml up -d --remove-orphans
-            
-            docker image prune -f
-          EOF
-          )
-          aws ssm send-command \
-            --instance-ids "${{ secrets.TARGET_EC2_ID }}"
-            --document-name "AWS-RunShellScript" \
-            --parameters commands="$DEPLOYMENT_SCRIPT" \
+          ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
+          ECR_URI="$ACCOUNT_ID.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com"
+
+          cat <<EOF > deploy_script.sh
+          DEPLOY_PATH=/opt/django
+          sudo mkdir -p \$DEPLOY_PATH
+          sudo chown -R \$USER:\$USER \$DEPLOY_PATH
+          cd \$DEPLOY_PATH
+
+          aws secretsmanager get-secret-value \
+            --secret-id "${{ env.SECRET_ID }}" \
             --region ${{ secrets.AWS_REGION }} \
-            --output text
+            --query 'SecretString' \
+            --output text | jq -r 'to_entries | .[] | "\(.key)=\(.value)"' > .env
+
+          export DJANGO_IMAGE="$ECR_URI/${{ env.ECR_REPOSITORY }}:${{ env.SHA_TAG }}"
+
+          aws s3 cp s3://${{ env.S3_BUCKET_NAME }}/${{ env.S3_KEY }} docker-compose.prod.yaml
+          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin $ECR_URI
+
+          docker-compose -f docker-compose.prod.yaml pull
+          docker-compose -f docker-compose.prod.yaml up -d --remove-orphans
+
+          docker image prune -f
+          aws s3 rm s3://${{ env.S3_BUCKET_NAME }}/${{ env.S3_KEY }}
+          EOF
+
+          ESCAPED_SCRIPT=$(cat deploy_script.sh | jq -R -s .)
+
+          COMMAND_ID=$(aws ssm send-command \
+            --instance-ids "${{ env.TARGET_EC2_ID }}" \
+            --document-name "AWS-RunShellScript" \
+            --parameters "commands=$ESCAPED_SCRIPT" \
+            --region ${{ secrets.AWS_REGION }} \
+            --query "Command.CommandId" \
+            --output text)
+
+          echo "SSM Command ID: $COMMAND_ID"
+          aws ssm wait command-executed --command-id "$COMMAND_ID" --instance-id "${{ env.TARGET_EC2_ID }}" --region ${{ secrets.AWS_REGION }}
