@@ -101,10 +101,14 @@ jobs:
       - name: Build Docker Image and push to ECR
         run: |
           ECR_URI=${{ steps.login-ecr.outputs.registry }}
+          CACHE_REF=$ECR_URI/$ECR_REPOSITORY:buildcache
           docker buildx build \
             --platform linux/arm64,linux/amd64 \
             -t $ECR_URI/$ECR_REPOSITORY:$IMAGE_TAG \
-            --push .
+            --push \
+            --cache-from "type=registry,ref=$CACHE_REF" \
+            --cache-to "type=registry,ref=$CACHE_REF,mode=max" \
+            .
 
   deploy:
     name: Deploy to EC2
