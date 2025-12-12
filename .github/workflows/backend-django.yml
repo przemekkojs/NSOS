@@ -41,7 +41,7 @@ env:
   IMAGE_TAG: ${{ github.sha }}
   SHA_TAG: ${{ github.sha }}
   AWS_DJANGO_ROLE_ARN: "arn:aws:iam::966121466059:role/github-actions-django-deploy" # FIXME: replace with secret
-  TARGET_EC2_ID: "i-05078a74ab583c51f"
+  TARGET_EC2_ID: "i-0f898d51625a84230"
   S3_BUCKET_NAME: "django-artifacts-bucket"
   S3_KEY: "deployment/${{ github.sha }}/docker-compose.prod.yaml"
 
