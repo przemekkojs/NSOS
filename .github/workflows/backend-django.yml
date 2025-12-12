@@ -1,0 +1,191 @@
+name: Backend - Django
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "services/core-api/**"
+      - ".github/workflows/backend-django.yml"
+      # NOTE: remove the following when django is moved to its own directory
+      - "main/**"
+      - "scripts/**"
+  pull_request:
+    branches: [main]
+    paths:
+      - "services/core-api/**"
+      - ".github/workflows/backend-django.yml"
+      # NOTE: remove the following when django is moved to its own directory
+      - "main/**"
+      - "scripts/**"
+  workflow_dispatch:
+    inputs:
+      deploy:
+        description: "Deploy to production"
+        required: true
+        type: boolean
+        default: false
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  # WORKING_DIR: services/core-api
+  WORKING_DIR: .
+  ECR_REPOSITORY: "django-backend" # FIXME: replace with secret
+  # ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+  IMAGE_TAG: ${{ github.sha }}
+  SHA_TAG: ${{ github.sha }}
+  AWS_DJANGO_ROLE_ARN: "arn:aws:iam::966121466059:role/github-actions-django-deploy" # FIXME: replace with secret
+  TARGET_EC2_ID: "i-0f898d51625a84230"
+  S3_BUCKET_NAME: "django-artifacts-bucket"
+  S3_KEY: "deployment/${{ github.sha }}/docker-compose.prod.yaml"
+
+defaults:
+  run:
+    working-directory: .
+
+jobs:
+  quality-checks:
+    name: Lint and Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install Ruff
+        run: pip install ruff
+
+      - name: Run Ruff Linter
+        run: ruff check
+
+      - name: Run Ruff Formatter
+        run: ruff format
+
+      # - name: Run Django Tests
+      #   run: python manage.py test
+
+  build:
+    name: Build & Push to ECR
+    runs-on: ubuntu-latest
+    needs: quality-checks
+    environment: production
+    # if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Configure AWS credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@v5
+        with:
+          role-to-assume: ${{ env.AWS_DJANGO_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+          role-session-name: GitHubActions-DjangoDeploy
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker Image and push to ECR
+        run: |
+          ECR_URI=${{ steps.login-ecr.outputs.registry }}
+          CACHE_REF=$ECR_URI/$ECR_REPOSITORY:buildcache
+          docker buildx build \
+            --platform linux/arm64,linux/amd64 \
+            -t $ECR_URI/$ECR_REPOSITORY:$IMAGE_TAG \
+            --push \
+            --cache-from "type=registry,ref=$CACHE_REF" \
+            --cache-to "type=registry,ref=$CACHE_REF,mode=max" \
+            .
+
+  deploy:
+    name: Deploy to EC2
+    runs-on: ubuntu-latest
+    needs: build
+    environment: production
+    # if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.deploy == 'true')
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Configure AWS credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@v5
+        with:
+          role-to-assume: ${{ env.AWS_DJANGO_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+          role-session-name: GitHubActions-DjangoDeploy
+
+      - name: Upload docker-compose.prod.yaml to S3
+        run: |
+          aws s3 cp docker-compose.prod.yaml s3://${{ env.S3_BUCKET_NAME }}/${{ env.S3_KEY }}
+
+      - name: Send Deployment Command to EC2 via SSM
+        env:
+          ECR_URI: ${{ steps.login-ecr.outputs.registry }}
+        run: |
+          DEPLOYMENT_SCRIPT=$(cat <<EOF
+            DEPLOY_PATH=/opt/django
+            cd \$DEPLOY_PATH
+            
+            aws s3 cp s3://${{ env.S3_BUCKET_NAME }}/${{ env.S3_KEY }} docker-compose.prod.yaml
+            
+            aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin \$ECR_URI
+            
+            docker-compose -f docker-compose.prod.yaml pull
+            
+            ECR_REPOSITORY=${{ env.ECR_REPOSITORY }} IMAGE_TAG=${{ env.SHA_TAG }} docker-compose -f docker-compose.prod.yaml up -d --remove-orphans
+            
+            docker image prune -f
+
+            aws s3 rm s3://${{ env.S3_BUCKET_NAME }}/${{ env.S3_KEY }}
+          EOF
+          )
+          COMMAND_OUTPUT=$(aws ssm send-command \
+            --instance-ids "${{ env.TARGET_EC2_ID }}" \
+            --document-name "AWS-RunShellScript" \
+            --parameters commands="$DEPLOYMENT_SCRIPT" \
+            --region ${{ secrets.AWS_REGION }} \
+            --output json)
+
+          echo "SSM Command ID: $COMMAND_ID"
+
+          aws ssm wait command-executed \
+            --command-id "$COMMAND_ID" \
+            --instance-id "${{ env.TARGET_EC2_ID }}" \
+            --region ${{ secrets.AWS_REGION }}
+
+          STATUS=$(aws ssm get-command-invocation \
+            --command-id "$COMMAND_ID" \
+            --instance-id "${{ env.TARGET_EC2_ID }}" \
+            --query 'Status' \
+            --output text)
+
+            echo "Final SSM Status: $STATUS"
+
+          if [ "$STATUS" != "Success" ]; then
+            aws ssm get-command-invocation \
+              --command-id "$COMMAND_ID" \
+              --instance-id "${{ env.TARGET_EC2_ID }}" \
+              --query '[StandardOutputContent, StandardErrorContent]' \
+              --output text
+            echo "---------------------------------"
+            exit 1
+          fi
+
+
