@@ -39,7 +39,9 @@ env:
   ECR_REPOSITORY: "django-backend" # FIXME: replace with secret
   # ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
   IMAGE_TAG: ${{ github.sha }}
+  SHA_TAG: ${{ github.sha }}
   AWS_DJANGO_ROLE_ARN: "arn:aws:iam::966121466059:role/github-actions-django-deploy" # FIXME: replace with secret
+  TARGET_EC2_ID: "i-0344303100b5742bb"
 
 defaults:
   run:
@@ -130,12 +132,12 @@ jobs:
       - name: Send Deployment Command to EC2 via SSM
         run: |
           DEPLOYMENT_SCRIPT=$(cat <<EOF
-            DEPLOY_PATH=/path/to/your/app/on/ec2
+            DEPLOY_PATH=/opt/django
             cd \$DEPLOY_PATH
             
             git pull origin main 
             
-            aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_URI
+            aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin $ECR_URI
             
             docker compose -f docker-compose.prod.yaml pull
             
@@ -145,7 +147,7 @@ jobs:
           EOF
           )
           aws ssm send-command \
-            --instance-ids "${{ secrets.TARGET_EC2_ID }}"
+            --instance-ids "${{ env.TARGET_EC2_ID }}" \
             --document-name "AWS-RunShellScript" \
             --parameters commands="$DEPLOYMENT_SCRIPT" \
             --region ${{ secrets.AWS_REGION }} \
