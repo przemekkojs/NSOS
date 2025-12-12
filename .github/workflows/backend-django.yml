@@ -42,6 +42,8 @@ env:
   SHA_TAG: ${{ github.sha }}
   AWS_DJANGO_ROLE_ARN: "arn:aws:iam::966121466059:role/github-actions-django-deploy" # FIXME: replace with secret
   TARGET_EC2_ID: "i-0344303100b5742bb"
+  S3_BUCKET_NAME: "django-artifacts-bucket"
+  S3_KEY: "deployment/${{ github.sha }}/docker-compose.prod.yaml"
 
 defaults:
   run:
@@ -129,21 +131,29 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
           role-session-name: GitHubActions-DjangoDeploy
 
+      - name: Upload docker-compose.prod.yaml to S3
+        run: |
+          aws s3 cp docker-compose.prod.yaml s3://${{ env.S3_BUCKET_NAME }}/${{ env.S3_KEY }}
+
       - name: Send Deployment Command to EC2 via SSM
+        env:
+          ECR_URI: ${{ steps.login-ecr.outputs.registry }}
         run: |
           DEPLOYMENT_SCRIPT=$(cat <<EOF
             DEPLOY_PATH=/opt/django
             cd \$DEPLOY_PATH
             
-            git pull origin main 
+            aws s3 cp s3://${{ env.S3_BUCKET_NAME }}/${{ env.S3_KEY }} docker-compose.prod.yaml
             
-            aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin $ECR_URI
+            aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin \$ECR_URI
             
             docker compose -f docker-compose.prod.yaml pull
             
             ECR_REPOSITORY=${{ env.ECR_REPOSITORY }} IMAGE_TAG=${{ env.SHA_TAG }} docker compose -f docker-compose.prod.yaml up -d --remove-orphans
             
             docker image prune -f
+
+            aws s3 rm s3://${{ env.S3_BUCKET_NAME }}/${{ env.S3_KEY }}
           EOF
           )
           aws ssm send-command \
