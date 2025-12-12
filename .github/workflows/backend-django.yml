@@ -41,7 +41,7 @@ env:
   IMAGE_TAG: ${{ github.sha }}
   SHA_TAG: ${{ github.sha }}
   AWS_DJANGO_ROLE_ARN: "arn:aws:iam::966121466059:role/github-actions-django-deploy" # FIXME: replace with secret
-  TARGET_EC2_ID: "i-0344303100b5742bb"
+  TARGET_EC2_ID: "i-05078a74ab583c51f"
   S3_BUCKET_NAME: "django-artifacts-bucket"
   S3_KEY: "deployment/${{ github.sha }}/docker-compose.prod.yaml"
 
@@ -147,9 +147,9 @@ jobs:
             
             aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin \$ECR_URI
             
-            docker compose -f docker-compose.prod.yaml pull
+            docker-compose -f docker-compose.prod.yaml pull
             
-            ECR_REPOSITORY=${{ env.ECR_REPOSITORY }} IMAGE_TAG=${{ env.SHA_TAG }} docker compose -f docker-compose.prod.yaml up -d --remove-orphans
+            ECR_REPOSITORY=${{ env.ECR_REPOSITORY }} IMAGE_TAG=${{ env.SHA_TAG }} docker-compose -f docker-compose.prod.yaml up -d --remove-orphans
             
             docker image prune -f
 
