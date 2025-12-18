@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Faculty, Position, Semester, University, UniversityMembership
 from users.serializers import UserSerializer
+from users.models import User
 
 
 class FacultySerializer(serializers.ModelSerializer):
@@ -25,8 +26,9 @@ class SemesterSerializer(serializers.ModelSerializer):
 
 class UniversityMembershipSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
+    user_id = serializers.PrimaryKeyRelatedField(source='user', queryset=User.objects.all())
     university_id = serializers.PrimaryKeyRelatedField(queryset=University.objects.all(), source='university')
 
     class Meta:
         model = UniversityMembership
-        fields = ['id', 'user', 'university_id', 'position']
+        fields = ['id', 'user', 'user_id', 'university_id', 'position']

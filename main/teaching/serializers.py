@@ -6,30 +6,53 @@ class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = [
-            'id', 'course_code', 'name', 'weekly_hours', 'weeks_count',
-            'ects', 'course_group', 'course_type', 'faculty'
+            'id',
+            'course_code',
+            'name',
+            'weekly_hours',
+            'weeks_count',
+            'ects',
+            'course_group',
+            'course_type',
+            'faculty',
         ]
+        read_only_fields = ['id']
 
 
 class CourseGroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = CourseGroup
         fields = [
-            'id', 'course', 'name', 'lecturer', 'weekday',
-            'start_time', 'end_time', 'room', 'semester'
+            'id',
+            'course',
+            'name',
+            'lecturer',
+            'weekday',
+            'start_time',
+            'end_time',
+            'room',
+            'semester',
         ]
+        read_only_fields = ['id']
 
 
 class ClassSerializer(serializers.ModelSerializer):
     class Meta:
         model = Class
         fields = ['id', 'lecturer', 'course_group', 'date_held']
+        read_only_fields = ['id']
 
 
 class ScheduleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Schedule
         fields = [
-            'id', 'lecturer', 'student', 'course_group',
-            'date', 'start_time', 'end_time'
+            'id',
+            'lecturer',
+            'student',
+            'course_group',
+            'date',
+            'start_time',
+            'end_time',
         ]
+        read_only_fields = ['id']

@@ -3,3 +3,5 @@ django==4.2.25
 sqlparse==0.5.3
 typing-extensions==4.15.0
 tzdata==2025.2
+django-import-export==4.1.1
+djangorestframework==3.14.0

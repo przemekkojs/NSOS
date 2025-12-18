@@ -9,6 +9,10 @@ class User(AbstractUser):
     class Meta:
         verbose_name = "User"
         verbose_name_plural = "Users"
+        permissions = [
+            ("import_user", "Can import users"),
+            ("export_user", "Can export users"),
+        ]
 
     @property
     def is_student(self):
@@ -52,6 +56,10 @@ class Lecturer(models.Model):
     class Meta:
         verbose_name = "Lecturer"
         verbose_name_plural = "Lecturers"
+        permissions = [
+            ("import_lecturer", "Can import lecturers"),
+            ("export_lecturer", "Can export lecturers"),
+        ]
 
     def __str__(self):
         return f"{self.user.first_name} {self.user.last_name}"
@@ -68,6 +76,10 @@ class Student(models.Model):
     class Meta:
         verbose_name = "Student"
         verbose_name_plural = "Students"
+        permissions = [
+            ("import_student", "Can import students"),
+            ("export_student", "Can export students"),
+        ]
 
     def __str__(self):
         return f"{self.index_number} - {self.user.first_name} {self.user.last_name}"
