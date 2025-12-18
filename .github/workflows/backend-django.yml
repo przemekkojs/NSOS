@@ -139,40 +139,36 @@ jobs:
         run: |
           ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
           ECR_URI="$ACCOUNT_ID.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com"
-
-          cat <<EOF > deploy_script.sh
-          DEPLOY_PATH=/opt/django
-          sudo mkdir -p \$DEPLOY_PATH
-          sudo chown -R \$USER:\$USER \$DEPLOY_PATH
-          cd \$DEPLOY_PATH
-
-          aws secretsmanager get-secret-value \
-            --secret-id "${{ env.SECRET_ID }}" \
-            --region ${{ secrets.AWS_REGION }} \
-            --query 'SecretString' \
-            --output text | jq -r 'to_entries | .[] | "\(.key)=\(.value)"' > .env
-
-          export DJANGO_IMAGE="$ECR_URI/${{ env.ECR_REPOSITORY }}:${{ env.SHA_TAG }}"
-
-          aws s3 cp s3://${{ env.S3_BUCKET_NAME }}/${{ env.S3_KEY }} docker-compose.prod.yaml
-          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin $ECR_URI
-
-          docker-compose -f docker-compose.prod.yaml pull
-          docker-compose -f docker-compose.prod.yaml up -d --remove-orphans
-
-          docker image prune -f
-          aws s3 rm s3://${{ env.S3_BUCKET_NAME }}/${{ env.S3_KEY }}
-          EOF
-
-          ESCAPED_SCRIPT=$(cat deploy_script.sh | jq -R -s .)
+          DJANGO_IMAGE="$ECR_URI/${{ env.ECR_REPOSITORY }}:${{ env.SHA_TAG }}"
 
           COMMAND_ID=$(aws ssm send-command \
             --instance-ids "${{ env.TARGET_EC2_ID }}" \
             --document-name "AWS-RunShellScript" \
-            --parameters "commands=$ESCAPED_SCRIPT" \
+            --parameters commands="
+              set -e
+              DEPLOY_PATH=/opt/django
+              sudo mkdir -p \$DEPLOY_PATH
+              sudo chown -R \$USER:\$USER \$DEPLOY_PATH
+              cd \$DEPLOY_PATH
+              aws secretsmanager get-secret-value \
+                --secret-id '${{ env.SECRET_ID }}' \
+                --region ${{ secrets.AWS_REGION }} \
+                --query 'SecretString' \
+                --output text | jq -r 'to_entries | .[] | \"\(.key)=\(.value)\"' > .env
+              export DJANGO_IMAGE='$DJANGO_IMAGE'
+              aws s3 cp s3://${{ env.S3_BUCKET_NAME }}/${{ env.S3_KEY }} docker-compose.prod.yaml
+              aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin $ECR_URI
+              docker-compose -f docker-compose.prod.yaml pull
+              docker-compose -f docker-compose.prod.yaml up -d --remove-orphans
+              docker image prune -f
+              aws s3 rm s3://${{ env.S3_BUCKET_NAME }}/${{ env.S3_KEY }}
+            " \
             --region ${{ secrets.AWS_REGION }} \
             --query "Command.CommandId" \
             --output text)
-
+            
           echo "SSM Command ID: $COMMAND_ID"
-          aws ssm wait command-executed --command-id "$COMMAND_ID" --instance-id "${{ env.TARGET_EC2_ID }}" --region ${{ secrets.AWS_REGION }}
+          aws ssm wait command-executed \
+            --command-id "$COMMAND_ID" \
+            --instance-id "${{ env.TARGET_EC2_ID }}" \
+            --region ${{ secrets.AWS_REGION }}
