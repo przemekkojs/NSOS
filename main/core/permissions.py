@@ -38,17 +38,24 @@ class IsAdmin(BasePermission):
 
 class IsLecturerOfCourseGroup(BasePermission):
     def has_object_permission(self, request, view, obj):
-        if request.user:
+        user = request.user
+        if not user:
+            return False
+        if getattr(user, "is_staff", False):
             return True
-        if not is_lecturer(request.user):
+        if not is_lecturer(user):
+            return False
+
+        lecturer = getattr(user, "lecturer_profile", None)
+        if not lecturer:
             return False
 
         course_group = getattr(obj, 'course_group', None)
         if course_group:
-            return course_group.lecturer_id == getattr(request.user, 'lecturer').id
+            return course_group.lecturer_id == lecturer.id
 
         if getattr(obj, 'lecturer', None) is not None and hasattr(obj, 'lecturer'):
-            return obj.lecturer_id == getattr(request.user, 'lecturer').id
+            return obj.lecturer_id == lecturer.id
         return False
 
 

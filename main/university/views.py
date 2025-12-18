@@ -4,6 +4,7 @@ from .models import Faculty, Position, Semester, UniversityMembership
 from .serializers import FacultySerializer, PositionSerializer, SemesterSerializer, UniversityMembershipSerializer
 from core.permissions import IsStudentReadOnly, IsLecturerOrAdmin, HasMembershipAtUniversity, IsAdmin
 from rest_framework.pagination import PageNumberPagination
+from core.mixins import IMPORT_EXPORT_ACTIONS, AdminImportExportMixin
 
 
 class DefaultPagination(PageNumberPagination):
@@ -19,6 +20,10 @@ class RoleBasedViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         user = self.request.user
+
+        if getattr(self, "action", None) in IMPORT_EXPORT_ACTIONS:
+            return [IsAdmin()]
+
         if not user or not user.is_authenticated:
             return [DenyAll()]
 
@@ -34,22 +39,22 @@ class RoleBasedViewSet(viewsets.ModelViewSet):
         return [DenyAll()]
 
 
-class FacultyViewSet(RoleBasedViewSet):
+class FacultyViewSet(AdminImportExportMixin, RoleBasedViewSet):
     queryset = Faculty.objects.all()
     serializer_class = FacultySerializer
 
 
-class PositionViewSet(RoleBasedViewSet):
+class PositionViewSet(AdminImportExportMixin, RoleBasedViewSet):
     queryset = Position.objects.all()
     serializer_class = PositionSerializer
 
 
-class SemesterViewSet(RoleBasedViewSet):
+class SemesterViewSet(AdminImportExportMixin, RoleBasedViewSet):
     queryset = Semester.objects.select_related('faculty').all()
     serializer_class = SemesterSerializer
 
 
-class UniversityMembershipViewSet(RoleBasedViewSet):
+class UniversityMembershipViewSet(AdminImportExportMixin, RoleBasedViewSet):
     queryset = UniversityMembership.objects.all()
     serializer_class = UniversityMembershipSerializer
 
@@ -59,7 +64,6 @@ class UniversityMembershipViewSet(RoleBasedViewSet):
 
         if user.is_staff:
             return qs
-        if hasattr(user, 'is_student') or hasattr(user, 'is_lecturer'):
+        if user.is_student or user.is_lecturer:
             return qs.filter(user=user)
         return qs.none()
-

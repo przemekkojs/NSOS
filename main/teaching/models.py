@@ -22,6 +22,10 @@ class Course(models.Model):
     class Meta:
         verbose_name = "Course"
         verbose_name_plural = "Courses"
+        permissions = [
+            ("import_course", "Can import courses"),
+            ("export_course", "Can export courses"),
+        ]
 
     def __str__(self):
         return f"{self.course_code} - {self.name}"
@@ -40,6 +44,10 @@ class CourseGroup(models.Model):
     class Meta:
         verbose_name = "Course Group"
         verbose_name_plural = "Course Groups"
+        permissions = [
+            ("import_coursegroup", "Can import course groups"),
+            ("export_coursegroup", "Can export course groups"),
+        ]
 
     def __str__(self):
         return f"{self.name} - {self.course.name}"
@@ -53,6 +61,10 @@ class Class(models.Model):
     class Meta:
         verbose_name = "Class"
         verbose_name_plural = "Classes"
+        permissions = [
+            ("import_class", "Can import classes"),
+            ("export_class", "Can export classes"),
+        ]
 
     def __str__(self):
         return f"{self.course_group} ({self.date_held})"
@@ -69,6 +81,10 @@ class Schedule(models.Model):
     class Meta:
         verbose_name = "Schedule"
         verbose_name_plural = "Schedules"
+        permissions = [
+            ("import_schedule", "Can import schedules"),
+            ("export_schedule", "Can export schedules"),
+        ]
 
     def __str__(self):
         return f"{self.date} - {self.course_group}"

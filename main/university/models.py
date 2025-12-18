@@ -8,6 +8,10 @@ class Faculty(models.Model):
     class Meta:
         verbose_name = "Faculty"
         verbose_name_plural = "Faculties"
+        permissions = [
+            ("import_faculty", "Can import faculties"),
+            ("export_faculty", "Can export faculties"),
+        ]
 
     def __str__(self):
         return self.name
@@ -31,6 +35,10 @@ class Position(models.Model):
     class Meta:
         verbose_name = "Position"
         verbose_name_plural = "Positions"
+        permissions = [
+            ("import_position", "Can import positions"),
+            ("export_position", "Can export positions"),
+        ]
 
     def __str__(self):
         return f"{self.name} ({self.workload})"
@@ -56,6 +64,10 @@ class Semester(models.Model):
         unique_together = ('faculty', 'academic_year', 'type')
         verbose_name = "Semester"
         verbose_name_plural = "Semesters"
+        permissions = [
+            ("import_semester", "Can import semesters"),
+            ("export_semester", "Can export semesters"),
+        ]
 
     def __str__(self):
         return f"{self.name} ({self.academic_year})"
@@ -70,6 +82,10 @@ class University(models.Model):
     class Meta:
         verbose_name = "University"
         verbose_name_plural = "Universities"
+        permissions = [
+            ("import_university", "Can import universities"),
+            ("export_university", "Can export universities"),
+        ]
 
     def __str__(self):
         return self.name
@@ -89,6 +105,10 @@ class UniversityMembership(models.Model):
         unique_together = ('user', 'university')
         verbose_name = "University Membership"
         verbose_name_plural = "University Memberships"
+        permissions = [
+            ("import_universitymembership", "Can import university memberships"),
+            ("export_universitymembership", "Can export university memberships"),
+        ]
 
     def __str__(self):
         return f"{self.user} @ {self.university}"
