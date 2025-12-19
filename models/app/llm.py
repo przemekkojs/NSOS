@@ -1,5 +1,8 @@
 import os
 import requests
+import httpx
+import json
+
 from dotenv import load_dotenv
 
 from .names import LLM_4
@@ -12,6 +15,7 @@ API_URL = "https://router.huggingface.co/v1/chat/completions"
 headers = {
     "Authorization": f"Bearer {HF_TOKEN}",
 }
+
 
 def generate_prompt(question: str, docs: (list[str] | None)) -> str:
     if not question:
@@ -29,36 +33,67 @@ def generate_prompt(question: str, docs: (list[str] | None)) -> str:
         "Odpowiedź:"
     )
 
+
 def query(payload):
-    response = requests.post(
-        API_URL,
-        headers=headers,
-        json=payload
-    )
+    response = requests.post(API_URL, headers=headers, json=payload)
 
     return response.json()
 
-def retrieve_answer(response:dict, model_name:str) -> str:
-    error_dict = [{'message' : {'content' : str(response)}}]
 
-    mapping:dict[str, str] = {
-        LLM_4 : response.get('choices', error_dict)[0]['message']['content']
+def retrieve_answer(response: dict, model_name: str) -> str:
+    error_dict = [{"message": {"content": str(response)}}]
+
+    mapping: dict[str, str] = {
+        LLM_4: response.get("choices", error_dict)[0]["message"]["content"]
     }
 
     return mapping[model_name]
 
-def generate(prompt: str, model_name:str) -> str:
+
+def generate(prompt: str, model_name: str) -> str:
     try:
-        response = query({
-            "messages": [
-                {
-                    "role": "user",
-                    "content": prompt
-                }
-            ],
-            "model": model_name
-        })
+        response = query(
+            {"messages": [{"role": "user", "content": prompt}], "model": model_name}
+        )
 
         return retrieve_answer(response, model_name)
     except Exception as e:
         return f"Something went wrong... {str(e)}"
+
+
+async def generate_stream(prompt: str, model_name: str):
+    payload = {
+        "messages": [{"role": "user", "content": prompt}],
+        "model": model_name,
+        "stream": True,
+    }
+
+    async with httpx.AsyncClient() as client:
+        async with client.stream(
+            "POST", API_URL, headers=headers, json=payload, timeout=60.0
+        ) as response:
+            async for line in response.aiter_lines():
+                if not line or line.strip() == "":
+                    continue
+
+                if line.startswith("data: "):
+                    line = line[6:]
+
+                if line.strip() == "[DONE]":
+                    break
+
+                try:
+                    data = json.loads(line)
+
+                    choices = data.get("choices", [])
+                    if not choices:
+                        continue  # Skip chunks that don't have text
+
+                    delta = choices[0].get("delta", {})
+                    content = delta.get("content", "")
+
+                    if content:
+                        yield content
+
+                except json.JSONDecodeError:
+                    continue
