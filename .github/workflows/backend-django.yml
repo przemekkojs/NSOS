@@ -18,12 +18,6 @@ on:
       - "main/**"
       - "scripts/**"
   workflow_dispatch:
-    inputs:
-      deploy:
-        description: "Deploy to production"
-        required: true
-        type: boolean
-        default: false
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -82,6 +76,8 @@ jobs:
     needs: quality-checks
     # if: github.ref == 'refs/heads/main' || github.event_name == 'workflow-dispatch'
     environment: production
+    outputs:
+      image: ${{ steps.build-image.outputs.image }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -101,16 +97,20 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Build Docker Image and push to ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
-          ECR_URI=${{ steps.login-ecr.outputs.registry }}
-          CACHE_REF=$ECR_URI/$ECR_REPOSITORY:buildcache
+          CACHE_REF=$ECR_REGISTRY/$ECR_REPOSITORY:buildcache
           docker buildx build \
-            --platform linux/arm64,linux/amd64 \
-            -t $ECR_URI/$ECR_REPOSITORY:$IMAGE_TAG \
+            --platform linux/arm64 \
             --push \
+            --tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
+            --tag $ECR_REGISTRY/$ECR_REPOSITORY:latest \
             --cache-from "type=registry,ref=$CACHE_REF" \
             --cache-to "type=registry,ref=$CACHE_REF,mode=max" \
             .
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
   deploy:
     name: Deploy to EC2
@@ -122,20 +122,26 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
-      - name: Configure AWS credentials via OIDC
+      - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v5
         with:
           role-to-assume: ${{ env.AWS_DJANGO_ROLE_ARN }}
           aws-region: ${{ secrets.AWS_REGION }}
           role-session-name: GitHubActions-DjangoProduction
 
-      - name: Upload docker-compose.prod.yaml to S3
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Upload docker-compose to S3
         run: |
           aws s3 cp docker-compose.prod.yaml s3://${{ env.S3_BUCKET_NAME }}/${{ env.S3_KEY }}
 
       - name: Send Deployment Command to EC2 via SSM
         env:
           ECR_URI: ${{ steps.login-ecr.outputs.registry }}
+          DJANGO_IMAGE: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ env.SHA_TAG }}
+          REGION: ${{ secrets.AWS_REGION}}
         run: |
           ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
           ECR_URI="$ACCOUNT_ID.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com"
@@ -144,25 +150,20 @@ jobs:
           COMMAND_ID=$(aws ssm send-command \
             --instance-ids "${{ env.TARGET_EC2_ID }}" \
             --document-name "AWS-RunShellScript" \
-            --parameters commands="
-              set -e
-              DEPLOY_PATH=/opt/django
-              sudo mkdir -p \$DEPLOY_PATH
-              sudo chown -R \$USER:\$USER \$DEPLOY_PATH
-              cd \$DEPLOY_PATH
-              aws secretsmanager get-secret-value \
-                --secret-id '${{ env.SECRET_ID }}' \
-                --region ${{ secrets.AWS_REGION }} \
-                --query 'SecretString' \
-                --output text | jq -r 'to_entries | .[] | \"\(.key)=\(.value)\"' > .env
-              export DJANGO_IMAGE='$DJANGO_IMAGE'
-              aws s3 cp s3://${{ env.S3_BUCKET_NAME }}/${{ env.S3_KEY }} docker-compose.prod.yaml
-              aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin $ECR_URI
-              docker-compose -f docker-compose.prod.yaml pull
-              docker-compose -f docker-compose.prod.yaml up -d --remove-orphans
-              docker image prune -f
-              aws s3 rm s3://${{ env.S3_BUCKET_NAME }}/${{ env.S3_KEY }}
-            " \
+            --parameters 'commands=[
+              "set -e",
+              "DEPLOY_PATH=/opt/django",
+              "sudo mkdir -p $DEPLOY_PATH",
+              "sudo chown -R $USER:$USER $DEPLOY_PATH",
+              "cd $DEPLOY_PATH",
+              "aws secretsmanager get-secret-value --secret-id ${{ env.SECRET_ID }} --region ${{ secrets.AWS_REGION }} --query SecretString --output text | jq -r \"to_entries | .[] | \\\"\(.key)=\(.value)\\\"\" > .env",
+              "export DJANGO_IMAGE=${{ env.DJANGO_IMAGE }}",
+              "aws s3 cp s3://${{ env.S3_BUCKET_NAME }}/${{ env.S3_KEY }} docker-compose.prod.yaml",
+              "aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ env.ECR_URI }}
+              "docker-compose -f docker-compose.prod.yaml pull",
+              "docker-compose -f docker-compose.prod.yaml up -d --remove-orphans",
+              "docker image prune -f"
+            ]' \
             --region ${{ secrets.AWS_REGION }} \
             --query "Command.CommandId" \
             --output text)
@@ -172,3 +173,8 @@ jobs:
             --command-id "$COMMAND_ID" \
             --instance-id "${{ env.TARGET_EC2_ID }}" \
             --region ${{ secrets.AWS_REGION }}
+
+      - name: Cleanup S3 artifact
+        if: always()
+        run: |
+          aws s3 rm s3://${{ env.S3_BUCKET_NAME }}/${{ env.S3_KEY }}
