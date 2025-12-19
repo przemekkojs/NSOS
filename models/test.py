@@ -1,7 +1,7 @@
-from rag import RagEngine
-from llm import generate, generate_prompt
-from docs import fetch_docs
-from names import LLM_4
+from app.rag import RagEngine
+from app.llm import generate, generate_prompt
+from app.docs import fetch_docs
+from app.names import LLM_4
 
 if __name__ == "__main__":
     raw_docs:list = fetch_docs('przemekkojs', "NSOS")

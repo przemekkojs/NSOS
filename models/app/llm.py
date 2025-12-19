@@ -1,7 +1,8 @@
 import os
 import requests
 from dotenv import load_dotenv
-from names import LLM_4
+
+from .names import LLM_4
 
 load_dotenv()
 
@@ -38,8 +39,10 @@ def query(payload):
     return response.json()
 
 def retrieve_answer(response:dict, model_name:str) -> str:
+    error_dict = [{'message' : {'content' : str(response)}}]
+
     mapping:dict[str, str] = {
-        LLM_4 : response['choices'][0]['message']['content']
+        LLM_4 : response.get('choices', error_dict)[0]['message']['content']
     }
 
     return mapping[model_name]
@@ -57,5 +60,5 @@ def generate(prompt: str, model_name:str) -> str:
         })
 
         return retrieve_answer(response, model_name)
-    except Exception:
-        return "Something went wrong..."
+    except Exception as e:
+        return f"Something went wrong... {str(e)}"

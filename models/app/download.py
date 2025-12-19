@@ -1,8 +1,8 @@
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from sentence_transformers import SentenceTransformer, util
 import torch
-from names import *
-from paths import *
+from .names import *
+from .paths import *
 
 if __name__ == "__main__":
     llm_model_name = LLM_2
