@@ -137,34 +137,30 @@ jobs:
         run: |
           aws s3 cp docker-compose.prod.yaml s3://${{ env.S3_BUCKET_NAME }}/${{ env.S3_KEY }}
 
-      - name: Send Deployment Command to EC2 via SSM
+      - name: Send Deployment Command to EC2
         env:
           ECR_URI: ${{ steps.login-ecr.outputs.registry }}
           DJANGO_IMAGE: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ env.SHA_TAG }}
           REGION: ${{ secrets.AWS_REGION}}
         run: |
-          ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
-          ECR_URI="$ACCOUNT_ID.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com"
-          DJANGO_IMAGE="$ECR_URI/${{ env.ECR_REPOSITORY }}:${{ env.SHA_TAG }}"
-
           COMMAND_ID=$(aws ssm send-command \
             --instance-ids "${{ env.TARGET_EC2_ID }}" \
             --document-name "AWS-RunShellScript" \
-            --parameters 'commands=[
-              "set -e",
-              "DEPLOY_PATH=/opt/django",
-              "sudo mkdir -p $DEPLOY_PATH",
-              "sudo chown -R $USER:$USER $DEPLOY_PATH",
-              "cd $DEPLOY_PATH",
-              "aws secretsmanager get-secret-value --secret-id ${{ env.SECRET_ID }} --region ${{ secrets.AWS_REGION }} --query SecretString --output text | jq -r \"to_entries | .[] | \\\"\(.key)=\(.value)\\\"\" > .env",
-              "export DJANGO_IMAGE=${{ env.DJANGO_IMAGE }}",
-              "aws s3 cp s3://${{ env.S3_BUCKET_NAME }}/${{ env.S3_KEY }} docker-compose.prod.yaml",
-              "aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ env.ECR_URI }}
-              "docker-compose -f docker-compose.prod.yaml pull",
-              "docker-compose -f docker-compose.prod.yaml up -d --remove-orphans",
-              "docker image prune -f"
-            ]' \
-            --region ${{ secrets.AWS_REGION }} \
+            --parameters "commands=[
+              \"set -e\",
+              \"DEPLOY_PATH=/opt/django\",
+              \"sudo mkdir -p \$DEPLOY_PATH\",
+              \"sudo chown -R \$USER:\$USER \$DEPLOY_PATH\",
+              \"cd \$DEPLOY_PATH\",
+              \"aws secretsmanager get-secret-value --secret-id ${{ env.SECRET_ID }} --region $REGION --query SecretString --output text | jq -r 'to_entries | .[] | \\\"\(.key)=\(.value)\\\"' > .env\",
+              \"export DJANGO_IMAGE=$DJANGO_IMAGE\",
+              \"aws s3 cp s3://${{ env.S3_BUCKET_NAME }}/${{ env.S3_KEY }} docker-compose.prod.yaml\",
+              \"aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ECR_URI\",
+              \"docker-compose -f docker-compose.prod.yaml pull\",
+              \"docker-compose -f docker-compose.prod.yaml up -d --remove-orphans\",
+              \"docker image prune -f\"
+            ]" \
+            --region $REGION \
             --query "Command.CommandId" \
             --output text)
             
