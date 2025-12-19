@@ -45,6 +45,18 @@ services:
     networks:
       - backend
 
+  migrate:
+    image: ${DJANGO_IMAGE}
+    entrypoint: ["python"]
+    command: ["main/manage.py", "migrate", "--noinput"]
+    env_file: .env
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
+    networks:
+      - backend
+
 networks:
   backend:
 

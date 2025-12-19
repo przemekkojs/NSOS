@@ -154,10 +154,12 @@ jobs:
               \"cd \$DEPLOY_PATH\",
               \"aws secretsmanager get-secret-value --secret-id ${{ env.SECRET_ID }} --region $REGION --query SecretString --output text | jq -r 'to_entries | .[] | \\\"\(.key)=\(.value)\\\"' > .env\",
               \"export DJANGO_IMAGE=$DJANGO_IMAGE\",
+              \"echo $DJANGO_IMAGE >> .env\",
               \"aws s3 cp s3://${{ env.S3_BUCKET_NAME }}/${{ env.S3_KEY }} docker-compose.prod.yaml\",
               \"aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ECR_URI\",
               \"docker-compose -f docker-compose.prod.yaml pull\",
-              \"docker-compose -f docker-compose.prod.yaml up -d --remove-orphans\",
+              \"docker-compose -f docker-compose.prod.yaml run --rm migrate\",
+              \"docker-compose -f docker-compose.prod.yaml up -d --remove-orphans django\",
               \"docker image prune -f\"
             ]" \
             --region $REGION \
