@@ -51,8 +51,8 @@ urllib3==2.6.2
 uvicorn==0.38.0
     # via nsos-cpy (pyproject.toml)
 typing-extensions==4.15.0
-tzdata==2025.2
 
+tzdata==2025.2
 transformers
 torch
 sentence_transformers

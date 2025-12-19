@@ -1,16 +1,3 @@
-# from transformers import AutoTokenizer, AutoModelForCausalLM
-# import torch
-# from paths import llm_save_path
-
-# tokenizer = AutoTokenizer.from_pretrained(llm_save_path, fix_mistral_regex=True)
-# model = AutoModelForCausalLM.from_pretrained(llm_save_path)
-
-# # To potem można łatwo zmienić, żeby korzystać z Hugging Face - nie będzie trzeba mieć modelu lokalnie
-# def generate(prompt):
-#     inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
-#     output = model.generate(**inputs, max_new_tokens=300)
-#     return tokenizer.decode(output[0], skip_special_tokens=True)
-
 import os
 import requests
 from dotenv import load_dotenv
@@ -25,7 +12,7 @@ headers = {
     "Authorization": f"Bearer {HF_TOKEN}",
 }
 
-def generate_prompt(question: str, docs: list[str]) -> str:
+def generate_prompt(question: str, docs: (list[str] | None)) -> str:
     if not question:
         raise ValueError("Question cannot be empty")
     if docs is None:
