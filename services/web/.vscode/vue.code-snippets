@@ -1,0 +1,14 @@
+{
+  "Vue Script setup template": {
+    "scope": "vue",
+    "prefix": "vss",
+    "body": [
+      "<script setup lang=\"ts\">",
+      "</script>",
+      "<template>",
+      "  $0",
+      "</template>",
+    ],
+    "description": "Create Vue SFC",
+  },
+}

@@ -1,0 +1,11 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+@layer theme {
+  :root {
+    --font-scale: 1;
+    --text-sm: calc(0.875rem * var(--font-scale));
+  }
+}
+
+@source '../../../content/**/*';

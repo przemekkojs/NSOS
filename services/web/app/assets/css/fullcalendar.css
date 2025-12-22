@@ -1,0 +1,48 @@
+:root {
+  --fc-today-bg-color: var(--color-primary-100);
+  --fc-event-bg-color: var(--color-primary-500);
+  --fc-event-border-color: var(--fc-event-bg-color);
+  --fc-border-color: var(--ui-border);
+  --fc-button-bg-color: var(--ui-primary);
+  --fc-button-border-color: var(--fc-button-bg-color);
+  --fc-button-hover-bg-color: var(--color-primary-700);
+  --fc-button-hover-border-color: var(--fc-button-hover-bg-color);
+  --fc-button-active-bg-color: var(--color-primary-800);
+  --fc-now-indicator-color: var(--color-primary-600);
+}
+
+.dark {
+  --fc-today-bg-color: var(--color-primary-950);
+  --fc-event-bg-color: var(--color-primary-400);
+}
+
+.fc-toolbar-title {
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.fc .fc-timegrid-now-indicator-line {
+  border-width: 2px 0 0;
+}
+
+.fc-event {
+  border: none;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-weight: 600;
+}
+
+.fc .fc-button {
+  transition: all 150ms;
+  border-radius: calc(var(--ui-radius) * 1.5);
+  font: inherit;
+  font-size: 1rem;
+  color: var(--ui-text-inverted);
+  padding-block: calc(var(--spacing) * 1.5);
+  padding-inline: calc(var(--spacing) * 2.5);
+  text-align: center;
+}
+
+.fc-media-screen {
+  height: 100%;
+}
