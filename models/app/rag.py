@@ -1,5 +1,5 @@
 from sentence_transformers import SentenceTransformer, util
-from .names import *
+from names import *
 
 def chunk_text(text, size=800, overlap=200):
     chunks = []
