@@ -1,11 +1,10 @@
 from fastapi import Request, APIRouter
 from fastapi.responses import StreamingResponse
 
-from .llm import generate, generate_prompt, generate_stream
-from .names import LLM_4
+from llm import generate, generate_prompt, generate_stream
+from names import LLM_4
 
 router = APIRouter()
-
 
 @router.post("/chat")
 async def chat(request: Request, question: str):

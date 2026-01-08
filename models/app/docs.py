@@ -1,6 +1,8 @@
 import requests
 
-def fetch_docs(repo_owner:str, repo_name:str, path:str=""):
+from paths import docs_save_path
+
+def fetch_docs(repo_owner:str, repo_name:str, path:str="") -> list[str]:
     api_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/contents/{path}"
     response = requests.get(api_url)
 
@@ -21,3 +23,17 @@ def fetch_docs(repo_owner:str, repo_name:str, path:str=""):
             docs.append(file_content)
 
     return docs
+
+def save_docs() -> None:
+    docs:list[str] = fetch_docs("przemekkojs", "NSOS")
+
+    with open(docs_save_path, mode='w', encoding='utf-8') as file:
+        file.writelines(docs)
+
+def get_docs() -> list[str]:
+    result:list[str] = []
+
+    with open(docs_save_path, mode='r', encoding='utf-8') as file:
+        result = file.readlines()
+    
+    return result
