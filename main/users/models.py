@@ -1,10 +1,12 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from university.models import Faculty, Semester, Position
+from aws.s3 import PrivateMediaStorage
 
 
 class User(AbstractUser):
     email = models.EmailField(unique=True)
+    avatar = models.FileField(storage=PrivateMediaStorage(), null=True)
 
     class Meta:
         verbose_name = "User"
@@ -15,17 +17,19 @@ class User(AbstractUser):
 
 
 class Lecturer(User):
-    ACTIVE = 'active'
-    INACTIVE = 'inactive'
-    RETIRED = 'retired'
+    ACTIVE = "active"
+    INACTIVE = "inactive"
+    RETIRED = "retired"
 
     STATUS_CHOICES = [
-        (ACTIVE, 'Active'),
-        (INACTIVE, 'Inactive'),
-        (RETIRED, 'No longer employed'),
+        (ACTIVE, "Active"),
+        (INACTIVE, "Inactive"),
+        (RETIRED, "No longer employed"),
     ]
 
-    faculty = models.ForeignKey(Faculty, on_delete=models.CASCADE, related_name='lecturers')
+    faculty = models.ForeignKey(
+        Faculty, on_delete=models.CASCADE, related_name="lecturers"
+    )
     position = models.ForeignKey(Position, on_delete=models.SET_NULL, null=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=ACTIVE)
 
@@ -42,7 +46,9 @@ class Student(User):
     field_of_study = models.CharField(max_length=100)
     year_of_study = models.SmallIntegerField()
     semester = models.ForeignKey(Semester, on_delete=models.SET_NULL, null=True)
-    faculty = models.ForeignKey(Faculty, on_delete=models.CASCADE, related_name='students')
+    faculty = models.ForeignKey(
+        Faculty, on_delete=models.CASCADE, related_name="students"
+    )
 
     class Meta:
         verbose_name = "Student"
