@@ -35,5 +35,7 @@ def get_docs() -> list[str]:
 
     with open(docs_save_path, mode='r', encoding='utf-8') as file:
         result = file.readlines()
+
+    print(result)
     
     return result

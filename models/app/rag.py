@@ -1,5 +1,5 @@
 from sentence_transformers import SentenceTransformer, util
-from names import *
+from names import RAG_1
 
 def chunk_text(text, size=800, overlap=200):
     chunks = []
@@ -15,7 +15,7 @@ def chunk_text(text, size=800, overlap=200):
 
 
 class RagEngine:
-    def __init__(self, raw_docs):
+    def __init__(self, raw_docs:list[str]):
         self.docs = []
 
         for doc in raw_docs:

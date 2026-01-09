@@ -15,7 +15,13 @@ async def chat(request: Request, question: str):
         return {"answer": "Przepraszam, nie znam odpowiedzi na to pytanie."}
 
     retrieved = rag.retrieve(question)
+
+    print(retrieved)
+
     prompt = generate_prompt(question, retrieved)
+
+    print(prompt)
+    
     answer = generate(prompt, LLM_4)
 
     return {"answer": answer}

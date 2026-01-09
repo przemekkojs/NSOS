@@ -23,14 +23,13 @@ def generate_prompt(question: str, docs: (list[str] | None)) -> str:
     if docs is None:
         docs = []
 
-    docs_text = "\n\n".join(docs)
+    docs_text = "".join(docs)
 
     return (
-        "Jesteś asystentem systemu obsługi studentów.\n"
-        "Odpowiedz na zadane pytanie TYLKO w oparciu o dostarczoną dokumentację.\n\n"
-        f"Dokumentacja:\n{docs_text}\n\n"
-        f"Pytanie:\n{question}\n"
-        "Odpowiedź:"
+        f"""Jesteś asystentem systemu obsługi studentów.\n
+        Odpowiedz na zadane pytanie TYLKO w oparciu o dostarczoną dokumentację.\n
+        Dokumentacja:\n{docs_text}\n
+        Pytanie:\n{question}\n"""
     )
 
 
