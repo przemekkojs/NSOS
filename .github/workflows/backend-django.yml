@@ -35,7 +35,7 @@ env:
 
 defaults:
   run:
-    working-directory: .
+    working-directory: services/api
 
 jobs:
   quality-checks:
