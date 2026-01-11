@@ -4,19 +4,13 @@ on:
   push:
     branches: [main]
     paths:
-      - "services/core-api/**"
+      - "services/api/**"
       - ".github/workflows/backend-django.yml"
-      # NOTE: remove the following when django is moved to its own directory
-      - "main/**"
-      - "scripts/**"
   pull_request:
     branches: [main]
     paths:
-      - "services/core-api/**"
+      - "services/api/**"
       - ".github/workflows/backend-django.yml"
-      # NOTE: remove the following when django is moved to its own directory
-      - "main/**"
-      - "scripts/**"
   workflow_dispatch:
 
 concurrency:
@@ -28,8 +22,7 @@ permissions:
   contents: read
 
 env:
-  # WORKING_DIR: services/core-api
-  WORKING_DIR: .
+  WORKING_DIR: services/api
   ECR_REPOSITORY: "django-backend" # FIXME: replace with secret
   # ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
   IMAGE_TAG: ${{ github.sha }}
