@@ -12,9 +12,9 @@ def chat(request):
     question = request.POST.get("question", "")
 
     if not question.strip():
-        return JsonResponse({
-            "answer": "Przepraszam, nie znam odpowiedzi na to pytanie."
-        })
+        return JsonResponse(
+            {"answer": "Przepraszam, nie znam odpowiedzi na to pytanie."}
+        )
 
     rag = get_rag()
 

@@ -20,7 +20,7 @@ async def chat(request: Request, question: str):
     retrieved = rag.retrieve(question)
 
     print(retrieved)
-    
+
     answer = generate(retrieved, question, LLM_4)
 
     return {"answer": answer}
@@ -28,6 +28,7 @@ async def chat(request: Request, question: str):
 
 class StreamBody(BaseModel):
     question: str
+
 
 @router.post("/chat-stream")
 async def chat_stream(request: Request, body: StreamBody):

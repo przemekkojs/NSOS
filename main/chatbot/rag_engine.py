@@ -9,13 +9,14 @@ import threading
 _lock = threading.Lock()
 _rag_instance = None
 
+
 def get_rag():
     global _rag_instance
 
     if _rag_instance is None:
         with _lock:
             if _rag_instance is None:
-                docs = fetch_docs('przemekkojs', "NSOS")
+                docs = fetch_docs("przemekkojs", "NSOS")
                 _rag_instance = RagEngine(docs)
 
     return _rag_instance

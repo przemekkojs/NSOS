@@ -8,7 +8,6 @@ from .rag import RagEngine
 from .api import router
 
 
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     load_dotenv()
