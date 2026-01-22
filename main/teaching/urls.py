@@ -1,5 +1,11 @@
 from rest_framework.routers import DefaultRouter
-from .views import CourseViewSet, CourseGroupViewSet, ClassViewSet, ScheduleViewSet, UserScheduleView
+from .views import (
+    CourseViewSet,
+    CourseGroupViewSet,
+    ClassViewSet,
+    ScheduleViewSet,
+    UserScheduleView,
+)
 from django.urls import path
 
 router = DefaultRouter()

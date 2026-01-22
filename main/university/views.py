@@ -1,7 +1,12 @@
 from rest_framework import viewsets
 from rest_framework.permissions import SAFE_METHODS, BasePermission
 from .models import Faculty, Position, Semester, UniversityMembership
-from .serializers import FacultySerializer, PositionSerializer, SemesterSerializer, UniversityMembershipSerializer
+from .serializers import (
+    FacultySerializer,
+    PositionSerializer,
+    SemesterSerializer,
+    UniversityMembershipSerializer,
+)
 from core.permissions import IsStudentReadOnly, IsLecturerOrAdmin, IsAdmin
 from rest_framework.pagination import PageNumberPagination
 
@@ -13,6 +18,7 @@ class DefaultPagination(PageNumberPagination):
 class DenyAll(BasePermission):
     def has_permission(self, request, view):
         return False
+
 
 class RoleBasedViewSet(viewsets.ModelViewSet):
     pagination_class = DefaultPagination
@@ -62,4 +68,3 @@ class UniversityMembershipViewSet(RoleBasedViewSet):
         if hasattr(user, "is_student") or hasattr(user, "is_lecturer"):
             return qs.filter(user=user)
         return qs.none()
-

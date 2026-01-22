@@ -16,13 +16,18 @@ class UserViewSet(viewsets.ModelViewSet):
             return [DenyAll()]
         if user.is_staff:
             return [IsAdmin()]
-        return [IsStudentReadOnly() if hasattr(user, "student_profile") else IsLecturerOrAdmin()]
+        return [
+            IsStudentReadOnly()
+            if hasattr(user, "student_profile")
+            else IsLecturerOrAdmin()
+        ]
 
     def get_queryset(self):
         user = self.request.user
         if user.is_staff:
             return User.objects.all()
         return User.objects.filter(id=user.id)
+
 
 class LecturerViewSet(viewsets.ModelViewSet):
     queryset = Lecturer.objects.all()
@@ -46,6 +51,7 @@ class LecturerViewSet(viewsets.ModelViewSet):
         if hasattr(user, "lecturer_profile"):
             return Lecturer.objects.filter(id=user.lecturer_profile.id)
         return Lecturer.objects.none()
+
 
 class StudentViewSet(viewsets.ModelViewSet):
     queryset = Student.objects.all()

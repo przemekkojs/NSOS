@@ -1,7 +1,9 @@
 from rest_framework.permissions import BasePermission, SAFE_METHODS
 
+
 def is_lecturer(user):
     return user and user.is_authenticated and user.is_lecturer
+
 
 def is_student(user):
     return user and user.is_authenticated and user.is_student
@@ -59,4 +61,6 @@ class HasMembershipAtUniversity(BasePermission):
         uni_id = view.kwargs.get("university_pk") or request.data.get("university")
         if not uni_id:
             return False
-        return request.user.university_memberships.filter(university_id=uni_id, is_active=True).exists()
+        return request.user.university_memberships.filter(
+            university_id=uni_id, is_active=True
+        ).exists()

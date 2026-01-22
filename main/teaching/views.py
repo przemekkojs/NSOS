@@ -1,5 +1,10 @@
 from .models import Course, CourseGroup, Class, Schedule
-from .serializers import CourseSerializer, CourseGroupSerializer, ClassSerializer, ScheduleSerializer
+from .serializers import (
+    CourseSerializer,
+    CourseGroupSerializer,
+    ClassSerializer,
+    ScheduleSerializer,
+)
 from university.views import RoleBasedViewSet
 from django.contrib.auth import get_user_model
 from rest_framework.views import APIView
@@ -14,9 +19,13 @@ class CourseViewSet(RoleBasedViewSet):
     queryset = Course.objects.select_related("faculty").all()
     serializer_class = CourseSerializer
 
+
 class CourseGroupViewSet(RoleBasedViewSet):
-    queryset = CourseGroup.objects.select_related("course", "lecturer", "semester").all()
+    queryset = CourseGroup.objects.select_related(
+        "course", "lecturer", "semester"
+    ).all()
     serializer_class = CourseGroupSerializer
+
 
 class ClassViewSet(RoleBasedViewSet):
     queryset = Class.objects.select_related("lecturer", "course_group").all()
@@ -24,7 +33,9 @@ class ClassViewSet(RoleBasedViewSet):
 
 
 class ScheduleViewSet(RoleBasedViewSet):
-    queryset = Schedule.objects.select_related("lecturer", "student", "course_group").all()
+    queryset = Schedule.objects.select_related(
+        "lecturer", "student", "course_group"
+    ).all()
     serializer_class = ScheduleSerializer
 
     def get_queryset(self):
@@ -47,16 +58,14 @@ class UserScheduleView(APIView):
 
         if not user_id:
             return Response(
-                {"detail": "user_id is required"},
-                status=status.HTTP_400_BAD_REQUEST
+                {"detail": "user_id is required"}, status=status.HTTP_400_BAD_REQUEST
             )
 
         try:
             user = User.objects.get(id=user_id)
         except User.DoesNotExist:
             return Response(
-                {"detail": "User not found"},
-                status=status.HTTP_404_NOT_FOUND
+                {"detail": "User not found"}, status=status.HTTP_404_NOT_FOUND
             )
 
         schedules = Schedule.objects.all()
@@ -74,7 +83,7 @@ class UserScheduleView(APIView):
         else:
             return Response(
                 {"detail": "User is neither student nor lecturer"},
-                status=status.HTTP_400_BAD_REQUEST
+                status=status.HTTP_400_BAD_REQUEST,
             )
 
         schedules = schedules.order_by("date", "start_time")
