@@ -1,8 +1,8 @@
 from transformers import AutoTokenizer, AutoModelForCausalLM
-from sentence_transformers import SentenceTransformer, util
+from sentence_transformers import SentenceTransformer
 import torch
-from names import *
-from paths import *
+from names import LLM_2, RAG_1
+from paths import llm_save_path, rag_save_path
 
 if __name__ == "__main__":
     llm_model_name = LLM_2
@@ -18,7 +18,7 @@ if __name__ == "__main__":
     model.save_pretrained(llm_save_path)
     tokenizer.save_pretrained(llm_save_path)
 
-    print(f"LLM done")
+    print("LLM done")
 
     rag_model_name: str = RAG_1
     model = SentenceTransformer(rag_model_name)
