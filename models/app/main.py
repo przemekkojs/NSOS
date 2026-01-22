@@ -10,11 +10,11 @@ from dotenv import load_dotenv
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    print("Models service starting...")
     raw_docs:list[str] = get_docs()
     app.state.rag = RagEngine(raw_docs)
+    print("Models service up!")
     yield
-
-print("Models service starting...")
 
 load_dotenv()
 app = FastAPI(lifespan=lifespan)
@@ -28,5 +28,3 @@ app.add_middleware(
 )
 
 app.include_router(router)
-
-print("Models service up!")
