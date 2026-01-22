@@ -47,13 +47,14 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "allauth.headless",
-    # Apps
-    'users',
-    'university',
-    'teaching',
-    'core',
 
-    'rest_framework',
+    # Apps
+    "users",
+    "university",
+    "teaching",
+    "core",
+
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
@@ -232,9 +233,9 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 20,
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 20,
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
     ],
 }

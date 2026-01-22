@@ -38,7 +38,6 @@ class StudentAdmin(admin.ModelAdmin):
     user_full_name.short_description = "Full name"
 
 
-
 @admin.register(Lecturer)
 class LecturerAdmin(admin.ModelAdmin):
     list_display = ("id", "user_email", "user_full_name", "faculty", "position", "status")
