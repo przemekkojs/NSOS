@@ -1,0 +1,708 @@
+diff --git a/.gitignore b/.gitignore
+index 567ef1f..9cfa331 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -20,10 +20,11 @@ db.sqlite3
+ **/migrations/*.pyo
+ **/migrations/__pycache__/
+ 
++models/app/.env
+ # env
+ .env*
+ .env*.local
+ !.env.example
+ 
+ # cache
+-.ruff_cache/
++.ruff_cache/
+\ No newline at end of file
+diff --git a/main/chatbot/__init__.py b/main/chatbot/__init__.py
+new file mode 100644
+index 0000000..e69de29
+diff --git a/main/chatbot/rag_engine.py b/main/chatbot/rag_engine.py
+new file mode 100644
+index 0000000..edd214d
+--- /dev/null
++++ b/main/chatbot/rag_engine.py
+@@ -0,0 +1,21 @@
++# To jest potrzebne jakbyśmy jednak integrowali wszystko "razem"
++# Jak dostanę approve, to zmigruję potrzebne skrypty tutaj, na razie zrobię o tak
++
++from ...models.app.rag import RagEngine
++from ...models.app.docs import fetch_docs
++import threading
++
++# Generalnie potrzeba zrobić dobry life-span na tego typu obiekt
++_lock = threading.Lock()
++_rag_instance = None
++
++def get_rag():
++    global _rag_instance
++
++    if _rag_instance is None:
++        with _lock:
++            if _rag_instance is None:
++                docs = fetch_docs('przemekkojs', "NSOS")
++                _rag_instance = RagEngine(docs)
++
++    return _rag_instance
+\ No newline at end of file
+diff --git a/main/chatbot/urls.py b/main/chatbot/urls.py
+new file mode 100644
+index 0000000..e69de29
+diff --git a/main/chatbot/views.py b/main/chatbot/views.py
+new file mode 100644
+index 0000000..850f12f
+--- /dev/null
++++ b/main/chatbot/views.py
+@@ -0,0 +1,25 @@
++# To jest potrzebne jakbyśmy jednak integrowali wszystko "razem"
++# Jak dostanę approve, to zmigruję potrzebne skrypty tutaj, na razie zrobię o tak
++
++from django.http import JsonResponse
++from rag_engine import get_rag
++
++from ...models.app.llm import generate, generate_prompt
++from ...models.app.names import LLM_4
++
++
++def chat(request):
++    question = request.POST.get("question", "")
++
++    if not question.strip():
++        return JsonResponse({
++            "answer": "Przepraszam, nie znam odpowiedzi na to pytanie."
++        })
++
++    rag = get_rag()
++
++    retrieved = rag.retrieve(question)
++    prompt = generate_prompt(question, retrieved)
++    answer = generate(prompt, LLM_4)
++
++    return JsonResponse({"answer": answer})
+diff --git a/models/.gitignore b/models/.gitignore
+new file mode 100644
+index 0000000..9e24fbe
+--- /dev/null
++++ b/models/.gitignore
+@@ -0,0 +1,5 @@
++app/saved
++__pycache__/
++.venv/
++
++.env
+\ No newline at end of file
+diff --git a/models/app/__init__.py b/models/app/__init__.py
+new file mode 100644
+index 0000000..e69de29
+diff --git a/models/app/api.py b/models/app/api.py
+new file mode 100644
+index 0000000..c495f95
+--- /dev/null
++++ b/models/app/api.py
+@@ -0,0 +1,43 @@
++from fastapi import Request, APIRouter
++from fastapi.responses import StreamingResponse
++
++from llm import generate, generate_prompt, generate_stream
++from names import LLM_4
++
++router = APIRouter()
++
++
++@router.post("/chat")
++async def chat(request: Request, question: str):
++    rag = request.app.state.rag
++    print(question)
++
++    if not question.strip():
++        return {"answer": "Przepraszam, nie znam odpowiedzi na to pytanie."}
++
++    retrieved = rag.retrieve(question)
++
++    print(retrieved)
++
++    prompt = generate_prompt(question, retrieved)
++
++    print(prompt)
++
++    answer = generate(prompt, LLM_4)
++
++    return {"answer": answer}
++
++
++@router.post("/chat-stream")
++async def chat_stream(request: Request, question: str):
++    rag = request.app.state.rag
++
++    if not question.strip():
++        return {"answer": "Przepraszam, nie znam odpowiedzi na to pytanie."}
++
++    retrieved = rag.retrieve(question)
++    prompt = generate_prompt(question, retrieved)
++
++    return StreamingResponse(
++        generate_stream(prompt, LLM_4), media_type="text/event-stream"
++    )
+diff --git a/models/app/docs.py b/models/app/docs.py
+new file mode 100644
+index 0000000..acc4a0e
+--- /dev/null
++++ b/models/app/docs.py
+@@ -0,0 +1,63 @@
++from paths import docs_save_path
++from os import listdir
++from os.path import isfile, join
++
++import requests
++
++
++def fetch_docs(repo_owner: str, repo_name: str, path: str = "") -> list[str]:
++    api_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/contents/{path}"
++    response = requests.get(api_url)
++
++    if response.status_code != 200:
++        print("Github error:", response.text)
++        return []
++
++    data = response.json()
++    docs = []
++
++    for item in data:
++        if item["type"] == "dir":
++            docs.extend(fetch_docs(repo_owner, repo_name, item["path"]))
++            continue
++
++        if item["name"].endswith((".md")):
++            file_content = requests.get(item["download_url"]).text
++            docs.append(file_content)
++
++    return docs
++
++
++def save_docs() -> None:
++    docs: list[str] = fetch_docs("przemekkojs", "NSOS")
++
++    for i, f in enumerate(docs):
++        path = f"{docs_save_path}/doc_{i}"
++
++        with open(path, mode="w", encoding="utf-8") as file:
++            file.writelines(f)
++
++
++def get_docs(debug=False) -> list[str]:
++    result: list[str] = []
++    files = [
++        f"{docs_save_path}/{f}"
++        for f in listdir(docs_save_path)
++        if isfile(join(docs_save_path, f))
++    ]
++
++    if debug:
++        print(files)
++
++    for f in files:
++        with open(f, mode="r", encoding="utf-8") as file:
++            contents = file.read()
++            result.append(contents)
++
++            if debug:
++                print(contents)
++
++    if debug:
++        print(result)
++
++    return result
+diff --git a/models/app/download.py b/models/app/download.py
+new file mode 100644
+index 0000000..88b4787
+--- /dev/null
++++ b/models/app/download.py
+@@ -0,0 +1,26 @@
++from transformers import AutoTokenizer, AutoModelForCausalLM
++from sentence_transformers import SentenceTransformer
++import torch
++from names import LLM_2, RAG_1
++from paths import llm_save_path, rag_save_path
++
++if __name__ == "__main__":
++    llm_model_name = LLM_2
++
++    tokenizer = AutoTokenizer.from_pretrained(llm_model_name)
++
++    model = AutoModelForCausalLM.from_pretrained(
++        llm_model_name, device_map="auto", torch_dtype=torch.float16
++    )
++
++    model.save_pretrained(llm_save_path)
++    tokenizer.save_pretrained(llm_save_path)
++
++    print("LLM done")
++
++    rag_model_name: str = RAG_1
++    model = SentenceTransformer(rag_model_name)
++
++    model.save(rag_save_path)
++
++    print("RAG done")
+diff --git a/models/app/llm.py b/models/app/llm.py
+new file mode 100644
+index 0000000..23a2243
+--- /dev/null
++++ b/models/app/llm.py
+@@ -0,0 +1,96 @@
++import os
++import requests
++import httpx
++import json
++
++from dotenv import load_dotenv
++
++from names import LLM_4
++
++load_dotenv()
++
++HF_TOKEN = os.getenv("HF_TOKEN")
++API_URL = "https://router.huggingface.co/v1/chat/completions"
++
++headers = {
++    "Authorization": f"Bearer {HF_TOKEN}",
++}
++
++
++def generate_prompt(question: str, docs: (list[str] | None)) -> str:
++    if not question:
++        raise ValueError("Question cannot be empty")
++    if docs is None:
++        docs = []
++
++    docs_text = "".join(docs)
++
++    return f"""Jesteś asystentem systemu obsługi studentów.\n
++        Odpowiedz na zadane pytanie TYLKO w oparciu o dostarczoną dokumentację.\n
++        Dokumentacja:\n{docs_text}\n
++        Pytanie:\n{question}\n"""
++
++
++def query(payload):
++    response = requests.post(API_URL, headers=headers, json=payload)
++
++    return response.json()
++
++
++def retrieve_answer(response: dict, model_name: str) -> str:
++    error_dict = [{"message": {"content": str(response)}}]
++
++    mapping: dict[str, str] = {
++        LLM_4: response.get("choices", error_dict)[0]["message"]["content"]
++    }
++
++    return mapping[model_name]
++
++
++def generate(prompt: str, model_name: str) -> str:
++    try:
++        response = query(
++            {"messages": [{"role": "user", "content": prompt}], "model": model_name}
++        )
++
++        return retrieve_answer(response, model_name)
++    except Exception as e:
++        return f"Something went wrong... {str(e)}"
++
++
++async def generate_stream(prompt: str, model_name: str):
++    payload = {
++        "messages": [{"role": "user", "content": prompt}],
++        "model": model_name,
++        "stream": True,
++    }
++
++    async with httpx.AsyncClient() as client:
++        async with client.stream(
++            "POST", API_URL, headers=headers, json=payload, timeout=60.0
++        ) as response:
++            async for line in response.aiter_lines():
++                if not line or line.strip() == "":
++                    continue
++
++                if line.startswith("data: "):
++                    line = line[6:]
++
++                if line.strip() == "[DONE]":
++                    break
++
++                try:
++                    data = json.loads(line)
++
++                    choices = data.get("choices", [])
++                    if not choices:
++                        continue  # Skip chunks that don't have text
++
++                    delta = choices[0].get("delta", {})
++                    content = delta.get("content", "")
++
++                    if content:
++                        yield content
++
++                except json.JSONDecodeError:
++                    continue
+diff --git a/models/app/local/doc_0 b/models/app/local/doc_0
+new file mode 100644
+index 0000000..cf8c15d
+--- /dev/null
++++ b/models/app/local/doc_0
+@@ -0,0 +1,15 @@
++# NSOS
++
++NASZ System Obsługi Studentów
++
++Twórcy - studenci Politechniki Wrocławskiej:
++
++- Paweł Jurek
++- Przemysław Kojs
++- Krystian Ogonowski
++- Dawid Zaremba
++
++Projekt jest tworzony na potrzeby zaliczenia przedmiotu o nazwie _Projekt Zespołowy_, ale - jeżeli będzie miał wysoki potencjał - z pewnością będzie kontynuowany.
++
++Projekt obsługuje kompleksową obsługę uczelnianą - zarządzania ocenami, przedmiotami oraz zasobami ludzkimi (pedagodzy, studenci).
++Asystować przy wszelkich wątpliwościach będzie nasz autorski chatbot AI.
+\ No newline at end of file
+diff --git a/models/app/main.py b/models/app/main.py
+new file mode 100644
+index 0000000..91fcbd2
+--- /dev/null
++++ b/models/app/main.py
+@@ -0,0 +1,32 @@
++from fastapi import FastAPI
++from fastapi.middleware.cors import CORSMiddleware
++
++from contextlib import asynccontextmanager
++
++from docs import get_docs
++from rag import RagEngine
++from api import router
++from dotenv import load_dotenv
++
++
++@asynccontextmanager
++async def lifespan(app: FastAPI):
++    print("Models service starting...")
++    raw_docs: list[str] = get_docs()
++    app.state.rag = RagEngine(raw_docs)
++    print("Models service up!")
++    yield
++
++
++load_dotenv()
++app = FastAPI(lifespan=lifespan)
++
++app.add_middleware(
++    CORSMiddleware,
++    allow_origins=["*"],
++    allow_credentials=True,
++    allow_methods=["*"],
++    allow_headers=["*"],
++)
++
++app.include_router(router)
+diff --git a/models/app/names.py b/models/app/names.py
+new file mode 100644
+index 0000000..021ec7c
+--- /dev/null
++++ b/models/app/names.py
+@@ -0,0 +1,6 @@
++LLM_1: str = "stabilityai/stablelm-2-1_6b"
++LLM_2: str = "Qwen/Qwen2.5-1.5B-Instruct"
++LLM_3: str = "mistralai/Mistral-7B-Instruct-v0.2"
++LLM_4: str = "meta-llama/Llama-3.2-1B-Instruct:novita"
++
++RAG_1: str = "all-MiniLM-L6-v2"
+diff --git a/models/app/paths.py b/models/app/paths.py
+new file mode 100644
+index 0000000..84384ee
+--- /dev/null
++++ b/models/app/paths.py
+@@ -0,0 +1,7 @@
++from pathlib import Path
++
++BASE_DIR = Path(__file__).resolve().parent  # folder, w którym leży paths.py
++
++llm_save_path = f"{BASE_DIR}/saved/llm"
++rag_save_path = f"{BASE_DIR}/saved/rag"
++docs_save_path = f"{BASE_DIR}/local"
+diff --git a/models/app/rag.py b/models/app/rag.py
+new file mode 100644
+index 0000000..b327470
+--- /dev/null
++++ b/models/app/rag.py
+@@ -0,0 +1,43 @@
++from sentence_transformers import SentenceTransformer, util
++from names import RAG_1
++
++
++def chunk_text(text, size=800, overlap=200):
++    chunks = []
++    start = 0
++
++    while start < len(text):
++        end = start + size
++        chunk = text[start:end]
++        chunks.append(chunk)
++        start += size - overlap
++
++    return chunks
++
++
++class RagEngine:
++    def __init__(self, raw_docs: list[str]):
++        self.docs = []
++
++        for doc in raw_docs:
++            self.docs.extend(chunk_text(doc))
++
++        self.embedder = SentenceTransformer(RAG_1, device="cpu")
++        self.doc_embeddings = self.embedder.encode(
++            self.docs, convert_to_tensor=True, batch_size=8, show_progress_bar=False
++        )
++
++    def retrieve(self, query, top_k=2):
++        q_emb = self.embedder.encode(
++            query, convert_to_tensor=True, batch_size=1, show_progress_bar=False
++        )
++        k = min(top_k, len(self.docs))
++
++        if k == 0:
++            return []
++
++        scores = util.cos_sim(q_emb, self.doc_embeddings)[0]
++        top_results = scores.topk(k)
++        idxs = top_results.indices.tolist()
++
++        return [self.docs[i] for i in idxs]
+diff --git a/models/app/test_request.py b/models/app/test_request.py
+new file mode 100644
+index 0000000..e3d3ad8
+--- /dev/null
++++ b/models/app/test_request.py
+@@ -0,0 +1,9 @@
++import requests
++
++if __name__ == "__main__":
++    print(
++        requests.post(
++            "http://127.0.0.1:8000/chat",
++            params={"question": "Kto stworzył system NSOS"},
++        ).json()
++    )
+diff --git a/models/requirements.txt b/models/requirements.txt
+new file mode 100644
+index 0000000..be0fc6c
+--- /dev/null
++++ b/models/requirements.txt
+@@ -0,0 +1,11 @@
++transformers==4.57.3
++torch==2.9.1
++sentence-transformers==5.1.2
++tf_keras==2.20.1
++accelerate==1.12.0
++hf-xet==1.2.0
++httpx==0.28.1
++python-dotenv==1.2.1
++
++uvicorn==0.38.0
++fastapi==0.125.0
+\ No newline at end of file
+diff --git a/models/test.py b/models/test.py
+new file mode 100644
+index 0000000..fbd26ba
+--- /dev/null
++++ b/models/test.py
+@@ -0,0 +1,19 @@
++from app.rag import RagEngine
++from app.llm import generate, generate_prompt
++from app.docs import get_docs
++from app.names import LLM_4
++
++if __name__ == "__main__":
++    raw_docs: list = get_docs("przemekkojs", "NSOS")
++    rag = RagEngine(raw_docs)
++
++    question = input(">>> ")
++
++    if question == "":
++        answer: str = "Przepraszam, nie znam odpowiedzi na to pytanie."
++    else:
++        retrieved: list = rag.retrieve(question)
++        prompt: str = generate_prompt(question, retrieved)
++        answer: str = generate(prompt, LLM_4)
++
++    print(answer)
+diff --git a/models/test_ui/chat.html b/models/test_ui/chat.html
+new file mode 100644
+index 0000000..af6985f
+--- /dev/null
++++ b/models/test_ui/chat.html
+@@ -0,0 +1,133 @@
++<!DOCTYPE html>
++<html lang="pl">
++    <head>
++        <meta charset="UTF-8">
++        <title>Chatbot</title>
++        <style>
++            body {
++                font-family: Arial, sans-serif;
++                background: #f0f2f5;
++                display: flex;
++                justify-content: center;
++                align-items: center;
++                height: 100vh;
++            }
++
++            .chat-window {
++                width: 400px;
++                height: 500px;
++                background: #ffffff;
++                border-radius: 10px;
++                box-shadow: 0 4px 15px rgba(0,0,0,0.15);
++                display: flex;
++                flex-direction: column;
++                overflow: hidden;
++            }
++
++            .chat-header {
++                background: #2c3e50;
++                color: white;
++                padding: 12px;
++                text-align: center;
++                font-weight: bold;
++            }
++
++            .chat-messages {
++                flex: 1;
++                padding: 10px;
++                overflow-y: auto;
++            }
++
++            .message {
++                margin-bottom: 10px;
++                padding: 8px 10px;
++                border-radius: 6px;
++                max-width: 80%;
++                word-wrap: break-word;
++            }
++
++            .user {
++                background: #d1e7ff;
++                align-self: flex-end;
++            }
++
++            .bot {
++                background: #eeeeee;
++                align-self: flex-start;
++            }
++
++            .chat-input {
++                display: flex;
++                border-top: 1px solid #ddd;
++            }
++
++            .chat-input input {
++                flex: 1;
++                padding: 10px;
++                border: none;
++                outline: none;
++            }
++
++            .chat-input button {
++                padding: 10px 15px;
++                border: none;
++                background: #2c3e50;
++                color: white;
++                cursor: pointer;
++            }
++
++            .chat-input button:hover {
++                background: #1a252f;
++            }
++        </style>
++    </head>
++    <body>
++
++    <div class="chat-window">
++        <div class="chat-header">Chatbot</div>
++        <div class="chat-messages" id="messages"></div>
++        <div class="chat-input">
++            <input type="text" id="question" placeholder="Napisz wiadomość..." />
++            <button onclick="sendMessage()">Wyślij</button>
++        </div>
++    </div>
++
++    <script>
++        async function sendMessage() {
++            const input = document.getElementById("question");
++            const text = input.value.trim();
++            if (!text) return;
++
++            addMessage(text, "user");
++            input.value = "";
++
++            try {
++                const response = await fetch(
++                    "http://127.0.0.1:8000/chat?question=" + encodeURIComponent(text),
++                    { method: "POST" }
++                );
++
++                const data = await response.json();
++                addMessage(data.answer ?? JSON.stringify(data), "bot");
++            } catch (err) {
++                addMessage("Błąd połączenia z serwerem.", "bot");
++            }
++        }
++
++        function addMessage(text, type) {
++            const messages = document.getElementById("messages");
++            const div = document.createElement("div");
++            div.className = "message " + type;
++            div.textContent = text;
++            messages.appendChild(div);
++            messages.scrollTop = messages.scrollHeight;
++        }
++
++        // wysyłanie enterem
++        document.getElementById("question").addEventListener("keydown", function(e) {
++            if (e.key === "Enter") sendMessage();
++        });
++    </script>
++
++    </body>
++</html>
+diff --git a/models/update_docs.py b/models/update_docs.py
+new file mode 100644
+index 0000000..9cc78cf
+--- /dev/null
++++ b/models/update_docs.py
+@@ -0,0 +1,10 @@
++from app.docs import save_docs
++
++if __name__ == "__main__":
++    try:
++        print("Fetching docs...")
++        save_docs()
++        print("Saved!")
++    except Exception as e:
++        print("Something went wrong...")
++        print(str(e))
+diff --git a/requirements.txt b/requirements.txt
+index 489a00d..75f3f40 100644
+--- a/requirements.txt
++++ b/requirements.txt
+@@ -50,3 +50,5 @@ urllib3==2.6.2
+     # via botocore
+ uvicorn==0.38.0
+     # via nsos-cpy (pyproject.toml)
++typing-extensions==4.15.0
++tzdata==2025.2
+\ No newline at end of file
