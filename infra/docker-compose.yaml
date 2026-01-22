@@ -40,6 +40,8 @@ services:
     depends_on:
       - db
     restart: unless-stopped
+    volumes:
+      - huggingface_cache:/home/appuser/.cache/huggingface
     networks:
       - nsos_net
 
@@ -51,4 +53,5 @@ networks:
 
 volumes:
   sqlite_data:
+  huggingface_cache:
 
