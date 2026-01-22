@@ -1,6 +1,5 @@
 # --- STAGE 1: BUILDER STAGE ---
 FROM python:3.13-slim-bookworm AS builder
-
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV UV_NO_DEV=1
@@ -18,6 +17,8 @@ FROM python:3.13-slim-bookworm AS final
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
+ENV PYTHONPATH=/app/main
+ENV DJANGO_SETTINGS_MODULE=main.settings
 ENV UV_NO_DEV=1
 
 # Install run-time dependencies
@@ -46,4 +47,4 @@ USER appuser
 EXPOSE 8000
 
 # Default command
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "main.asgi:application", "--host", "0.0.0.0", "--port", "8000"]

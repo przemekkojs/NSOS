@@ -51,14 +51,16 @@ def get_secrets(secret_name: str, region_name: str = "eu-central-1") -> Secrets:
             DB_HOST=get_required_env("DB_HOST"),
             DB_PORT=int(get_required_env("DB_PORT")),
             DEBUG=os.getenv("DEBUG", "False") == "True",
-            AWS_SES_SENDER=get_required_env("AWS_SES_SENDER"),
-            AWS_SES_RECIPIENT=get_required_env("AWS_SES_RECIPIENT"),
-            AWS_DEFAULT_REGION=get_required_env("AWS_DEFAULT_REGION"),
+            # Optional in dev, required in prod
+            AWS_SES_SENDER=os.getenv("AWS_SES_SENDER"),
+            # Optional in dev, required in prod
+            AWS_SES_RECIPIENT=os.getenv("AWS_SES_RECIPIENT"),
+            AWS_DEFAULT_REGION=os.getenv("AWS_DEFAULT_REGION"),
             ALLOWED_HOSTS=get_required_env("ALLOWED_HOSTS").split(","),
             CORS_ALLOWED_ORIGINS=get_required_env("CORS_ALLOWED_ORIGINS").split(","),
             ENV=cast(Literal["dev", "staging", "production"], os.getenv("ENV", "dev")),
             DB_ENGINE=cast(
-                Literal["sqlite3", "postgresql"], get_required_env("DB_ENGINE")
+                Literal["sqlite3", "postgresql"], os.getenv("DB_ENGINE", "postgresql")
             ),
             FRONTEND_URL=get_required_env("FRONTEND_URL"),
             AWS_PROFILE=os.getenv("AWS_PROFILE"),

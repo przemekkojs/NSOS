@@ -27,3 +27,25 @@ docker compose build
 ```sh
 docker compose up
 ```
+# Django backend
+
+```sh
+cd infra
+cp .env.example .env
+```
+
+generate secret key:
+
+```sh
+echo "CORE_API_SECRET_KEY=$(openssl rand -base64 64)" >> .env
+```
+
+migrate:
+```sh
+docker exec -it infra-django-1 python manage.py migrate
+```
+create superuser
+```sh
+docker exec -it infra-django-1 python manage.py createsuperuser
+```
+

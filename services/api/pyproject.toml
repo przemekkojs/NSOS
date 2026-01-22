@@ -11,7 +11,7 @@ dependencies = [
     "django-cors-headers>=4.9.0",
     "django-storages>=1.14.6",
     "djangorestframework>=3.16.1",
-    "mypy-boto3-s3>=1.42.21",
+    "dotenv>=0.9.9",
     "psycopg2-binary>=2.9.11",
     "python-dotenv>=1.2.1",
     "sqlparse>=0.5.5",
@@ -21,7 +21,7 @@ dependencies = [
 [dependency-groups]
 dev = [
     "boto3-stubs>=1.42.8",
-    "mypy-boto3-s3>=1.42.3",
+    "mypy-boto3-s3>=1.42.21",
     "mypy-boto3-secretsmanager>=1.42.8",
     "mypy-boto3-ses>=1.42.3",
     "typing-extensions>=4.15.0",

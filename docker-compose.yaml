@@ -18,18 +18,18 @@ services:
     networks:
       - backend
 
-  redis:
-    image: redis:7-alpine
-    command: redis-server --appendonly no
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 1s
-      timeout: 3s
-      retries: 5
-    ports:
-      - "6379:6379"
-    networks:
-      - backend
+  # redis:
+  #   image: redis:7-alpine
+  #   command: redis-server --appendonly no
+  #   healthcheck:
+  #     test: ["CMD", "redis-cli", "ping"]
+  #     interval: 1s
+  #     timeout: 3s
+  #     retries: 5
+  #   ports:
+  #     - "6379:6379"
+  #   networks:
+  #     - backend
 
   django:
     build: .
@@ -45,8 +45,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
-      redis:
-        condition: service_healthy
+      # redis:
+      #   condition: service_healthy
     networks:
       - backend
 
