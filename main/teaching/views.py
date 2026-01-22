@@ -11,6 +11,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import ScheduleItemSerializer
+from datetime import timedelta
+from django.utils.timezone import localdate
 
 User = get_user_model()
 
@@ -70,11 +72,20 @@ class UserScheduleView(APIView):
 
         schedules = Schedule.objects.all()
 
-        if start_date:
-            schedules = schedules.filter(date__gte=start_date)
+        today = localdate()
+        weekday = today.weekday()
 
-        if end_date:
-            schedules = schedules.filter(date__lte=end_date)
+        if not start_date and not end_date:
+            start_date = today - timedelta(days=weekday)
+            end_date = start_date + timedelta(days=6)
+
+        elif start_date and not end_date:
+            end_date = start_date + timedelta(days=6)
+
+        elif end_date and not start_date:
+            start_date = end_date - timedelta(days=6)
+
+        schedules = schedules.filter(date__gte=start_date, date__lte=end_date)
 
         if user.is_student:
             schedules = schedules.filter(student=user.student_profile)
