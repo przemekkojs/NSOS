@@ -3,10 +3,10 @@ from .views import CourseViewSet, CourseGroupViewSet, ClassViewSet, ScheduleView
 from django.urls import path
 
 router = DefaultRouter()
-router.register(r'courses', CourseViewSet)
-router.register(r'course-groups', CourseGroupViewSet)
-router.register(r'classes', ClassViewSet)
-router.register(r'schedules', ScheduleViewSet)
+router.register(r"courses", CourseViewSet)
+router.register(r"course-groups", CourseGroupViewSet)
+router.register(r"classes", ClassViewSet)
+router.register(r"schedules", ScheduleViewSet)
 
 urlpatterns = [
     path('user-schedule/', UserScheduleView.as_view(), name='user-schedule'),

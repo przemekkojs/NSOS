@@ -1,0 +1,178 @@
+name: Backend - Django
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "services/core-api/**"
+      - ".github/workflows/backend-django.yml"
+      # NOTE: remove the following when django is moved to its own directory
+      - "main/**"
+      - "scripts/**"
+  pull_request:
+    branches: [main]
+    paths:
+      - "services/core-api/**"
+      - ".github/workflows/backend-django.yml"
+      # NOTE: remove the following when django is moved to its own directory
+      - "main/**"
+      - "scripts/**"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  # WORKING_DIR: services/core-api
+  WORKING_DIR: .
+  ECR_REPOSITORY: "django-backend" # FIXME: replace with secret
+  # ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+  IMAGE_TAG: ${{ github.sha }}
+  SHA_TAG: ${{ github.sha }}
+  AWS_DJANGO_ROLE_ARN: "arn:aws:iam::966121466059:role/github-actions-django-deploy" # FIXME: replace with secret
+  TARGET_EC2_ID: "i-0f898d51625a84230"
+  S3_BUCKET_NAME: "django-artifacts-bucket"
+  S3_KEY: "deployment/${{ github.sha }}/docker-compose.prod.yaml"
+  SECRET_ID: "prod/nsos/config"
+
+defaults:
+  run:
+    working-directory: .
+
+jobs:
+  quality-checks:
+    name: Lint and Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+          cache: "pip"
+
+      - name: Install Ruff
+        run: pip install ruff
+
+      - name: Run Ruff Linter
+        run: ruff check
+
+      - name: Run Ruff Formatter
+        run: ruff format --check
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+  build:
+    name: Build & Push to ECR
+    runs-on: ubuntu-latest
+    needs: quality-checks
+    # if: github.ref == 'refs/heads/main' || github.event_name == 'workflow-dispatch'
+    environment: production
+    outputs:
+      image: ${{ steps.build-image.outputs.image }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v5
+        with:
+          role-to-assume: ${{ env.AWS_DJANGO_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+          role-session-name: GitHubActions-DjangoDeploy
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker Image and push to ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        run: |
+          CACHE_REF=$ECR_REGISTRY/$ECR_REPOSITORY:buildcache
+          docker buildx build \
+            --platform linux/arm64 \
+            --push \
+            --tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
+            --tag $ECR_REGISTRY/$ECR_REPOSITORY:latest \
+            --cache-from "type=registry,ref=$CACHE_REF" \
+            --cache-to "type=registry,ref=$CACHE_REF,mode=max" \
+            .
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+  deploy:
+    name: Deploy to EC2
+    runs-on: ubuntu-latest
+    needs: build
+    # if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+    environment: production
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v5
+        with:
+          role-to-assume: ${{ env.AWS_DJANGO_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+          role-session-name: GitHubActions-DjangoProduction
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Upload docker-compose to S3
+        run: |
+          aws s3 cp docker-compose.prod.yaml s3://${{ env.S3_BUCKET_NAME }}/${{ env.S3_KEY }}
+
+      - name: Send Deployment Command to EC2
+        env:
+          ECR_URI: ${{ steps.login-ecr.outputs.registry }}
+          DJANGO_IMAGE: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ env.SHA_TAG }}
+          REGION: ${{ secrets.AWS_REGION}}
+        run: |
+          COMMAND_ID=$(aws ssm send-command \
+            --instance-ids "${{ env.TARGET_EC2_ID }}" \
+            --document-name "AWS-RunShellScript" \
+            --parameters "commands=[
+              \"set -e\",
+              \"DEPLOY_PATH=/opt/django\",
+              \"sudo mkdir -p \$DEPLOY_PATH\",
+              \"sudo chown -R \$USER:\$USER \$DEPLOY_PATH\",
+              \"cd \$DEPLOY_PATH\",
+              \"aws secretsmanager get-secret-value --secret-id ${{ env.SECRET_ID }} --region $REGION --query SecretString --output text | jq -r 'to_entries | .[] | \\\"\(.key)=\(.value)\\\"' > .env\",
+              \"export DJANGO_IMAGE=$DJANGO_IMAGE\",
+              \"echo $DJANGO_IMAGE >> .env\",
+              \"aws s3 cp s3://${{ env.S3_BUCKET_NAME }}/${{ env.S3_KEY }} docker-compose.prod.yaml\",
+              \"aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ECR_URI\",
+              \"docker-compose -f docker-compose.prod.yaml pull\",
+              \"docker-compose -f docker-compose.prod.yaml run --rm migrate\",
+              \"docker-compose -f docker-compose.prod.yaml up -d --remove-orphans django\",
+              \"docker image prune -f\"
+            ]" \
+            --region $REGION \
+            --query "Command.CommandId" \
+            --output text)
+            
+          echo "SSM Command ID: $COMMAND_ID"
+          aws ssm wait command-executed \
+            --command-id "$COMMAND_ID" \
+            --instance-id "${{ env.TARGET_EC2_ID }}" \
+            --region ${{ secrets.AWS_REGION }}
+
+      - name: Cleanup S3 artifact
+        if: always()
+        run: |
+          aws s3 rm s3://${{ env.S3_BUCKET_NAME }}/${{ env.S3_KEY }}

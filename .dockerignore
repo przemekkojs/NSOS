@@ -1,0 +1,43 @@
+# --- PYTHON ARTIFACTS ---
+**/__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+# Temporary files from local IDEs or editors
+*.swp
+*~
+*.log
+.mypy_cache
+.pytest_cache
+
+# TODO: remove when moved to scripts/
+# --- TERRAFORM/INFRASTRUCTURE ---
+infra/
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
+*.tfvars
+
+# --- VERSION CONTROL ---
+.git
+.gitignore
+
+# --- VIRTUAL ENVIRONMENT ---
+venv/
+env/
+.env
+
+# --- DEVELOPMENT/LOCAL FILES ---
+*.db
+db.sqlite3
+.vscode/
+node_modules/
+npm-debug.log
+
+# --- MEDIA/STATIC FILES (Generated) ---
+staticfiles/
+media/
+
+services/

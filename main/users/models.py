@@ -1,10 +1,13 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from university.models import Faculty, Semester, Position, University
+from university.models import Faculty, Semester, Position
+from aws.s3 import PrivateMediaStorage
 
 
 class User(AbstractUser):
     email = models.EmailField(unique=True)
+    avatar = models.FileField(storage=PrivateMediaStorage(), null=True)
 
     class Meta:
         verbose_name = "User"
@@ -40,9 +43,9 @@ class Lecturer(models.Model):
     RETIRED = 'retired'
 
     STATUS_CHOICES = [
-        (ACTIVE, 'Active'),
-        (INACTIVE, 'Inactive'),
-        (RETIRED, 'No longer employed'),
+        (ACTIVE, "Active"),
+        (INACTIVE, "Inactive"),
+        (RETIRED, "No longer employed"),
     ]
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='lecturer_profile')
     faculty = models.ForeignKey(Faculty, on_delete=models.CASCADE, related_name='lecturers')
@@ -63,7 +66,9 @@ class Student(models.Model):
     field_of_study = models.CharField(max_length=100)
     year_of_study = models.SmallIntegerField()
     semester = models.ForeignKey(Semester, on_delete=models.SET_NULL, null=True)
-    faculty = models.ForeignKey(Faculty, on_delete=models.CASCADE, related_name='students')
+    faculty = models.ForeignKey(
+        Faculty, on_delete=models.CASCADE, related_name="students"
+    )
 
     class Meta:
         verbose_name = "Student"

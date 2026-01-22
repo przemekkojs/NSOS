@@ -1,0 +1,46 @@
+#!/bin/sh
+
+INFRA_DIR="infra/"
+
+INFRA_CHANGES=$(git diff --cached --name-only | grep "^$INFRA_DIR" | head -1)
+
+if [ -n "$INFRA_CHANGES" ]; then
+    terraform fmt --check $INFRA_DIR
+
+    if [ $? -ne 0 ]; then
+        echo "Terraform format check failed. Please run 'terraform fmt $INFRA_DIR' and stage the changes"
+        exit 1
+    fi
+
+    echo "Terraform format check passed."
+fi
+
+# ----------------------
+
+WEB_DIR="services/web"
+
+WEB_CHANGES=$(git diff --cached --name-only | grep "^$WEB_DIR" | head -1)
+
+if [ -n "$WEB_CHANGES" ]; then
+    echo "Running 'npm run lint'..."
+    (cd "$WEB_DIR" && npm run lint)
+    LINT_STATUS=$?
+
+    if [ $LINT_STATUS -ne 0 ]; then
+        echo "Linting failed. Please run 'npm run lint:fix' in '$WEB_DIR'"
+        exit 1
+    fi
+    echo "Lint check passed."
+
+    echo "Running 'npm run typecheck'..."
+    (cd "$WEB_DIR" && npm run typecheck)
+    TYPECHECK_STATUS=$?
+
+    if [ $TYPECHECK_STATUS -ne 0 ]; then
+        echo "Typecheck failed. Please fix TypeScript errors in '$WEB_DIR'"
+        exit 1
+    fi
+    echo "Typecheck passed."
+fi
+
+exit 0
