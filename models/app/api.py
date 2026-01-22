@@ -6,6 +6,7 @@ from names import LLM_4
 
 router = APIRouter()
 
+
 @router.post("/chat")
 async def chat(request: Request, question: str):
     rag = request.app.state.rag

@@ -4,7 +4,8 @@ from os.path import isfile, join
 
 import requests
 
-def fetch_docs(repo_owner:str, repo_name:str, path:str="") -> list[str]:
+
+def fetch_docs(repo_owner: str, repo_name: str, path: str = "") -> list[str]:
     api_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/contents/{path}"
     response = requests.get(api_url)
 
@@ -26,24 +27,30 @@ def fetch_docs(repo_owner:str, repo_name:str, path:str="") -> list[str]:
 
     return docs
 
+
 def save_docs() -> None:
-    docs:list[str] = fetch_docs("przemekkojs", "NSOS")
+    docs: list[str] = fetch_docs("przemekkojs", "NSOS")
 
     for i, f in enumerate(docs):
         path = f"{docs_save_path}/doc_{i}"
 
-        with open(path, mode='w', encoding='utf-8') as file:
+        with open(path, mode="w", encoding="utf-8") as file:
             file.writelines(f)
 
+
 def get_docs(debug=False) -> list[str]:
-    result:list[str] = []
-    files = [f"{docs_save_path}/{f}" for f in listdir(docs_save_path) if isfile(join(docs_save_path, f))]
+    result: list[str] = []
+    files = [
+        f"{docs_save_path}/{f}"
+        for f in listdir(docs_save_path)
+        if isfile(join(docs_save_path, f))
+    ]
 
     if debug:
         print(files)
 
     for f in files:
-        with open(f, mode='r', encoding='utf-8') as file:
+        with open(f, mode="r", encoding="utf-8") as file:
             contents = file.read()
             result.append(contents)
 
@@ -52,5 +59,5 @@ def get_docs(debug=False) -> list[str]:
 
     if debug:
         print(result)
-    
+
     return result

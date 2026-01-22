@@ -15,7 +15,7 @@ async def lifespan(app: FastAPI):
     load_dotenv()
 
     print("Models service starting...")
-    raw_docs:list[str] = get_docs()
+    raw_docs: list[str] = get_docs()
     app.state.rag = RagEngine(raw_docs)
     print("Models service up!")
     yield

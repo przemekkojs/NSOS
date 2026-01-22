@@ -10,10 +10,8 @@ if __name__ == "__main__":
     tokenizer = AutoTokenizer.from_pretrained(llm_model_name)
 
     model = AutoModelForCausalLM.from_pretrained(
-        llm_model_name,
-        device_map="auto",
-        torch_dtype=torch.float16
-    )    
+        llm_model_name, device_map="auto", torch_dtype=torch.float16
+    )
 
     model.save_pretrained(llm_save_path)
     tokenizer.save_pretrained(llm_save_path)
