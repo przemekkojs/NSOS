@@ -5,7 +5,7 @@ import json
 
 from dotenv import load_dotenv
 
-from names import LLM_3, LLM_4
+from .names import LLM_3, LLM_4
 
 load_dotenv()
 

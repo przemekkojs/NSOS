@@ -1,9 +1,8 @@
-from paths import docs_save_path
 from os import listdir
 from os.path import isfile, join
-
 import requests
 
+from .paths import docs_save_path
 
 def fetch_docs(repo_owner: str, repo_name: str, path: str = "") -> list[str]:
     api_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/contents/{path}"

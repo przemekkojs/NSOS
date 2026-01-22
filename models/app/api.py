@@ -1,8 +1,10 @@
 from fastapi import Request, APIRouter
 from fastapi.responses import StreamingResponse
+from pydantic import BaseModel
 
-from llm import generate, generate_stream
-from names import LLM_4
+from .llm import generate, generate_stream
+from .names import LLM_4
+from .rag import RagEngine
 
 router = APIRouter()
 
@@ -24,11 +26,16 @@ async def chat(request: Request, question: str):
     return {"answer": answer}
 
 
-@router.post("/chat-stream")
-async def chat_stream(request: Request, question: str):
-    rag = request.app.state.rag
+class StreamBody(BaseModel):
+    question: str
 
-    if not question.strip():
+@router.post("/chat-stream")
+async def chat_stream(request: Request, body: StreamBody):
+    rag: RagEngine = request.app.state.rag
+
+    question = body.question.strip()
+
+    if not question:
         return {"answer": "Przepraszam, nie znam odpowiedzi na to pytanie."}
 
     retrieved = rag.retrieve(question)

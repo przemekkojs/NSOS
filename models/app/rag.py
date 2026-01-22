@@ -1,5 +1,5 @@
 from sentence_transformers import SentenceTransformer, util
-from names import RAG_1
+from .names import RAG_1
 
 
 def chunk_text(text, size=800, overlap=200):
