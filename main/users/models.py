@@ -14,11 +14,11 @@ class User(AbstractUser):
 
     @property
     def is_student(self):
-        return hasattr(self, "student_profile")
+        return hasattr(self, 'student_profile')
 
     @property
     def is_lecturer(self):
-        return hasattr(self, "lecturer_profile")
+        return hasattr(self, 'lecturer_profile')
 
     def __str__(self):
         return self.username
@@ -29,7 +29,7 @@ class User(AbstractUser):
 
     def membership_for(self, university):
         """Zwraca UniversityMembership albo None."""
-        return getattr(self, "university_memberships", None).filter(university=university).first()
+        return getattr(self, 'university_memberships', None).filter(university=university).first()
 
     def position_at(self, university):
         m = self.membership_for(university)
@@ -37,17 +37,17 @@ class User(AbstractUser):
 
 
 class Lecturer(models.Model):
-    ACTIVE = "active"
-    INACTIVE = "inactive"
-    RETIRED = "retired"
+    ACTIVE = 'active'
+    INACTIVE = 'inactive'
+    RETIRED = 'retired'
 
     STATUS_CHOICES = [
         (ACTIVE, "Active"),
         (INACTIVE, "Inactive"),
         (RETIRED, "No longer employed"),
     ]
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="lecturer_profile")
-    faculty = models.ForeignKey(Faculty, on_delete=models.CASCADE, related_name="lecturers")
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='lecturer_profile')
+    faculty = models.ForeignKey(Faculty, on_delete=models.CASCADE, related_name='lecturers')
     position = models.ForeignKey(Position, on_delete=models.SET_NULL, null=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=ACTIVE)
 
@@ -60,7 +60,7 @@ class Lecturer(models.Model):
 
 
 class Student(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="student_profile")
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='student_profile')
     index_number = models.CharField(max_length=20, unique=True)
     field_of_study = models.CharField(max_length=100)
     year_of_study = models.SmallIntegerField()

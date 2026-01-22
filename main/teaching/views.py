@@ -11,20 +11,20 @@ User = get_user_model()
 
 
 class CourseViewSet(RoleBasedViewSet):
-    queryset = Course.objects.select_related("faculty").all()
+    queryset = Course.objects.select_related('faculty').all()
     serializer_class = CourseSerializer
 
 class CourseGroupViewSet(RoleBasedViewSet):
-    queryset = CourseGroup.objects.select_related("course", "lecturer", "semester").all()
+    queryset = CourseGroup.objects.select_related('course', 'lecturer', 'semester').all()
     serializer_class = CourseGroupSerializer
 
 class ClassViewSet(RoleBasedViewSet):
-    queryset = Class.objects.select_related("lecturer", "course_group").all()
+    queryset = Class.objects.select_related('lecturer', 'course_group').all()
     serializer_class = ClassSerializer
 
 
 class ScheduleViewSet(RoleBasedViewSet):
-    queryset = Schedule.objects.select_related("lecturer", "student", "course_group").all()
+    queryset = Schedule.objects.select_related('lecturer', 'student', 'course_group').all()
     serializer_class = ScheduleSerializer
 
     def get_queryset(self):
@@ -32,18 +32,18 @@ class ScheduleViewSet(RoleBasedViewSet):
         user = self.request.user
         if user.is_staff:
             return qs
-        if hasattr(user, "student"):
+        if hasattr(user, 'student'):
             return qs.filter(student__user=user)
-        if hasattr(user, "lecturer"):
+        if hasattr(user, 'lecturer'):
             return qs.filter(lecturer__user=user)
         return qs.none()
 
 
 class UserScheduleView(APIView):
     def get(self, request):
-        start_date = request.query_params.get("start_date")
-        end_date = request.query_params.get("end_date")
-        user_id = request.query_params.get("user_id")
+        start_date = request.query_params.get('start_date')
+        end_date = request.query_params.get('end_date')
+        user_id = request.query_params.get('user_id')
 
         if not user_id:
             return Response(
@@ -77,7 +77,7 @@ class UserScheduleView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        schedules = schedules.order_by("date", "start_time")
+        schedules = schedules.order_by('date', 'start_time')
 
         serializer = ScheduleItemSerializer(schedules, many=True)
         return Response(serializer.data)

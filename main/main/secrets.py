@@ -37,7 +37,7 @@ def get_required_env(key: str) -> str:
     """Get environment variable or raise error if not found."""
     value = os.getenv(key)
     if value is None:
-        raise ValueError(f"Required environment variable "{key}" is not set")
+        raise ValueError(f"Required environment variable '{key}' is not set")
     return value
 
 

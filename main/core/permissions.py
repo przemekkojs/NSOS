@@ -43,12 +43,12 @@ class IsLecturerOfCourseGroup(BasePermission):
         if not is_lecturer(request.user):
             return False
 
-        course_group = getattr(obj, "course_group", None)
+        course_group = getattr(obj, 'course_group', None)
         if course_group:
-            return course_group.lecturer_id == getattr(request.user, "lecturer").id
+            return course_group.lecturer_id == getattr(request.user, 'lecturer').id
 
-        if getattr(obj, "lecturer", None) is not None and hasattr(obj, "lecturer"):
-            return obj.lecturer_id == getattr(request.user, "lecturer").id
+        if getattr(obj, 'lecturer', None) is not None and hasattr(obj, 'lecturer'):
+            return obj.lecturer_id == getattr(request.user, 'lecturer').id
         return False
 
 
@@ -56,7 +56,7 @@ class HasMembershipAtUniversity(BasePermission):
     def has_permission(self, request, view):
         if not request.user:
             return False
-        uni_id = view.kwargs.get("university_pk") or request.data.get("university")
+        uni_id = view.kwargs.get('university_pk') or request.data.get('university')
         if not uni_id:
             return False
         return request.user.university_memberships.filter(university_id=uni_id, is_active=True).exists()

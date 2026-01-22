@@ -25,10 +25,10 @@ class RoleBasedViewSet(viewsets.ModelViewSet):
         if user.is_staff:
             return [IsAdmin()]
 
-        if hasattr(user, "student_profile") and self.request.method in SAFE_METHODS:
+        if hasattr(user, 'student_profile') and self.request.method in SAFE_METHODS:
             return [IsStudentReadOnly()]
 
-        if hasattr(user, "lecturer_profile"):
+        if hasattr(user, 'lecturer_profile'):
             return [IsLecturerOrAdmin()]
 
         return [DenyAll()]
@@ -45,7 +45,7 @@ class PositionViewSet(RoleBasedViewSet):
 
 
 class SemesterViewSet(RoleBasedViewSet):
-    queryset = Semester.objects.select_related("faculty").all()
+    queryset = Semester.objects.select_related('faculty').all()
     serializer_class = SemesterSerializer
 
 
@@ -59,7 +59,7 @@ class UniversityMembershipViewSet(RoleBasedViewSet):
 
         if user.is_staff:
             return qs
-        if hasattr(user, "is_student") or hasattr(user, "is_lecturer"):
+        if hasattr(user, 'is_student') or hasattr(user, 'is_lecturer'):
             return qs.filter(user=user)
         return qs.none()
 

@@ -26,12 +26,12 @@ class SemesterAdmin(admin.ModelAdmin):
 
 @admin.register(University)
 class UniversityAdmin(admin.ModelAdmin):
-    list_display = ("name", "created_at")
-    search_fields = ("name",)
+    list_display = ('name', 'created_at')
+    search_fields = ('name',)
 
 
 @admin.register(UniversityMembership)
 class UniversityMembershipAdmin(admin.ModelAdmin):
-    list_display = ("user", "university", "position", "is_active")
-    list_filter = ("university", "position", "is_active")
-    search_fields = ("user__username", "user__first_name", "user__last_name")
+    list_display = ('user', 'university', 'position', 'is_active')
+    list_filter = ('university', 'position', 'is_active')
+    search_fields = ('user__username', 'user__first_name', 'user__last_name')

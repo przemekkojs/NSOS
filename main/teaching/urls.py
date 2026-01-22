@@ -9,7 +9,7 @@ router.register(r"classes", ClassViewSet)
 router.register(r"schedules", ScheduleViewSet)
 
 urlpatterns = [
-    path("user-schedule/", UserScheduleView.as_view(), name="user-schedule"),
+    path('user-schedule/', UserScheduleView.as_view(), name='user-schedule'),
 ]
 
 urlpatterns += router.urls

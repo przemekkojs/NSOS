@@ -9,39 +9,39 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ("university", "0001_initial"),
+        ('university', '0001_initial'),
     ]
 
     operations = [
         migrations.CreateModel(
-            name="University",
+            name='University',
             fields=[
-                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
-                ("name", models.CharField(max_length=200, unique=True)),
-                ("description", models.TextField(blank=True, null=True)),
-                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('name', models.CharField(max_length=200, unique=True)),
+                ('description', models.TextField(blank=True, null=True)),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
             ],
             options={
-                "verbose_name": "University",
-                "verbose_name_plural": "Universities",
+                'verbose_name': 'University',
+                'verbose_name_plural': 'Universities',
             },
         ),
         migrations.CreateModel(
-            name="UniversityMembership",
+            name='UniversityMembership',
             fields=[
-                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
-                ("workload", models.IntegerField(blank=True, choices=[(40, "Full (40h)"), (20, "Half (20h)"), (30, "Three quarter (30h)")], null=True)),
-                ("is_active", models.BooleanField(default=True)),
-                ("start_date", models.DateField(blank=True, null=True)),
-                ("end_date", models.DateField(blank=True, null=True)),
-                ("position", models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to="university.position")),
-                ("university", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name="memberships", to="university.university")),
-                ("user", models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name="university_memberships", to=settings.AUTH_USER_MODEL)),
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('workload', models.IntegerField(blank=True, choices=[(40, 'Full (40h)'), (20, 'Half (20h)'), (30, 'Three quarter (30h)')], null=True)),
+                ('is_active', models.BooleanField(default=True)),
+                ('start_date', models.DateField(blank=True, null=True)),
+                ('end_date', models.DateField(blank=True, null=True)),
+                ('position', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='university.position')),
+                ('university', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='memberships', to='university.university')),
+                ('user', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='university_memberships', to=settings.AUTH_USER_MODEL)),
             ],
             options={
-                "verbose_name": "University Membership",
-                "verbose_name_plural": "University Memberships",
-                "unique_together": {("user", "university")},
+                'verbose_name': 'University Membership',
+                'verbose_name_plural': 'University Memberships',
+                'unique_together': {('user', 'university')},
             },
         ),
     ]
