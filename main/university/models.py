@@ -79,9 +79,9 @@ class University(models.Model):
 
 
 class UniversityMembership(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True, related_name='university_memberships')
-    university = models.ForeignKey(University, on_delete=models.CASCADE, related_name='memberships')
-    position = models.ForeignKey('Position', on_delete=models.SET_NULL, null=True, blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True, related_name="university_memberships")
+    university = models.ForeignKey(University, on_delete=models.CASCADE, related_name="memberships")
+    position = models.ForeignKey("Position", on_delete=models.SET_NULL, null=True, blank=True)
 
     workload = models.IntegerField(choices=Position.WORKLOAD_CHOICES, null=True, blank=True)
     is_active = models.BooleanField(default=True)
@@ -89,7 +89,7 @@ class UniversityMembership(models.Model):
     end_date = models.DateField(null=True, blank=True)
 
     class Meta:
-        unique_together = ('user', 'university')
+        unique_together = ("user", "university")
         verbose_name = "University Membership"
         verbose_name_plural = "University Memberships"
 
