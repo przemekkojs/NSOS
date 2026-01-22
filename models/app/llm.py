@@ -5,7 +5,7 @@ import json
 
 from dotenv import load_dotenv
 
-from names import LLM_4
+from names import LLM_3, LLM_4
 
 load_dotenv()
 
@@ -17,20 +17,20 @@ headers = {
 }
 
 
-def generate_prompt(question: str, docs: (list[str] | None)) -> str:
-    if not question:
-        raise ValueError("Question cannot be empty")
-    if docs is None:
-        docs = []
+# def generate_prompt(question: str, docs: (list[str] | None)) -> str:
+#     if not question:
+#         raise ValueError("Question cannot be empty")
+#     if docs is None:
+#         docs = []
 
-    docs_text = "".join(docs)
+#     docs_text = "".join(docs)
 
-    return (
-        f"""Jesteś asystentem systemu obsługi studentów.\n
-        Odpowiedz na zadane pytanie TYLKO w oparciu o dostarczoną dokumentację.\n
-        Dokumentacja:\n{docs_text}\n
-        Pytanie:\n{question}\n"""
-    )
+#     return (
+#         f"""Jesteś asystentem systemu obsługi studentów.\n
+#         Odpowiedz na zadane pytanie TYLKO w oparciu o dostarczoną dokumentację.\n
+#         Dokumentacja:\n{docs_text}\n
+#         Pytanie:\n{question}\n"""
+#     )
 
 
 def query(payload):
@@ -43,16 +43,39 @@ def retrieve_answer(response: dict, model_name: str) -> str:
     error_dict = [{"message": {"content": str(response)}}]
 
     mapping: dict[str, str] = {
+        LLM_3: response.get("choices", error_dict)[0]["message"]["content"],
         LLM_4: response.get("choices", error_dict)[0]["message"]["content"]
     }
 
     return mapping[model_name]
 
 
-def generate(prompt: str, model_name: str) -> str:
+def get_messages(question:str, docs:list[str]):
+    docs_str:str = "".join(docs)
+    to_remove = ["*", "_", '#']
+    docs_str = "".join(c for c in docs_str if c not in to_remove)
+
+    print(docs_str)
+
+    return [
+        {
+            "role": "system",
+            "content": f"Jesteś chatbotem systemu uczelnianej obsługi studentów. Odpowiadaj tylko z użyciem dokumentacji: {docs_str}."
+        },
+        {
+            "role": "user",
+            "content": question
+        }
+    ]
+
+
+def generate(docs: list[str], question: str, model_name: str) -> str:
     try:
         response = query(
-            {"messages": [{"role": "user", "content": prompt}], "model": model_name}
+            {
+                "messages": get_messages(question, docs),
+                "model": model_name
+            }
         )
 
         return retrieve_answer(response, model_name)
@@ -60,9 +83,9 @@ def generate(prompt: str, model_name: str) -> str:
         return f"Something went wrong... {str(e)}"
 
 
-async def generate_stream(prompt: str, model_name: str):
+async def generate_stream(docs: list[str], question: str, model_name: str):
     payload = {
-        "messages": [{"role": "user", "content": prompt}],
+        "messages": get_messages(question, docs), 
         "model": model_name,
         "stream": True,
     }

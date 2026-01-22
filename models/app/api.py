@@ -1,7 +1,7 @@
 from fastapi import Request, APIRouter
 from fastapi.responses import StreamingResponse
 
-from llm import generate, generate_prompt, generate_stream
+from llm import generate, generate_stream
 from names import LLM_4
 
 router = APIRouter()
@@ -17,12 +17,8 @@ async def chat(request: Request, question: str):
     retrieved = rag.retrieve(question)
 
     print(retrieved)
-
-    prompt = generate_prompt(question, retrieved)
-
-    print(prompt)
     
-    answer = generate(prompt, LLM_4)
+    answer = generate(retrieved, question, LLM_4)
 
     return {"answer": answer}
 
@@ -35,8 +31,7 @@ async def chat_stream(request: Request, question: str):
         return {"answer": "Przepraszam, nie znam odpowiedzi na to pytanie."}
 
     retrieved = rag.retrieve(question)
-    prompt = generate_prompt(question, retrieved)
 
     return StreamingResponse(
-        generate_stream(prompt, LLM_4), media_type="text/event-stream"
+        generate_stream(retrieved, question, LLM_4), media_type="text/event-stream"
     )
