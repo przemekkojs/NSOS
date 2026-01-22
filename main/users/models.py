@@ -1,7 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from university.models import Faculty, Semester, Position, University
-from university.models import Faculty, Semester, Position
 from aws.s3 import PrivateMediaStorage
 
 

@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from rest_framework.permissions import SAFE_METHODS, BasePermission
 from .models import Faculty, Position, Semester, UniversityMembership
 from .serializers import FacultySerializer, PositionSerializer, SemesterSerializer, UniversityMembershipSerializer
-from core.permissions import IsStudentReadOnly, IsLecturerOrAdmin, HasMembershipAtUniversity, IsAdmin
+from core.permissions import IsStudentReadOnly, IsLecturerOrAdmin, IsAdmin
 from rest_framework.pagination import PageNumberPagination
 
 
