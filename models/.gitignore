@@ -1,0 +1,6 @@
+app/saved
+__pycache__/
+.venv/
+
+.env
+local/

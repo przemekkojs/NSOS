@@ -31,6 +31,21 @@ services:
     networks:
       - nsos_net
 
+  rag:
+    build: ../models # NOTE: move to services/rag
+    ports:
+      - "8001:8000"
+    environment:
+      - HF_TOKEN=${HF_TOKEN}
+    depends_on:
+      - db
+    restart: unless-stopped
+    volumes:
+      - huggingface_cache:/home/appuser/.cache/huggingface
+    networks:
+      - nsos_net
+
+
 
 networks:
   nsos_net:
@@ -38,4 +53,5 @@ networks:
 
 volumes:
   sqlite_data:
+  huggingface_cache:
 

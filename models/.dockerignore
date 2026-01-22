@@ -1,0 +1,75 @@
+# Python cache and bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Testing
+test.py
+test_ui/
+*test*.py
+pytest_cache/
+.pytest_cache/
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose.yml
+.dockerignore
+
+# Documentation and markdown
+*.md
+README.md
+docs/
+
+# Environment files (don't copy .env, use secrets/config)
+.env
+.env.*
+*.env
+
+# Logs
+*.log
+logs/
+
+# Database files (if any)
+*.db
+*.sqlite
+*.sqlite3
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
+# Scripts that aren't needed in production
+update_docs.py
+download.py
