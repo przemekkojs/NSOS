@@ -27,7 +27,7 @@ secrets = get_secrets(SECRET_NAME)
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = secrets.SECRET_KEY
 
-# SECURITY WARNING: don't run with debug turned on in production!
+# SECURITY WARNING: don"t run with debug turned on in production!
 DEBUG = secrets.DEBUG
 
 ALLOWED_HOSTS = secrets.ALLOWED_HOSTS
@@ -47,13 +47,11 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "allauth.headless",
-
     # Apps
     "users",
     "university",
     "teaching",
     "core",
-
     "rest_framework",
 ]
 
