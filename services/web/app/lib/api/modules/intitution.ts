@@ -1,9 +1,10 @@
 import { apiClient } from "../client";
 import type { InstitutionCreate, Institution } from "~/lib/api/schemas";
+import type { Paginated } from "../client-v2";
 
 export const institutionApi = {
   getAll: (params?: { page?: number; limit?: number }) =>
-    apiClient.get<Institution[]>("/institutions", {
+    apiClient.get<Paginated<Institution>>("/institutions", {
       headers: params ? { "X-Query": JSON.stringify(params) } : {},
     }),
 

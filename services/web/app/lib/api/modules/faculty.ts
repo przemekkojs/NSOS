@@ -1,11 +1,12 @@
 import { apiClient } from "../client";
 import type { Faculty, FacultyCreate } from "~/lib/api/schemas";
+import type { Paginated } from "../client-v2";
 
 const basePath = "/api/university/faculties";
 
 export const facultyApi = {
   getAll: (params?: { page?: number; limit?: number }) =>
-    apiClient.get<Faculty[]>(basePath, {
+    apiClient.get<Paginated<Faculty>>(basePath, {
       headers: params ? { "X-Query": JSON.stringify(params) } : {},
     }),
 

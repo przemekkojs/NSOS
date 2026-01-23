@@ -42,7 +42,13 @@ definePageMeta({
       <UButton to="/faculties/create" :label="$t('button.create')" />
     </PermissionGuard>
   </div>
-  <UTable ref="table" :data="data ?? []" :loading="isFetching" :columns sticky>
+  <UTable
+    ref="table"
+    :data="data?.results"
+    :loading="isFetching"
+    :columns
+    sticky
+  >
     <template #actions-cell="{ row }">
       <UDropdownMenu
         :items="

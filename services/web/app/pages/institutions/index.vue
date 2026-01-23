@@ -29,7 +29,12 @@ definePageMeta({
       <CreateInstitutionModal />
     </PermissionGuard>
   </div>
-  <UTable :key="locale" :data="institutions" :loading="isFetching" :columns>
+  <UTable
+    :key="locale"
+    :data="institutions?.results"
+    :loading="isFetching"
+    :columns
+  >
     <template #actions-cell="{ row }">
       <UDropdownMenu :items="getDropdownActions(row.original)">
         <UButton

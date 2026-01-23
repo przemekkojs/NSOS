@@ -1,5 +1,6 @@
 import { apiClient } from "../client";
 import type { User, UserUpdate } from "~/lib/api/schemas";
+import type { Paginated } from "../client-v2";
 
 const basePath = "/api/users/users";
 
@@ -7,7 +8,7 @@ export const userApi = {
   me: () => apiClient.get<User>("/users/me"),
 
   getAll: (params?: { page?: number; limit?: number }) =>
-    apiClient.get<User[]>(basePath, {
+    apiClient.get<Paginated<User>>(basePath, {
       headers: params ? { "X-Query": JSON.stringify(params) } : {},
     }),
 
