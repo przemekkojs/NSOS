@@ -1,0 +1,31 @@
+import { apiClient } from "../client-v2";
+
+export interface CalendarEvent {
+  id: number;
+  title: string;
+  start: string;
+  end: string;
+  extendedProps: {
+    courseCode: string;
+    courseName: string;
+    room: string;
+    lecturerName: string | null;
+    groupName: string;
+  };
+}
+
+export interface CalendarParams {
+  start_date?: string;
+  end_date?: string;
+  user_id?: number;
+}
+
+const baseUrl = `/api/teaching`;
+
+export const calendarApi = {
+  getEvents: (params?: CalendarParams) =>
+    apiClient.get<CalendarEvent[]>(
+      `${baseUrl}/user-schedule/?user_id=${params.user_id}`,
+      { params },
+    ),
+};
