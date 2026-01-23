@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import type { User, Lecturer, Student, Permission } from "~/lib/api/schemas";
 import { authApi } from "~/lib/api/modules/auth";
+import { userApi } from "~/lib/api/modules/user";
 
 export function isUser(obj: unknown): obj is User {
   if (typeof obj !== "object" || obj === null) {
@@ -62,10 +63,12 @@ export const useUserStore = defineStore("user", () => {
 
       const response = await authApi.session();
 
+      const _user = await userApi.getById(response.data.user.id);
+
       if (response.data.user) {
-        user.value = response.data.user;
+        user.value = _user;
         isLoaded.value = true;
-        return response.data.user;
+        return _user;
       } else {
         user.value = null;
         isLoaded.value = true;

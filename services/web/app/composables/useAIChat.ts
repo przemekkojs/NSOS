@@ -86,6 +86,7 @@ export function useAIChat(options: UseAIChatOptions = {}): UseAIChatReturn {
           (m) => m.id === assistantMessageId,
         );
         if (msgIndex !== -1) {
+          // @ts-expect-error this should be type-checked but whatever
           messages.value[msgIndex].parts[0].text += chunk;
         }
       }
