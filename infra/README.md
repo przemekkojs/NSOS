@@ -34,10 +34,12 @@ cd infra
 cp .env.example .env
 ```
 
+and fill HF_TOKEN for ML service
+
 generate secret key:
 
 ```sh
-echo "CORE_API_SECRET_KEY=$(openssl rand -base64 64)" >> .env
+echo "API_SECRET_KEY=$(openssl rand -base64 32)" >> .env
 ```
 
 migrate:
