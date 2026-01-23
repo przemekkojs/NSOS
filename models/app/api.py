@@ -9,6 +9,11 @@ from .rag import RagEngine
 router = APIRouter()
 
 
+@router.get("/health")
+async def health():
+    return {"status": "healthy", "service": "rag"}
+
+
 @router.post("/chat")
 async def chat(request: Request, question: str):
     rag = request.app.state.rag

@@ -52,6 +52,11 @@ export default defineNuxtConfig({
   imports: {
     dirs: ["~/composables/**"],
   },
+  content: {
+    experimental: {
+      nativeSqlite: true
+    }
+  },
   css: [
     "~/assets/css/main.css",
     "~/assets/css/fullcalendar.css",
@@ -109,7 +114,7 @@ export default defineNuxtConfig({
     },
     prerender: {
       crawlLinks: true,
-      routes: ["/"],
+      routes: ["/", "/en/"],
     },
   },
   routeRules: {

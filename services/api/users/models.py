@@ -2,11 +2,22 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from university.models import Faculty, Semester, Position, University
 from aws.s3 import PrivateMediaStorage
+from django.conf import settings
+
+
+if settings.ENV == "dev":
+    from django.core.files.storage import FileSystemStorage
+
+    avatar_storage = FileSystemStorage()
+else:
+    from aws.s3 import PrivateMediaStorage
+
+    avatar_storage = PrivateMediaStorage()
 
 
 class User(AbstractUser):
     email = models.EmailField(unique=True)
-    avatar = models.FileField(storage=PrivateMediaStorage(), null=True)
+    avatar = models.FileField(storage=avatar_storage, null=True)
 
     class Meta:
         verbose_name = "User"

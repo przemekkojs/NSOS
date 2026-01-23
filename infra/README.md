@@ -27,3 +27,27 @@ docker compose build
 ```sh
 docker compose up
 ```
+# Django backend
+
+```sh
+cd infra
+cp .env.example .env
+```
+
+and fill HF_TOKEN for ML service
+
+generate secret key:
+
+```sh
+echo "API_SECRET_KEY=$(openssl rand -base64 32)" >> .env
+```
+
+migrate:
+```sh
+docker exec -it infra-django-1 python manage.py migrate
+```
+create superuser
+```sh
+docker exec -it infra-django-1 python manage.py createsuperuser
+```
+

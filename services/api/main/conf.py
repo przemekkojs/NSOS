@@ -1,5 +1,5 @@
 from django.conf import settings as django_settings
-from .secrets import Secrets
+from .app_secrets import Secrets
 
 
 class TypedSettings:
