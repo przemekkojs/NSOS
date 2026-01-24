@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Course, CourseGroup, Class, Schedule
+from .models import Course, CourseGroup, Class, Schedule, Grade
 
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -77,3 +77,19 @@ class ScheduleItemSerializer(serializers.ModelSerializer):
         if obj.lecturer:
             return f"{obj.lecturer.user.first_name} {obj.lecturer.user.last_name}"
         return None
+
+
+class GradeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Grade
+        fields = [
+            "id",
+            "student",
+            "course",
+            "lecturer",
+            "grade_type",
+            "value",
+            "weight",
+            "issued_at",
+        ]
+        read_only_fields = ["lecturer", "issued_at"]

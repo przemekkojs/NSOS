@@ -1,9 +1,10 @@
-from .models import Course, CourseGroup, Class, Schedule
+from .models import Course, CourseGroup, Class, Schedule, Grade
 from .serializers import (
     CourseSerializer,
     CourseGroupSerializer,
     ClassSerializer,
     ScheduleSerializer,
+    GradeSerializer,
 )
 from university.views import RoleBasedViewSet
 from django.contrib.auth import get_user_model
@@ -101,3 +102,27 @@ class UserScheduleView(APIView):
 
         serializer = ScheduleItemSerializer(schedules, many=True)
         return Response(serializer.data)
+
+
+class GradeViewSet(RoleBasedViewSet):
+    queryset = Grade.objects.all()
+    serializer_class = GradeSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+
+        if user.is_student:
+            return self.queryset.filter(student=user.student_profile)
+
+        if user.is_lecturer:
+            return self.queryset.filter(lecturer=user.lecturer_profile)
+
+        return Grade.objects.none()
+
+    def perform_create(self, serializer):
+        user = self.request.user
+
+        if not (user.is_lecturer or user.is_staff):
+            raise PermissionError("Only lecturers can issue grades")
+
+        serializer.save(lecturer=user.lecturer_profile)

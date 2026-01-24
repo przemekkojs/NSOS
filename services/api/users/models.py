@@ -1,9 +1,10 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.db.models import ExpressionWrapper, F, Sum
+from django.forms import DurationField
 from university.models import Faculty, Semester, Position, University
 from aws.s3 import PrivateMediaStorage
 from django.conf import settings
-
 
 if settings.ENV == "dev":
     from django.core.files.storage import FileSystemStorage
@@ -77,6 +78,24 @@ class Lecturer(models.Model):
     def __str__(self):
         return f"{self.user.first_name} {self.user.last_name}"
 
+    def scheduled_hours(self):
+        from teaching.models import Schedule
+
+        total = (
+            Schedule.objects.filter(lecturer=self)
+            .annotate(
+                duration=ExpressionWrapper(
+                    F("end_time") - F("start_time"), output_field=DurationField()
+                )
+            )
+            .aggregate(total=Sum("duration"))["total"]
+        )
+
+        if not total:
+            return 0
+
+        return total.total_seconds() / 3600
+
 
 class Student(models.Model):
     user = models.OneToOneField(
@@ -96,3 +115,17 @@ class Student(models.Model):
 
     def __str__(self):
         return f"{self.index_number} - {self.user.first_name} {self.user.last_name}"
+
+    def course_averages(self):
+        from teaching.models import Course
+
+        result = {}
+
+        courses = Course.objects.filter(grades__student=self).distinct()
+
+        for course in courses:
+            avg = course.average_for_student(self)
+            if avg is not None:
+                result[course.course_code] = avg
+
+        return result
