@@ -11,22 +11,28 @@ botocore==1.42.8
     # via
     #   boto3
     #   s3transfer
+cffi==2.0.0
+    # via cryptography
 click==8.3.1
     # via uvicorn
-django==4.2.5
+cryptography==46.0.3
+    # via pyjwt
+django==6.0.1
     # via
     #   nsos-cpy (pyproject.toml)
     #   django-allauth
     #   django-cors-headers
     #   django-storages
     #   djangorestframework
-django-allauth==65.1.0
+django-allauth==65.14.0
     # via nsos-cpy (pyproject.toml)
 django-cors-headers==4.9.0
     # via nsos-cpy (pyproject.toml)
 django-storages==1.14.6
     # via nsos-cpy (pyproject.toml)
 djangorestframework==3.16.1
+    # via nsos-cpy (pyproject.toml)
+dotenv==0.9.9
     # via nsos-cpy (pyproject.toml)
 h11==0.16.0
     # via uvicorn
@@ -36,19 +42,25 @@ jmespath==1.0.1
     #   botocore
 psycopg2-binary==2.9.11
     # via nsos-cpy (pyproject.toml)
+pycparser==3.0
+    # via cffi
+pyjwt==2.10.1
+    # via django-allauth
 python-dateutil==2.9.0.post0
     # via botocore
 python-dotenv==1.2.1
-    # via nsos-cpy (pyproject.toml)
+    # via
+    #   nsos-cpy (pyproject.toml)
+    #   dotenv
 s3transfer==0.16.0
     # via boto3
 six==1.17.0
     # via python-dateutil
-sqlparse==0.5.3
-    # via django
+sqlparse==0.5.5
+    # via
+    #   nsos-cpy (pyproject.toml)
+    #   django
 urllib3==2.6.2
     # via botocore
 uvicorn==0.38.0
     # via nsos-cpy (pyproject.toml)
-typing-extensions==4.15.0
-tzdata==2025.2

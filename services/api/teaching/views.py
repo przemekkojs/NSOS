@@ -10,7 +10,7 @@ from django.contrib.auth import get_user_model
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import ScheduleItemSerializer
+from .serializers import ScheduleItemSerializer, CalendarEventSerializer
 from datetime import timedelta
 from django.utils.timezone import localdate
 
@@ -54,6 +54,7 @@ class ScheduleViewSet(RoleBasedViewSet):
 
 class UserScheduleView(APIView):
     def get(self, request):
+        print(request.query_params)
         start_date = request.query_params.get("start_date")
         end_date = request.query_params.get("end_date")
         user_id = request.query_params.get("user_id")
@@ -99,5 +100,5 @@ class UserScheduleView(APIView):
 
         schedules = schedules.order_by("date", "start_time")
 
-        serializer = ScheduleItemSerializer(schedules, many=True)
+        serializer = CalendarEventSerializer(schedules, many=True)
         return Response(serializer.data)

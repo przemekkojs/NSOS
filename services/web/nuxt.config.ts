@@ -1,4 +1,4 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
+// https://nuxt.com/docs/api/configuration/nuxt-config 
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
@@ -21,6 +21,7 @@ export default defineNuxtConfig({
       mswEnabled: process.env.NUXT_PUBLIC_MSW_ENABLED === "true",
       appUrl: process.env.NUXT_PUBLIC_APP_URL,
       apiUrl: process.env.NUXT_PUBLIC_API_URL,
+      ragUrl: process.env.NUXT_PUBLIC_RAG_URL,
       featureFlags: {
         notifications:
           process.env.NUXT_PUBLIC_FEATURE_FLAG_NOTIFICATIONS === "true",
