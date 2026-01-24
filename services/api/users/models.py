@@ -80,16 +80,16 @@ class Lecturer(models.Model):
 
     def scheduled_hours(self):
         from teaching.models import Schedule
-        total = Schedule.objects.filter(
-            lecturer=self
-        ).annotate(
-            duration=ExpressionWrapper(
-                F('end_time') - F('start_time'),
-                output_field=DurationField()
+
+        total = (
+            Schedule.objects.filter(lecturer=self)
+            .annotate(
+                duration=ExpressionWrapper(
+                    F("end_time") - F("start_time"), output_field=DurationField()
+                )
             )
-        ).aggregate(
-            total=Sum('duration')
-        )['total']
+            .aggregate(total=Sum("duration"))["total"]
+        )
 
         if not total:
             return 0
@@ -118,6 +118,7 @@ class Student(models.Model):
 
     def course_averages(self):
         from teaching.models import Course
+
         result = {}
 
         courses = Course.objects.filter(grades__student=self).distinct()

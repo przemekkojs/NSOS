@@ -37,13 +37,9 @@ class Course(models.Model):
         if not grades.exists():
             return None
 
-        weighted_sum = grades.aggregate(
-            total=Sum(F('value') * F('weight'))
-        )['total']
+        weighted_sum = grades.aggregate(total=Sum(F("value") * F("weight")))["total"]
 
-        weight_sum = grades.aggregate(
-            total=Sum('weight')
-        )['total']
+        weight_sum = grades.aggregate(total=Sum("weight"))["total"]
 
         if not weight_sum:
             return None
@@ -110,27 +106,18 @@ class Schedule(models.Model):
 
 class Grade(models.Model):
     GRADE_TYPE_CHOICES = [
-        ('exam', 'Exam'),
-        ('credit', 'Credit'),
-        ('test', 'Test'),
-        ('project', 'Project'),
+        ("exam", "Exam"),
+        ("credit", "Credit"),
+        ("test", "Test"),
+        ("project", "Project"),
     ]
 
     student = models.ForeignKey(
-        Student,
-        on_delete=models.CASCADE,
-        related_name='grades'
+        Student, on_delete=models.CASCADE, related_name="grades"
     )
-    course = models.ForeignKey(
-        Course,
-        on_delete=models.CASCADE,
-        related_name='grades'
-    )
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="grades")
     lecturer = models.ForeignKey(
-        Lecturer,
-        on_delete=models.SET_NULL,
-        null=True,
-        related_name='issued_grades'
+        Lecturer, on_delete=models.SET_NULL, null=True, related_name="issued_grades"
     )
 
     grade_type = models.CharField(max_length=20, choices=GRADE_TYPE_CHOICES)

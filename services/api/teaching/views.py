@@ -3,7 +3,8 @@ from .serializers import (
     CourseSerializer,
     CourseGroupSerializer,
     ClassSerializer,
-    ScheduleSerializer, GradeSerializer,
+    ScheduleSerializer,
+    GradeSerializer,
 )
 from university.views import RoleBasedViewSet
 from django.contrib.auth import get_user_model

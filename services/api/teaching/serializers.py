@@ -83,13 +83,13 @@ class GradeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Grade
         fields = [
-            'id',
-            'student',
-            'course',
-            'lecturer',
-            'grade_type',
-            'value',
-            'weight',
-            'issued_at',
+            "id",
+            "student",
+            "course",
+            "lecturer",
+            "grade_type",
+            "value",
+            "weight",
+            "issued_at",
         ]
-        read_only_fields = ['lecturer', 'issued_at']
+        read_only_fields = ["lecturer", "issued_at"]
