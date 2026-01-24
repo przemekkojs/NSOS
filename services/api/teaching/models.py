@@ -1,4 +1,6 @@
+from click.core import F
 from django.db import models
+from django.db.models import Sum
 from university.models import Faculty, Semester
 from users.models import Lecturer, Student
 
@@ -28,6 +30,25 @@ class Course(models.Model):
 
     def __str__(self):
         return f"{self.course_code} - {self.name}"
+
+    def average_for_student(self, student):
+        grades = self.grades.filter(student=student)
+
+        if not grades.exists():
+            return None
+
+        weighted_sum = grades.aggregate(
+            total=Sum(F('value') * F('weight'))
+        )['total']
+
+        weight_sum = grades.aggregate(
+            total=Sum('weight')
+        )['total']
+
+        if not weight_sum:
+            return None
+
+        return round(weighted_sum / weight_sum, 2)
 
 
 class CourseGroup(models.Model):
@@ -85,3 +106,42 @@ class Schedule(models.Model):
 
     def __str__(self):
         return f"{self.date} - {self.course_group}"
+
+
+class Grade(models.Model):
+    GRADE_TYPE_CHOICES = [
+        ('exam', 'Exam'),
+        ('credit', 'Credit'),
+        ('test', 'Test'),
+        ('project', 'Project'),
+    ]
+
+    student = models.ForeignKey(
+        Student,
+        on_delete=models.CASCADE,
+        related_name='grades'
+    )
+    course = models.ForeignKey(
+        Course,
+        on_delete=models.CASCADE,
+        related_name='grades'
+    )
+    lecturer = models.ForeignKey(
+        Lecturer,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='issued_grades'
+    )
+
+    grade_type = models.CharField(max_length=20, choices=GRADE_TYPE_CHOICES)
+    value = models.DecimalField(max_digits=3, decimal_places=1)
+    weight = models.DecimalField(max_digits=4, decimal_places=2, default=1.0)
+
+    issued_at = models.DateField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Grade"
+        verbose_name_plural = "Grades"
+
+    def __str__(self):
+        return f"{self.student} - {self.course} ({self.value})"
