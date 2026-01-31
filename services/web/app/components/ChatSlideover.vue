@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { getTextFromMessage } from "@nuxt/ui/runtime/utils/ai.js";
 import MDC from "./ui/MDC.vue";
-// @ts-expect-error FIXME: the following type
-import type { UIMessage } from "ai";
 import { useAIChat } from "~/composables/useAIChat";
 
 const { t } = useI18n();
@@ -46,25 +44,8 @@ const { messages, input, status, error, sendMessage } = useAIChat({
 
 const { isAIChatOpen } = useDashboard();
 
-async function _onSubmit() {
+async function onSubmit() {
   await sendMessage();
-}
-
-function onSubmit() {
-  const trimmedInput = input.value.trim();
-  if (trimmedInput) {
-    messages.value.push({
-      id: Date.now().toString(),
-      role: "user",
-      parts: [
-        {
-          type: "text",
-          text: trimmedInput,
-        },
-      ],
-    });
-    input.value = "";
-  }
 }
 </script>
 <template>
@@ -114,7 +95,7 @@ function onSubmit() {
             :error="error"
             :placeholder="$t('feature.chat.placeholder')"
             :disabled="status === 'streaming'"
-            @submit="_onSubmit"
+            @submit="onSubmit"
           />
         </template>
       </UChatPalette>

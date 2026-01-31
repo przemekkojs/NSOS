@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import type { User, Lecturer, Student, Permission } from "~/lib/api/schemas";
 import { authApi } from "~/lib/api/modules/auth";
 import { userApi } from "~/lib/api/modules/user";
+import { computed, ref } from "vue";
 
 export function isUser(obj: unknown): obj is User {
   if (typeof obj !== "object" || obj === null) {
@@ -11,14 +12,10 @@ export function isUser(obj: unknown): obj is User {
 }
 
 export function isLecturer(obj: unknown): obj is Lecturer {
-  if (!isUser(obj)) return false;
-
   return (obj as Lecturer).position !== undefined;
 }
 
 export function isStudent(obj: unknown): obj is Student {
-  if (!isUser(obj)) return false;
-
   return (obj as Student).index_number !== undefined;
 }
 

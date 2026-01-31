@@ -17,7 +17,6 @@ const teams = ref<
 const selectedTeam = ref(teams.value[0]);
 const { t } = useI18n();
 const route = useLocaleRoute();
-const { isEnabled } = useFeatureFlagsStore();
 const { hasPermission } = useUserStore();
 
 const items = computed<DropdownMenuItem[][]>(() => {
@@ -29,13 +28,11 @@ const items = computed<DropdownMenuItem[][]>(() => {
       },
     })),
     [
-      isEnabled("institutions") &&
-        // @ts-expect-error TODO: implement institutions
-        hasPermission("institutions.add_institution") && {
-          label: t("page.institution.create.title"),
-          icon: "i-lucide-circle-plus",
-          to: route({ name: "institutions-create" }).path,
-        },
+      hasPermission("university.add_university") && {
+        label: t("page.university.create.title"),
+        icon: "i-lucide-circle-plus",
+        to: route({ name: "universities-create" }).path,
+      },
     ].filter(truthy),
   ];
 });

@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { forceLogin, acceptCookies } from "./helpers.js";
 
-test.describe("Administrators can manage institutions", () => {
+test.describe("Administrators can manage universities", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/");
     // Assume forceLogin is defined elsewhere
@@ -9,8 +9,8 @@ test.describe("Administrators can manage institutions", () => {
     await acceptCookies(page);
   });
 
-  test("Admin can view institutions", async ({ page }) => {
-    await page.goto("/institutions");
+  test("Admin can view universities", async ({ page }) => {
+    await page.goto("/universities");
 
     const table = page.locator("table");
     await expect(table).toBeVisible();
@@ -18,7 +18,7 @@ test.describe("Administrators can manage institutions", () => {
     expect(rows).toBeGreaterThan(0);
   });
 
-  test("Admin can create institution", () => {});
+  test("Admin can create university", () => {});
 
-  test("Admin can update institution", () => {});
+  test("Admin can update university", () => {});
 });

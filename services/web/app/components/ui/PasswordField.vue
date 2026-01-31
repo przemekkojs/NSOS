@@ -3,10 +3,11 @@ import type { InputProps } from '@nuxt/ui'
 
 const model = defineModel<string>()
 
-interface PasswordInputProps extends Omit<InputProps, 'model' | 'modelValue'> {
+interface PasswordInputProps {
   show?: boolean
   label?: string
   name?: string
+  placeholder?: string
 }
 const { show = false, label=undefined, name = undefined,  ...props } = defineProps<PasswordInputProps>()
 

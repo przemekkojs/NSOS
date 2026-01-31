@@ -1,14 +1,14 @@
 import { describe, beforeEach, it, expect } from "vitest";
-import CreateInstitutionForm from "./InstitutionForm.vue";
+import CreateUniversityForm from "./UniversityForm.vue";
 import { testForm } from "../../../../test/utils/form";
 import { flushPromises, mount, type VueWrapper } from "@vue/test-utils";
 
-describe("CreateInstitutionForm", () => {
+describe("CreateUniversityForm", () => {
   let wrapper: VueWrapper<unknown>;
   let form: ReturnType<typeof testForm>;
 
   beforeEach(() => {
-    wrapper = mount(CreateInstitutionForm);
+    wrapper = mount(CreateUniversityForm);
     form = testForm(wrapper);
   });
 
@@ -41,7 +41,7 @@ describe("CreateInstitutionForm", () => {
 
   it("emits 'success' event with form data on submit", async () => {
     const formData = {
-      name: "Test Institution",
+      name: "Test University",
       code: "TEST",
       address: "123 Test St",
     };
@@ -54,7 +54,6 @@ describe("CreateInstitutionForm", () => {
     await flushPromises();
 
     // const emitted = wrapper.emitted("success");
-    // TODO: extend checks 
-
+    // TODO: extend checks
   });
 });

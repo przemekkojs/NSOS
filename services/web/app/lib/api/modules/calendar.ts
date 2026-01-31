@@ -17,15 +17,16 @@ export interface CalendarEvent {
 export interface CalendarParams {
   start_date?: string;
   end_date?: string;
-  user_id?: number;
+  user_id?: string;
 }
 
 const baseUrl = `/api/teaching`;
 
 export const calendarApi = {
-  getEvents: (params?: CalendarParams) =>
-    apiClient.get<CalendarEvent[]>(
-      `${baseUrl}/user-schedule/?user_id=${params.user_id}`,
+  getEvents: (params?: CalendarParams) => {
+    return apiClient.get<CalendarEvent[]>(
+      `${baseUrl}/user-schedule/?user_id=${params?.user_id}`,
       { params },
-    ),
+    );
+  },
 };

@@ -66,10 +66,9 @@ const options = ref<CalendarOptions>({
   slotMinTime: "08:00:00",
   slotMaxTime: "20:00:00",
   allDaySlot: false,
-  height: "auto",
-  viewClassNames: "h-full",
-  eventColor: "#3b82f6",
-  eventDisplay: "block",
+  // height: "auto",
+  // viewClassNames: "h-full",
+  // eventDisplay: "block",
   eventContent: (arg) => {
     const props = arg.event.extendedProps;
 

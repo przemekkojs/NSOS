@@ -37,12 +37,13 @@ class IsAdmin(BasePermission):
             return request.user.is_staff
         return False
 
+
 class IsLecturer(BasePermission):
     def has_permission(self, request, view):
         return (
             request.user
             and request.user.is_authenticated
-            and request.user.groups.filter(name='Lecturer').exists()
+            and request.user.groups.filter(name="Lecturer").exists()
         )
 
 
@@ -80,20 +81,20 @@ class CanViewOwnSchedule(BasePermission):
     Lecturers can view their own schedule.
     Admin and Dean can view all schedules.
     """
-    
+
     def has_object_permission(self, request, view, obj):
         # Admin and Dean can view all
-        if request.user.groups.filter(name__in=['Admin', 'Dean']).exists():
+        if request.user.groups.filter(name__in=["Admin", "Dean"]).exists():
             return True
-        
+
         # Lecturers can view schedules for their course groups
-        if hasattr(request.user, 'lecturer_profile'):
+        if hasattr(request.user, "lecturer_profile"):
             return obj.lecturer == request.user.lecturer_profile
-        
+
         # Students can view their own schedule
-        if hasattr(request.user, 'student_profile'):
+        if hasattr(request.user, "student_profile"):
             return obj.student == request.user.student_profile
-        
+
         return False
 
 
@@ -102,15 +103,15 @@ class CanViewOwnData(BasePermission):
     Users can view/edit their own data.
     Admins can view/edit all data.
     """
-    
+
     def has_object_permission(self, request, view, obj):
         # Admin can access everything
-        if request.user.groups.filter(name='Admin').exists():
+        if request.user.groups.filter(name="Admin").exists():
             return True
-        
+
         # Users can access their own data
-        if hasattr(obj, 'user'):
+        if hasattr(obj, "user"):
             return obj.user == request.user
-        
+
         # For User objects
         return obj == request.user

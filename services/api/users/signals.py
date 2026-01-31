@@ -8,7 +8,7 @@ from .models import Student, Lecturer
 def assign_student_group(sender, instance, created, **kwargs):
     """Automatically assign Student group when a Student profile is created"""
     if created:
-        student_group, _ = Group.objects.get_or_create(name='Student')
+        student_group, _ = Group.objects.get_or_create(name="Student")
         instance.user.groups.add(student_group)
 
 
@@ -16,5 +16,5 @@ def assign_student_group(sender, instance, created, **kwargs):
 def assign_lecturer_group(sender, instance, created, **kwargs):
     """Automatically assign Lecturer group when a Lecturer profile is created"""
     if created:
-        lecturer_group, _ = Group.objects.get_or_create(name='Lecturer')
+        lecturer_group, _ = Group.objects.get_or_create(name="Lecturer")
         instance.user.groups.add(lecturer_group)

@@ -24,7 +24,7 @@ export const createCourses = createFactory<Course>((overrides = {}) => {
       max: 6,
     }),
     course_code: faker.string.alpha(6),
-    course_group: faker.word.noun(),
+    course_group: 1,
     course_type: faker.helpers.arrayElement(courseTypes),
     faculty: createFaculty().id,
   };

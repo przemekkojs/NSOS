@@ -35,23 +35,27 @@ const links = computed<NavigationMenuItem[][]>(() => [
       kbds: ["g", "h"],
     },
     hasPermission("users.view_user") && {
-      label: t("navigation.employees"),
+      label: t("navigation.users"),
       icon: "i-lucide-users",
       to: route({ name: "employees" }).path,
       kbds: ["g", "e"],
       "data-tour-step": "invite-employee-1",
+      children: [
+        hasPermission("university.view_position") &&
+          ({
+            label: t("navigation.positions"),
+            to: route({ name: "positions" }),
+          } satisfies NavigationMenuItem),
+      ].filter(truthy),
     },
-    isEnabled("institutions") &&
-      // @ts-expect-error the permission doesn't exist yet but it's fine
-      hasPermission("institutions.view_institution") &&
+    hasPermission("university.view_university") &&
       ({
-        label: t("navigation.institutions"),
+        label: t("navigation.universities"),
         icon: "i-lucide-building-2",
-        to: route({ name: "institutions" }).path,
+        to: route({ name: "universities" }).path,
         kbds: ["g", "i"],
       } satisfies NavigationMenuItem),
     hasPermission("university.view_faculty") && {
-      // move to institutions/universities children when added
       label: t("navigation.faculties"),
       icon: "i-lucide-building",
       to: route({ name: "faculties" }).path,
@@ -84,7 +88,7 @@ const links = computed<NavigationMenuItem[][]>(() => [
       icon: "i-lucide-settings",
       kbds: ["g", "s"],
     },
-  ].filter((a) => !!a),
+  ].filter(truthy),
   [
     {
       label: t("navigation.help"),
@@ -168,7 +172,7 @@ onMounted(() => {
         :ui="{ footer: 'lg:border-t lg:border-default' }"
       >
         <template #header="{ collapsed }">
-          <TeamsMenu v-if="isEnabled('institutions')" :collapsed="collapsed" />
+          <TeamsMenu :collapsed="collapsed" />
         </template>
 
         <template #default="{ collapsed }">
@@ -211,7 +215,7 @@ onMounted(() => {
             </template>
 
             <template #right>
-              <ChatSlideover v-if="isEnabled('aiChat')" />
+              <ChatSlideover />
               <UTooltip
                 v-if="isEnabled('notifications')"
                 :text="$t('feature.notifications.tooltip')"

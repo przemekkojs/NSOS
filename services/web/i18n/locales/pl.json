@@ -16,6 +16,7 @@
     "sortByColumn": "Sortuj po {column}"
   },
   "button": {
+    "add": "Dodać",
     "backToHome": "Powrót do strony głównej",
     "cancel": "Anuluj",
     "confirm": "Potwierdź",
@@ -96,51 +97,107 @@
     }
   },
   "form": {
+    "help": {
+      "academicYear": "Format: RRRR/RRRR (np. 2025/2026)",
+      "excludedDates": "Konkretne daty, w których zajęcia nie odbędą się (wakacje, przerwy itp.)",
+      "recurrenceRule": "Format iCalendar RRULE (np. FREQ=WEEKLY;BYDAY=MO,WE;INTERVAL=1)",
+      "scheduleEndDate": "Kiedy zakończy się ten wzór harmonogramu (domyślnie koniec semestru)",
+      "scheduleStartDate": "Kiedy rozpoczyna się ten wzór harmonogramu (domyślnie jest to początek semestru)"
+    },
     "hint": {
-      "institutionCode": "Unikalny kod dla tej instytucji",
-      "password": "Musi mieć co najmniej 8 znaków"
+      "password": "Musi mieć co najmniej 8 znaków",
+      "universityCode": "Unikalny kod dla tej instytucji"
     },
     "label": {
+      "academicYear": "Rok akademicki",
       "announcements": "Ogłoszenia",
       "avatar": "Awatar",
       "colorBlindMode": "Tryb dla daltonistów",
       "confirmPassword": "Potwierdź hasło",
+      "course": {
+        "egz": "Egz",
+        "ekm": "Ekm",
+        "zal": "Zal",
+        "zst": "Zst"
+      },
+      "courseCode": "Kod kursu",
       "courseGroup": "Grupa kursów",
       "courseName": "Nazwa kursu",
       "courseType": "Typ kursu",
+      "date": "Data",
+      "dateHeld": "Data odbycia",
       "description": "Description",
       "disableAnimations": "Wyłącz animacje",
       "ects": "Punkty ECTS",
       "email": "Email",
+      "endDate": "Data zakończenia",
+      "endTime": "Czas zakończenia",
+      "excludedDates": "Wykluczone daty",
       "faculty": "Wydział",
       "firstName": "Imię",
       "fontScale": "Skala czcionki",
-      "institutionAddress": "Adres",
-      "institutionCode": "Kod",
-      "institutionName": "Nazwa instytucji",
+      "hourlyRate": "Stawka godzinowa",
       "lastName": "Nazwisko",
+      "lecturer": "Wykładowca",
       "lineHeight": "Wysokość linii",
       "name": "Name",
+      "notes": "Notatki",
       "password": "Hasło",
       "position": "Stanowisko",
+      "recurrenceRule": "Reguła powtarzalności",
       "reduceMotion": "Zmniejsz ruch",
+      "room": "Pokój",
+      "schedule": "Harmonogram",
+      "semester": "Semestr",
+      "semesterType": "Typ semestru",
+      "startDate": "Data rozpoczęcia",
+      "startTime": "Czas rozpoczęcia",
       "status": "Status",
+      "student": "Student",
       "tooltipDuration": "Czas trwania podpowiedzi",
-      "weeklyHours": "Godziny tygodniowo"
+      "universityAddress": "Adres",
+      "universityCode": "Kod",
+      "universityName": "Nazwa instytucji",
+      "weekday": "Dzień powszedni",
+      "weeklyHours": "Godziny tygodniowo",
+      "weeksCount": "Liczba tygodni",
+      "workload": "Obciążenie pracą"
     },
     "placeholder": {
+      "addExcludedDate": "Wybierz datę do wykluczenia",
       "confirmPassword": "Wprowadź hasło ponownie",
+      "courseCode": "np. CS101",
+      "courseGroup": "Opcjonalny identyfikator grupy",
+      "courseName": "Wpisz nazwę kursu",
+      "description": "Wprowadź opis (opcjonalnie)",
+      "ects": "np. 6",
       "email": "np. jan.kowalski{'@'}mail.pl",
       "faculty": "np. Wydział Matematyki, Informatyki i Mechaniki",
+      "facultyName": "Wpisz nazwę wydziału",
       "filterEmails": "Filtruj e-maile",
       "firstName": "np. Jan",
-      "institutionAddress": "np. Krakowskie Przedmieście 26/28",
-      "institutionCode": "np. UW001",
-      "institutionName": "np. Uniwersytet Warszawski",
+      "groupName": "np. grupa A",
+      "hourlyRate": "Podaj stawkę godzinową",
       "lastName": "np. Kowalski",
+      "notes": "Dodatkowe uwagi (opcjonalnie)",
       "password": "Wprowadź hasło",
       "position": "np. Profesor nadzwyczajny",
-      "search": "Szukaj..."
+      "positionName": "Wpisz nazwę stanowiska",
+      "room": "np. A-101",
+      "search": "Szukaj...",
+      "selectCourse": "Wybierz kurs",
+      "selectCourseGroup": "Wybierz grupę kursów",
+      "selectFaculty": "Wybierz wydział",
+      "selectLecturer": "Wybierz wykładowcę",
+      "selectSchedule": "Wybierz harmonogram (opcjonalnie)",
+      "selectSemester": "Wybierz semestr",
+      "selectStudent": "Wybierz ucznia (opcjonalnie)",
+      "semesterName": "Wpisz nazwę semestru",
+      "universityAddress": "np. Krakowskie Przedmieście 26/28",
+      "universityCode": "np. UW001",
+      "universityName": "np. Uniwersytet Warszawski",
+      "weeklyHours": "np. 4,5",
+      "weeksCount": "np. 15"
     },
     "selectItem": {
       "1": "x1",
@@ -185,7 +242,7 @@
   "message": {
     "confirm": {
       "delete": "Czy na pewno chcesz usunąć ten element?",
-      "deleteInstitution": "Czy na pewno chcesz usunąć tę instytucję? Tej operacji nie można cofnąć.",
+      "deleteUniversity": "Czy na pewno chcesz usunąć tę instytucję? Tej operacji nie można cofnąć.",
       "logout": "Czy na pewno chcesz się wylogować?"
     },
     "error": {
@@ -218,12 +275,14 @@
     "goTo": "Idź do",
     "help": "Pomoc",
     "inbox": "Skrzynka odbiorcza",
-    "institutions": "Instytucje",
+    "positions": "Pozycje",
     "schedule": "Harmonogram",
     "settings": "Ustawienia",
     "shortcuts": "Skróty klawiszowe",
     "sourceCode": "Wyświetl źródło strony",
-    "support": "Wsparcie"
+    "support": "Wsparcie",
+    "universities": "Instytucje",
+    "users": "Użytkownicy"
   },
   "page": {
     "course": {
@@ -249,7 +308,15 @@
       },
       "permission": "Brak uprawnień dla użytkownika. \nAby uzyskać więcej informacji, skontaktuj się z administratorem."
     },
-    "institution": {
+    "login": {
+      "description": "Zaloguj się do swojego konta",
+      "title": "Zaloguj się"
+    },
+    "register": {
+      "description": "Utwórz nowe konto",
+      "title": "Zarejestruj się"
+    },
+    "university": {
       "create": {
         "description": "Utwórz nową instytucję, aby rozpocząć zarządzanie jej danymi i użytkownikami.",
         "title": "Utwórz instytucję"
@@ -258,14 +325,6 @@
         "description": "Zarządzaj instytucjami",
         "title": "Instytucje"
       }
-    },
-    "login": {
-      "description": "Zaloguj się do swojego konta",
-      "title": "Zaloguj się"
-    },
-    "register": {
-      "description": "Utwórz nowe konto",
-      "title": "Zarejestruj się"
     }
   },
   "table": {
@@ -282,13 +341,15 @@
       "ects": "ECTS",
       "email": "Email",
       "faculty": "Wydział",
+      "hourly_rate": "Stawka godzinowa",
       "message": "Wiadomość",
       "name": "Nazwa",
       "position": "Stanowisko",
       "priority": "Priorytet",
       "status": "Status",
       "title": "Tytuł",
-      "weeklyHours": "Godziny tygodniowo"
+      "weeklyHours": "Godziny tygodniowo",
+      "workload": "Obciążenie pracą"
     },
     "status": {
       "read": "Przeczytane",

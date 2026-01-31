@@ -59,11 +59,12 @@ services:
     restart: unless-stopped
     volumes:
       - huggingface_cache:/home/appuser/.cache/huggingface
+      - ../models/app/local:/app/app/local
     healthcheck:
       test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/health')\""]
       interval: 30s
-      timeout: 10s
-      retries: 3
+      timeout: 15s
+      retries: 6
       start_period: 40s
     networks:
       - nsos_net

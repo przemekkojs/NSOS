@@ -12,10 +12,11 @@ export const facultyApi = {
 
   getById: (id: number) => apiClient.get<Faculty>(`${basePath}/${id}`),
 
-  create: (data: FacultyCreate) => apiClient.post<Faculty>(basePath, data),
+  create: (data: FacultyCreate) =>
+    apiClient.post<Faculty>(basePath + "/", data),
 
   update: (id: number, data: FacultyCreate) =>
-    apiClient.patch<Faculty>(`${basePath}/${id}`, data),
+    apiClient.patch<Faculty>(`${basePath}/${id}/`, data),
 
-  delete: (id: number) => apiClient.delete(`${basePath}/${id}`),
+  delete: (id: number) => apiClient.delete(`${basePath}/${id}/`),
 };

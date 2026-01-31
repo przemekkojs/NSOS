@@ -1,17 +1,18 @@
 <script setup lang="ts">
-import { useCourse } from "~/composables/api/useCourses";
+import { useUniversity } from "~/composables/api/useUniversities";
 import { useRoute } from "@typed-router";
-const route = useRoute("courses-id");
 
+const route = useRoute("universities-id");
 const id = Number(route.params.id);
 
-const { data, isFetching } = useCourse(id);
+const { data, isFetching } = useUniversity(id);
+
 definePageMeta({
-  permission: "teaching.view_course",
+  permission: "university.view_university",
 });
 </script>
 <template>
-  <h1>Employee: {{ id }}</h1>
+  <h1>Universities {{ id }}</h1>
   <div v-if="isFetching">Loading...</div>
   <div v-else>
     <pre>{{ data }}</pre>

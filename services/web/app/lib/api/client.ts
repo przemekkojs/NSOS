@@ -12,7 +12,7 @@ class ApiClient {
   private async request<T>(
     endpoint: string,
     options: RequestInit = {},
-    skipCSRF = false
+    skipCSRF = false,
   ): Promise<T> {
     const runtimeConfig = useRuntimeConfig();
     const baseUrl = runtimeConfig.public.apiUrl;
