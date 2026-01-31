@@ -4,22 +4,28 @@ import { useTableActions } from "~/composables/useTableActions";
 // import CreateUniversityModal from "~/features/university/modals/UniversityModal.vue";
 // TODO: replace with correct University type when available
 import type { TableColumn } from "@nuxt/ui";
-import type { UniversityMembership } from "~/lib/api/schemas";
+import type { University } from "~/lib/api/schemas";
 
 const { data: universities, isFetching } = useUniversities();
 const getDropdownActions = useTableActions();
 const { t, locale } = useI18n();
 
-const columns = computed<TableColumn<UniversityMembership>[]>(() => [
-  { accessorKey: "university.name", header: t("table.column.name") },
+const columns = computed<TableColumn<University>[]>(() => [
+  { accessorKey: "name", header: t("table.column.name") },
   {
-    accessorKey: "university.description",
+    accessorKey: "description",
     header: t("table.column.description"),
   },
   {
     id: "actions",
   },
 ]);
+const user = useUserStore();
+const permissions = {
+  view: user.hasPermission("university.add_university"),
+  delete: user.hasPermission("university.delete_university"),
+  change: user.hasPermission("university.change_university"),
+};
 
 definePageMeta({
   permission: "university.add_university",
@@ -39,7 +45,9 @@ definePageMeta({
     :columns
   >
     <template #actions-cell="{ row }">
-      <UDropdownMenu :items="getDropdownActions(row.original)">
+      <UDropdownMenu
+        :items="getDropdownActions({ ...row.original, ...permissions })"
+      >
         <UButton
           icon="i-lucide-ellipsis-vertical"
           color="neutral"

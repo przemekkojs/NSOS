@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useUniversity } from "~/composables/api/useUniversities";
-import { useRoute } from "@typed-router";
 
-const route = useRoute("universities-id");
-const id = Number(route.params.id);
+const router = useRouter();
+// @ts-expect-error this is fine i promise
+const id = computed(() => router.currentRoute.value.params.id);
 
 const { data, isFetching } = useUniversity(id);
 

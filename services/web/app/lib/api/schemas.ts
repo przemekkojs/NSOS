@@ -205,6 +205,13 @@ export const ClassSchema = z.object({
   lecturer: z.number(), // Foreign key ID
   course_group: z.number(), // Foreign key ID
   date_held: z.string(), // ISO date string
+  schedule: z.number(), // FK
+  start_time: z.iso.time(),
+  end_time: z.iso.time(),
+  room: z.string(),
+  status: z.literal(["scheduled", "completed", "cancelled", "rescheduled"]),
+  created_at: z.iso.datetime(),
+  updated_at: z.iso.datetime(),
 });
 
 export const ScheduleSchema = z.object({

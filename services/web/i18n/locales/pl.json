@@ -34,6 +34,7 @@
     "save": "Zapisz",
     "submit": "Wyślij",
     "update": "Aktualizuj",
+    "viewAll": "Zobacz wszystko",
     "yes": "Tak"
   },
   "common": {
@@ -45,6 +46,44 @@
     "of": "z",
     "or": "lub",
     "searchResults": "{count} wynik | {count} wyniki | {count} wyników"
+  },
+  "dashboard": {
+    "activity": {
+      "classScheduled": "Zaplanowano nowe zajęcia",
+      "courseCreated": "Utworzono kurs \"{name}\"",
+      "groupUpdated": "Zaktualizowano grupę \"{name}\""
+    },
+    "gettingStarted": {
+      "button": "Zobacz przewodnik dla początkujących",
+      "description": "Zacznij od utworzenia pierwszego kursu lub skonfigurowania struktury wydziału",
+      "title": "Rozpocznij"
+    },
+    "quickActions": {
+      "createCourse": "Utwórz kurs",
+      "createGroup": "Utwórz grupę",
+      "inviteEmployee": "Zaproś pracownika",
+      "title": "Szybkie akcje",
+      "viewSchedule": "Zobacz harmonogram"
+    },
+    "recentActivity": {
+      "title": "Ostatnia aktywność"
+    },
+    "stats": {
+      "courses": "Wszystkie kursy",
+      "faculties": "Wydziały",
+      "groups": "Grupy kursów",
+      "todayClasses": "Dzisiejsze zajęcia"
+    },
+    "subtitle": "Oto co dzieje się dzisiaj z Twoim harmonogramem",
+    "todaySchedule": {
+      "noClasses": "Brak zaplanowanych zajęć na dziś",
+      "title": "Harmonogram na dziś"
+    },
+    "upcomingClasses": {
+      "noClasses": "Brak nadchodzących zajęć w ciągu najbliższych 7 dni",
+      "title": "Nadchodzące zajęcia"
+    },
+    "welcome": "Witaj ponownie!"
   },
   "dev": {
     "resetTours": "Zresetuj wycieczki"
@@ -346,6 +385,7 @@
       "name": "Nazwa",
       "position": "Stanowisko",
       "priority": "Priorytet",
+      "semester": "Semestr",
       "status": "Status",
       "title": "Tytuł",
       "weeklyHours": "Godziny tygodniowo",

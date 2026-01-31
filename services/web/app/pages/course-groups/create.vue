@@ -8,7 +8,7 @@ const { mutateAsync: create } = useCreateCourseGroup();
 async function onSubmit(data: CourseGroupCreate) {
   const { id } = await create(data);
   await navigateTo({
-    name: "courses-id",
+    name: "course-groups-id",
     params: {
       id,
     },

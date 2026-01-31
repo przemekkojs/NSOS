@@ -16,6 +16,7 @@
     "sortByColumn": "Sort by {column}"
   },
   "button": {
+    "viewAll": "View all",
     "add": "Add",
     "backToHome": "Back to Home",
     "cancel": "Cancel",
@@ -396,5 +397,43 @@
     "invalidEmail": "Please enter a valid email address",
     "passwordsDoNotMatch": "Passwords do not match",
     "required": "This field is required"
+  },
+  "dashboard": {
+    "welcome": "Welcome back!",
+    "subtitle": "Here's what's happening with your schedule today",
+    "stats": {
+      "courses": "Total Courses",
+      "groups": "Course Groups",
+      "faculties": "Faculties",
+      "todayClasses": "Today's Classes"
+    },
+    "quickActions": {
+      "title": "Quick Actions",
+      "createCourse": "Create Course",
+      "createGroup": "Create Group",
+      "viewSchedule": "View Schedule",
+      "inviteEmployee": "Invite Employee"
+    },
+    "todaySchedule": {
+      "title": "Today's Schedule",
+      "noClasses": "No classes scheduled for today"
+    },
+    "upcomingClasses": {
+      "title": "Upcoming Classes",
+      "noClasses": "No upcoming classes in the next 7 days"
+    },
+    "recentActivity": {
+      "title": "Recent Activity"
+    },
+    "activity": {
+      "courseCreated": "Course \"{name}\" was created",
+      "groupUpdated": "Group \"{name}\" was updated",
+      "classScheduled": "New class was scheduled"
+    },
+    "gettingStarted": {
+      "title": "Get Started",
+      "description": "Start by creating your first course or setting up your faculty structure",
+      "button": "View Getting Started Guide"
+    }
   }
 }

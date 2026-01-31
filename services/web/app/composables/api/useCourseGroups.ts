@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import type { CourseGroupCreate } from "~/lib/api/schemas";
 
 export const courseGroupsKeys = {
-  all: ["courses"] as const,
+  all: ["course-groups"] as const,
   lists: () => [...courseGroupsKeys.all, "list"] as const,
   list: (params?: unknown) => [...courseGroupsKeys.lists(), params] as const,
   details: () => [...courseGroupsKeys.all, "detail"] as const,

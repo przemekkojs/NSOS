@@ -3,19 +3,23 @@ import UniversityForm from "~/features/university/forms/UniversityForm.vue";
 import { useCreateUniversity } from "~/composables/api/useUniversities";
 import type { UniversityCreate } from "~/lib/api/schemas";
 
-const { mutate } = useCreateUniversity();
-const open = ref(false);
+const { mutateAsync: create } = useCreateUniversity();
 const toast = useToast();
 
-function onCreate(value: UniversityCreate) {
-  open.value = false;
+async function onCreate(value: UniversityCreate) {
+  const { id } = await create(value);
   toast.add({
     title: "University created",
     description: `University ${value.name} has been created successfully.`,
     color: "success",
   });
 
-  mutate(value);
+  navigateTo({
+    name: "universities-id",
+    params: {
+      id,
+    },
+  });
 }
 
 definePageMeta({

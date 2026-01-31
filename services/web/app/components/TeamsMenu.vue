@@ -5,35 +5,35 @@ defineProps<{
   collapsed?: boolean;
 }>();
 
-const teams = ref<
-  {
-    label: string;
-    avatar: {
-      src: string;
-      alt: string;
-    };
-  }[]
->([]);
-const selectedTeam = ref(teams.value[0]);
+const { data: universities } = useUniversities();
+
+const selectedUni = ref(universities.value?.results[0]);
 const { t } = useI18n();
 const route = useLocaleRoute();
 const { hasPermission } = useUserStore();
 
 const items = computed<DropdownMenuItem[][]>(() => {
+  const additionalItems = [
+    hasPermission("university.add_university") && {
+      label: t("page.university.create.title"),
+      icon: "i-lucide-circle-plus",
+      to: route({ name: "universities-create" }).path,
+    },
+  ];
+
+  if (!universities.value) {
+    return [additionalItems];
+  }
+
   return [
-    teams.value.map((team) => ({
-      ...team,
+    universities.value.results.map((uni) => ({
+      label: uni.name,
+      ...uni,
       onSelect() {
-        selectedTeam.value = team;
+        selectedUni.value = uni;
       },
     })),
-    [
-      hasPermission("university.add_university") && {
-        label: t("page.university.create.title"),
-        icon: "i-lucide-circle-plus",
-        to: route({ name: "universities-create" }).path,
-      },
-    ].filter(truthy),
+    additionalItems.filter(truthy),
   ];
 });
 </script>
@@ -47,8 +47,8 @@ const items = computed<DropdownMenuItem[][]>(() => {
   >
     <UButton
       v-bind="{
-        ...selectedTeam,
-        label: collapsed ? undefined : selectedTeam?.label,
+        ...selectedUni,
+        label: collapsed ? undefined : selectedUni?.name,
         trailingIcon: collapsed ? undefined : 'i-lucide-chevrons-up-down',
       }"
       color="neutral"

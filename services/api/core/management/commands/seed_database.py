@@ -614,8 +614,10 @@ class Command(BaseCommand):
 
                 for class_date in class_dates[:10]:  # Limit to 10 classes
                     if class_date <= current_date + timedelta(weeks=4):
-                        status = 'completed' if class_date < current_date else 'scheduled'
-                        
+                        status = (
+                            "completed" if class_date < current_date else "scheduled"
+                        )
+
                         class_obj, class_created = Class.objects.get_or_create(
                             schedule=schedule,
                             date_held=class_date,
