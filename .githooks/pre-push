@@ -68,5 +68,6 @@ if [ -n "$API_CHANGES" ]; then
     exit 1
   fi 
   echo "Format passed"
+fi
 
 exit 0
