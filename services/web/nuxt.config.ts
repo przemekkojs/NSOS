@@ -4,11 +4,11 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   debug: true,
   modules: [
-    "@nuxt/content",
     "@nuxt/eslint",
     "@nuxt/image",
     "@nuxt/test-utils",
     "@nuxt/ui",
+    "@nuxt/content",
     "@nuxt/scripts",
     "@nuxtjs/i18n",
     "@pinia/nuxt",
@@ -21,12 +21,10 @@ export default defineNuxtConfig({
       mswEnabled: process.env.NUXT_PUBLIC_MSW_ENABLED === "true",
       appUrl: process.env.NUXT_PUBLIC_APP_URL,
       apiUrl: process.env.NUXT_PUBLIC_API_URL,
+      ragUrl: process.env.NUXT_PUBLIC_RAG_URL,
       featureFlags: {
         notifications:
           process.env.NUXT_PUBLIC_FEATURE_FLAG_NOTIFICATIONS === "true",
-        aiChat: process.env.NUXT_PUBLIC_FEATURE_FLAG_AI_CHAT === "true",
-        institutions:
-          process.env.NUXT_PUBLIC_FEATURE_FLAG_INSTITUTIONS === "true",
         csvImport: process.env.NUXT_PUBLIC_FEATURE_FLAG_CSV_IMPORT === "true",
         userAvatars:
           process.env.NUXT_PUBLIC_FEATURE_FLAG_USER_AVATARS === "true",
@@ -50,12 +48,13 @@ export default defineNuxtConfig({
     },
   },
   imports: {
+    autoImport: true,
     dirs: ["~/composables/**"],
   },
   content: {
     experimental: {
-      nativeSqlite: true
-    }
+      nativeSqlite: true,
+    },
   },
   css: [
     "~/assets/css/main.css",
@@ -102,6 +101,9 @@ export default defineNuxtConfig({
         "marked",
         "dompurify",
         "driver.js",
+
+        "@nuxt/ui/utils/content",
+        "@nuxt/content/utils",
       ],
     },
   },
@@ -120,5 +122,13 @@ export default defineNuxtConfig({
   routeRules: {
     "/help/**": { prerender: true },
     "/en/help/**": { prerender: true },
+  },
+  typescript: {
+    typeCheck: true,
+    strict: true,
+  },
+  sourcemap: {
+    server: import.meta.dev,
+    client: import.meta.dev,
   },
 });

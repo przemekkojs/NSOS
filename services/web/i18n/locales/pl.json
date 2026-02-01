@@ -1,22 +1,23 @@
 {
   "accessibility": {
     "chat": "Czatuj z asystentem AI",
-    "closeDialog": "Zamknij okno dialogowe",
+    "closeDialog": "Zamknij okno",
     "closeMenu": "Zamknij menu",
-    "currentPage": "Bieżąca strona, strona {page}",
+    "currentPage": "Bieżąca strona: {page}",
     "loading": "Ładowanie treści, proszę czekać",
     "next": "Następna",
-    "openActionsMenu": "Otórz menu akcji",
-    "openDialog": "Otwórz okno dialogowe",
+    "openActionsMenu": "Otwórz menu akcji",
+    "openDialog": "Otwórz okno",
     "openMenu": "Otwórz menu",
     "openNotifications": "Otwórz powiadomienia",
     "page": "Strona",
     "previous": "Poprzednia",
     "skipToContent": "Przejdź do treści głównej",
-    "sortByColumn": "Sortuj po {column}"
+    "sortByColumn": "Sortuj według: {column}"
   },
   "button": {
-    "backToHome": "Powrót do strony głównej",
+    "add": "Dodaj",
+    "backToHome": "Wróć do strony głównej",
     "cancel": "Anuluj",
     "confirm": "Potwierdź",
     "create": "Utwórz",
@@ -28,11 +29,12 @@
     "next": "Dalej",
     "no": "Nie",
     "previous": "Wstecz",
-    "register": "Utwórz konto",
+    "register": "Zarejestruj się",
     "reset": "Resetuj",
     "save": "Zapisz",
     "submit": "Wyślij",
     "update": "Aktualizuj",
+    "viewAll": "Zobacz wszystko",
     "yes": "Tak"
   },
   "common": {
@@ -45,126 +47,214 @@
     "or": "lub",
     "searchResults": "{count} wynik | {count} wyniki | {count} wyników"
   },
+  "dashboard": {
+    "activity": {
+      "classScheduled": "Zaplanowano nowe zajęcia",
+      "courseCreated": "Utworzono kurs „{name}”",
+      "groupUpdated": "Zaktualizowano grupę „{name}”"
+    },
+    "gettingStarted": {
+      "button": "Zobacz przewodnik",
+      "description": "Zacznij od utworzenia pierwszego kursu lub skonfigurowania struktury wydziału",
+      "title": "Pierwsze kroki"
+    },
+    "quickActions": {
+      "createCourse": "Dodaj kurs",
+      "createGroup": "Dodaj grupę",
+      "inviteEmployee": "Zaproś pracownika",
+      "title": "Szybkie akcje",
+      "viewSchedule": "Pokaż harmonogram"
+    },
+    "recentActivity": {
+      "title": "Ostatnia aktywność"
+    },
+    "stats": {
+      "courses": "Wszystkie kursy",
+      "faculties": "Wydziały",
+      "groups": "Grupy",
+      "todayClasses": "Dzisiejsze zajęcia"
+    },
+    "subtitle": "Oto podsumowanie Twojego dzisiejszego harmonogramu",
+    "todaySchedule": {
+      "noClasses": "Brak zaplanowanych zajęć na dziś",
+      "title": "Dzisiejszy harmonogram"
+    },
+    "upcomingClasses": {
+      "noClasses": "Brak zajęć w ciągu najbliższych 7 dni",
+      "title": "Nadchodzące zajęcia"
+    },
+    "welcome": "Witaj ponownie!"
+  },
   "dev": {
-    "resetTours": "Zresetuj wycieczki"
+    "resetTours": "Zresetuj samouczki"
   },
   "feature": {
     "chat": {
       "copyToClipboard": "Skopiuj do schowka",
-      "helloMessage": "Cześć! \nJestem twoim asystentem AI NSOS. \nMogę Ci pomóc w:\n\n\n- Analiza obciążenia pracą nauczycieli i godzin nadliczbowych\n\n- Znalezienie optymalnych harmonogramów grupowych\n\n- Odpowiadanie na pytania dotyczące przepisów akademickich\n\n- Generowanie raportów i zestawień\n\n\nJak mogę Ci dzisiaj pomóc?",
+      "helloMessage": "Cześć! \nJestem Twoim asystentem AI NSOS. \nMogę Ci pomóc w:\n\n- Analizie obciążenia pracą i nadgodzin wykładowców\n- Znajdowaniu optymalnych harmonogramów dla grup\n- Odpowiadaniu na pytania dotyczące regulaminów\n- Generowaniu raportów i zestawień\n\nJak mogę Ci dzisiaj pomóc?",
       "placeholder": "Zadaj pytanie lub wpisz polecenie...",
       "title": "Czat AI",
-      "tooltip": "Asystent czatu AI"
+      "tooltip": "Asystent AI"
     },
     "cookieConsent": {
       "accept": "Akceptuję",
-      "message": "Używamy plików cookie, aby poprawić komfort korzystania z naszej witryny.",
-      "optOut": "Rezygnuję"
+      "message": "Używamy plików cookie, aby zapewnić najlepszą jakość korzystania z naszej witryny.",
+      "optOut": "Odrzuć"
     },
     "csv": {
       "downloadTemplate": "Pobierz szablon CSV",
-      "dropFile": "Upuść tutaj plik CSV lub kliknij, aby wybrać",
-      "export": "Eksportuj plik CSV",
-      "import": "Importuj plik CSV",
-      "importValidationFailed": "Sprawdzanie poprawności importu nie powiodło się",
+      "dropFile": "Przeciągnij plik CSV tutaj lub kliknij, aby wybrać",
+      "export": "Eksportuj do CSV",
+      "import": "Importuj z CSV",
+      "importValidationFailed": "Błąd walidacji pliku importu",
       "noRows": "Plik CSV jest pusty",
-      "success": "Zaimportowano pomyślnie",
-      "successDescription": "Pomyślnie zaimportowano {count} wierszy z pliku CSV."
+      "success": "Import zakończony sukcesem",
+      "successDescription": "Pomyślnie zaimportowano {count} wierszy."
     },
     "notifications": {
       "empty": "Brak nowych powiadomień",
       "title": "Powiadomienia",
-      "tooltip": "Zobacz powiadomienia"
+      "tooltip": "Pokaż powiadomienia"
     },
     "shortcuts": {
-      "createEmployee": "Utwórz pracownika",
-      "focusSearch": "Wyszukiwanie fokusowe",
-      "goToCourses": "Idź na kursy",
-      "goToDashboard": "Przejdź do pulpitu nawigacyjnego",
-      "goToEmployees": "Idź do pracowników",
-      "goToFaculties": "Idź na wydziały",
+      "createEmployee": "Dodaj pracownika",
+      "focusSearch": "Aktywuj wyszukiwanie",
+      "goToCourses": "Przejdź do kursów",
+      "goToDashboard": "Przejdź do pulpitu",
+      "goToEmployees": "Przejdź do pracowników",
+      "goToFaculties": "Przejdź do wydziałów",
       "goToHarmonogram": "Przejdź do harmonogramu",
       "goToInbox": "Przejdź do skrzynki odbiorczej",
       "goToProfile": "Przejdź do profilu",
       "goToSettings": "Przejdź do ustawień",
       "goToUsers": "Przejdź do użytkowników",
       "quickCreate": "Szybkie tworzenie",
-      "showThisDialog": "Pokaż to okno dialogowe",
+      "showThisDialog": "Pokaż to okno",
       "toggleAIChat": "Przełącz czat AI",
-      "toggleDashboardSidebar": "Przełącz pasek boczny pulpitu nawigacyjnego",
-      "toggleNotificationsSlideover": "Przełącz przesuwanie powiadomień"
+      "toggleDashboardSidebar": "Przełącz pasek boczny",
+      "toggleNotificationsSlideover": "Pokaż/ukryj powiadomienia"
     }
   },
   "form": {
+    "help": {
+      "academicYear": "Format: RRRR/RRRR (np. 2025/2026)",
+      "excludedDates": "Daty, w których zajęcia się nie odbędą (święta, przerwy itp.)",
+      "recurrenceRule": "Format iCalendar RRULE (np. FREQ=WEEKLY;BYDAY=MO,WE;INTERVAL=1)",
+      "scheduleEndDate": "Data zakończenia tego harmonogramu (domyślnie koniec semestru)",
+      "scheduleStartDate": "Data rozpoczęcia tego harmonogramu (domyślnie początek semestru)"
+    },
     "hint": {
-      "institutionCode": "Unikalny kod dla tej instytucji",
-      "password": "Musi mieć co najmniej 8 znaków"
+      "password": "Minimum 8 znaków",
+      "universityCode": "Unikalny identyfikator instytucji"
     },
     "label": {
+      "academicYear": "Rok akademicki",
       "announcements": "Ogłoszenia",
       "avatar": "Awatar",
-      "colorBlindMode": "Tryb dla daltonistów",
-      "confirmPassword": "Potwierdź hasło",
-      "courseGroup": "Grupa kursów",
+      "colorBlindMode": "Tryb dla osób z daltonizmem",
+      "confirmPassword": "Powtórz hasło",
+      "course": {
+        "egz": "Egzamin",
+        "ekm": "Ekm",
+        "zal": "Zaliczenie",
+        "zst": "Zst"
+      },
+      "courseCode": "Kod kursu",
+      "courseGroup": "Grupa zajęciowa",
       "courseName": "Nazwa kursu",
       "courseType": "Typ kursu",
-      "description": "Description",
+      "date": "Data",
+      "dateHeld": "Data zajęć",
+      "description": "Opis",
       "disableAnimations": "Wyłącz animacje",
       "ects": "Punkty ECTS",
-      "email": "Email",
+      "email": "E-mail",
+      "endDate": "Data zakończenia",
+      "endTime": "Godzina zakończenia",
+      "excludedDates": "Daty wykluczone",
       "faculty": "Wydział",
       "firstName": "Imię",
       "fontScale": "Skala czcionki",
-      "institutionAddress": "Adres",
-      "institutionCode": "Kod",
-      "institutionName": "Nazwa instytucji",
+      "hourlyRate": "Stawka godzinowa",
       "lastName": "Nazwisko",
+      "lecturer": "Wykładowca",
       "lineHeight": "Wysokość linii",
-      "name": "Name",
+      "name": "Nazwa",
+      "notes": "Notatki",
       "password": "Hasło",
       "position": "Stanowisko",
-      "reduceMotion": "Zmniejsz ruch",
+      "recurrenceRule": "Reguła powtarzalności",
+      "reduceMotion": "Ogranicz ruch",
+      "room": "Sala",
+      "schedule": "Harmonogram",
+      "semester": "Semestr",
+      "semesterType": "Typ semestru",
+      "startDate": "Data rozpoczęcia",
+      "startTime": "Godzina rozpoczęcia",
       "status": "Status",
-      "tooltipDuration": "Czas trwania podpowiedzi",
-      "weeklyHours": "Godziny tygodniowo"
+      "student": "Student",
+      "tooltipDuration": "Czas wyświetlania podpowiedzi",
+      "universityAddress": "Adres",
+      "universityCode": "Kod instytucji",
+      "universityName": "Nazwa uczelni",
+      "weekday": "Dzień tygodnia",
+      "weeklyHours": "Godziny tygodniowo",
+      "weeksCount": "Liczba tygodni",
+      "workload": "Obciążenie"
     },
     "placeholder": {
+      "addExcludedDate": "Dodaj datę do wykluczenia",
       "confirmPassword": "Wprowadź hasło ponownie",
-      "email": "np. jan.kowalski{'@'}mail.pl",
-      "faculty": "np. Wydział Matematyki, Informatyki i Mechaniki",
-      "filterEmails": "Filtruj e-maile",
+      "courseCode": "np. CS101",
+      "courseGroup": "Opcjonalny kod grupy",
+      "courseName": "Wprowadź nazwę kursu",
+      "description": "Dodaj opcjonalny opis",
+      "ects": "np. 6",
+      "email": "np. jan.kowalski@uczelnia.pl",
+      "faculty": "np. Wydział Informatyki",
+      "facultyName": "Wprowadź nazwę wydziału",
+      "filterEmails": "Filtruj adresy e-mail",
       "firstName": "np. Jan",
-      "institutionAddress": "np. Krakowskie Przedmieście 26/28",
-      "institutionCode": "np. UW001",
-      "institutionName": "np. Uniwersytet Warszawski",
+      "groupName": "np. Grupa A1",
+      "hourlyRate": "Wprowadź stawkę",
       "lastName": "np. Kowalski",
+      "notes": "Dodatkowe uwagi",
       "password": "Wprowadź hasło",
-      "position": "np. Profesor nadzwyczajny",
-      "search": "Szukaj..."
+      "position": "np. Adiunkt",
+      "positionName": "Wprowadź nazwę stanowiska",
+      "room": "np. Sala 101",
+      "search": "Szukaj...",
+      "selectCourse": "Wybierz kurs",
+      "selectCourseGroup": "Wybierz grupę",
+      "selectFaculty": "Wybierz wydział",
+      "selectLecturer": "Wybierz wykładowcę",
+      "selectSchedule": "Wybierz harmonogram (opcjonalnie)",
+      "selectSemester": "Wybierz semestr",
+      "selectStudent": "Wybierz studenta (opcjonalnie)",
+      "semesterName": "np. Semestr Letni",
+      "universityAddress": "np. ul. Wiejska 1, Warszawa",
+      "universityCode": "np. UW-2025",
+      "universityName": "np. Uniwersytet Warszawski",
+      "weeklyHours": "np. 4",
+      "weeksCount": "np. 15"
     },
     "selectItem": {
-      "1": "x1",
-      "1125": "x1.125",
-      "125": "x1.25",
-      "1375": "x1.375",
-      "15": "x1.5",
       "compact": "Kompaktowy",
       "deuteranopia": "Deuteranopia",
-      "long": "Uporczywy",
       "loose": "Luźny",
-      "monochrome": "Monochromia",
-      "none": "Nic",
-      "normal": "Normalna",
-      "persistent": "Stały",
+      "monochrome": "Monochromatyczny",
+      "none": "Brak",
+      "normal": "Normalny",
+      "persistent": "Trwały",
       "protanopia": "Protanopia",
-      "relaxed": "Zrelaksowany",
+      "relaxed": "Rozszerzony",
       "short": "Krótki",
       "tritanopia": "Tritanopia"
     },
     "validation": {
-      "invalidEmail": "Wprowadź prawidłowy adres email",
+      "invalidEmail": "Nieprawidłowy adres e-mail",
       "invalidFormat": "Nieprawidłowy format",
-      "passwordMismatch": "Hasła nie są zgodne",
+      "passwordMismatch": "Hasła nie są identyczne",
       "passwordTooShort": "Hasło musi mieć co najmniej 8 znaków",
       "required": "To pole jest wymagane"
     }
@@ -185,56 +275,58 @@
   "message": {
     "confirm": {
       "delete": "Czy na pewno chcesz usunąć ten element?",
-      "deleteInstitution": "Czy na pewno chcesz usunąć tę instytucję? Tej operacji nie można cofnąć.",
+      "deleteUniversity": "Czy na pewno chcesz usunąć tę instytucję? Tej operacji nie można cofnąć.",
       "logout": "Czy na pewno chcesz się wylogować?"
     },
     "error": {
-      "generic": "Coś poszło nie tak. Spróbuj ponownie.",
-      "loginFailed": "Nieprawidłowy email lub hasło.",
-      "network": "Błąd sieci. Sprawdź połączenie.",
-      "notFound": "Nie znaleziono żądanego zasobu.",
+      "generic": "Wystąpił nieoczekiwany błąd. Spróbuj ponownie.",
+      "loginFailed": "Nieprawidłowy e-mail lub hasło.",
+      "network": "Błąd połączenia. Sprawdź dostęp do Internetu.",
+      "notFound": "Nie znaleziono żądanego elementu.",
       "registerFailed": "Rejestracja nie powiodła się. Spróbuj ponownie.",
-      "unauthorized": "Nie masz uprawnień do wykonania tej akcji.",
-      "validationFailed": "Sprawdź formularz pod kątem błędów."
+      "unauthorized": "Brak uprawnień do wykonania tej akcji.",
+      "validationFailed": "Formularz zawiera błędy."
     },
     "success": {
       "created": "Pomyślnie utworzono!",
       "deleted": "Pomyślnie usunięto!",
-      "inviteSent": "Zaproszenie wysłane pomyślnie!",
+      "inviteSent": "Zaproszenie zostało wysłane!",
       "loginSuccess": "Witaj ponownie!",
-      "registerSuccess": "Konto utworzone pomyślnie!",
-      "saved": "Pomyślnie zapisano!",
+      "registerSuccess": "Konto zostało utworzone!",
+      "saved": "Zmiany zostały zapisane!",
       "updated": "Pomyślnie zaktualizowano!"
     }
   },
   "navigation": {
     "code": "Kod",
-    "courseGroups": "Grupy kursów",
+    "courseGroups": "Grupy zajęciowe",
     "courses": "Kursy",
-    "dashboard": "Panel główny",
+    "dashboard": "Pulpit",
     "employees": "Pracownicy",
     "faculties": "Wydziały",
     "feedback": "Opinie",
-    "goTo": "Idź do",
+    "goTo": "Przejdź do",
     "help": "Pomoc",
     "inbox": "Skrzynka odbiorcza",
-    "institutions": "Instytucje",
+    "positions": "Stanowiska",
     "schedule": "Harmonogram",
     "settings": "Ustawienia",
     "shortcuts": "Skróty klawiszowe",
-    "sourceCode": "Wyświetl źródło strony",
-    "support": "Wsparcie"
+    "sourceCode": "Kod źródłowy",
+    "support": "Wsparcie",
+    "universities": "Uczelnie",
+    "users": "Użytkownicy"
   },
   "page": {
     "course": {
       "list": {
-        "description": "Zarządzaj kursami",
+        "description": "Zarządzaj listą kursów",
         "title": "Kursy"
       }
     },
     "dashboard": {
       "description": "Przegląd Twojej przestrzeni roboczej",
-      "title": "Panel główny"
+      "title": "Pulpit"
     },
     "employee": {
       "list": {
@@ -245,50 +337,53 @@
     "error": {
       "notFound": {
         "description": "Strona, której szukasz, nie istnieje.",
-        "title": "Strona nie została znaleziona"
+        "title": "Nie znaleziono strony"
       },
-      "permission": "Brak uprawnień dla użytkownika. \nAby uzyskać więcej informacji, skontaktuj się z administratorem."
-    },
-    "institution": {
-      "create": {
-        "description": "Utwórz nową instytucję, aby rozpocząć zarządzanie jej danymi i użytkownikami.",
-        "title": "Utwórz instytucję"
-      },
-      "list": {
-        "description": "Zarządzaj instytucjami",
-        "title": "Instytucje"
-      }
+      "permission": "Brak uprawnień. Skontaktuj się z administratorem, aby uzyskać dostęp."
     },
     "login": {
-      "description": "Zaloguj się do swojego konta",
-      "title": "Zaloguj się"
+      "description": "Zaloguj się do systemu",
+      "title": "Logowanie"
     },
     "register": {
       "description": "Utwórz nowe konto",
-      "title": "Zarejestruj się"
+      "title": "Rejestracja"
+    },
+    "university": {
+      "create": {
+        "description": "Dodaj nową instytucję, aby zarządzać jej strukturą i użytkownikami.",
+        "title": "Dodaj uczelnię"
+      },
+      "list": {
+        "description": "Zarządzaj zarejestrowanymi instytucjami",
+        "title": "Uczelnie"
+      }
     }
   },
   "table": {
     "action": {
       "copyId": "Kopiuj ID",
-      "viewDetails": "Zobacz szczegóły"
+      "viewDetails": "Szczegóły"
     },
     "column": {
       "address": "Adres",
-      "courseGroup": "Grupa kursów",
+      "courseGroup": "Grupa",
       "courseType": "Typ",
       "date": "Data",
       "description": "Opis",
       "ects": "ECTS",
-      "email": "Email",
+      "email": "E-mail",
       "faculty": "Wydział",
+      "hourly_rate": "Stawka",
       "message": "Wiadomość",
       "name": "Nazwa",
       "position": "Stanowisko",
       "priority": "Priorytet",
+      "semester": "Semestr",
       "status": "Status",
       "title": "Tytuł",
-      "weeklyHours": "Godziny tygodniowo"
+      "weeklyHours": "h/tydz.",
+      "workload": "Obciążenie"
     },
     "status": {
       "read": "Przeczytane",
@@ -305,34 +400,34 @@
     "inviteUsers": {
       "enterAnotherEmployee": {
         "description": "Możesz wpisać wielu pracowników, oddzielając ich adresy przecinkami.",
-        "title": "Przejdź dalej"
+        "title": "Masowe zaproszenia"
       },
       "enterEmployeeEmail": {
-        "description": "Wpisz adres email pracownika, którego chcesz zaprosić. Upewnij się, że to prawidłowy adres email.",
-        "title": "Wprowadź email pracownika"
+        "description": "Wpisz adres e-mail pracownika, którego chcesz zaprosić.",
+        "title": "Adres e-mail"
       },
       "inviteNewEmployee": {
-        "description": "Kliknij ten przycisk, aby otworzyć formularz zaproszenia pracownika.",
-        "title": "Zaproś nowego pracownika"
+        "description": "Kliknij tutaj, aby otworzyć formularz zaproszenia.",
+        "title": "Zaproś pracownika"
       },
       "navigateToEmployees": {
-        "description": "Kliknij tutaj, aby przejść do sekcji Pracownicy, w której możesz zarządzać kontami pracowników",
-        "title": "Przejdź do Pracownicy"
+        "description": "Przejdź do sekcji Pracownicy, aby zarządzać kadrą.",
+        "title": "Kadra"
       },
       "sendInvitation": {
-        "description": "Kliknij ten przycisk, aby wysłać zaproszenie do wskazanych pracowników.",
-        "title": "Wyślij zaproszenie"
+        "description": "Kliknij, aby wysłać zaproszenia do wybranych osób.",
+        "title": "Wyślij"
       },
-      "title": "Zaproś użytkowników"
+      "title": "Zapraszanie użytkowników"
     }
   },
   "user": {
-    "avatar": "Awatara"
+    "avatar": "Awatar"
   },
   "validation": {
     "invalid": "Nieprawidłowa wartość",
-    "invalidEmail": "Wprowadź prawidłowy adres email",
-    "passwordsDoNotMatch": "Hasła nie pasują",
+    "invalidEmail": "Nieprawidłowy adres e-mail",
+    "passwordsDoNotMatch": "Hasła nie są zgodne",
     "required": "To pole jest wymagane"
   }
 }

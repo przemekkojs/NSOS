@@ -43,4 +43,31 @@ if [ -n "$WEB_CHANGES" ]; then
     echo "Typecheck passed."
 fi
 
+# ----------------------
+
+API_DIR="services/api"
+
+API_CHANGES=$(git diff --cached --name-only | grep "^$API_DIR" | head -1)
+
+if [ -n "$API_CHANGES" ]; then
+  echo "Running 'ruff check'"
+  (cd "$API_DIR" && ruff check)
+  LINT_STATUS=$?
+
+  if [ $LINT_STATUS -ne 0 ]; then
+    echo "Linting failed. Please run 'ruff check --fix' in '$API_DIR'"
+    exit 1
+  fi
+  echo "ruff check passed."
+
+  echo "Running 'ruff format'"
+  (cd "$API_DIR" && ruff format)
+  FORMAT_STATUS=$?
+  if [ $FORMAT_STATUS -ne 0 ]; then
+    echo "Ruff formatting failed. Please fix in '$API_DIR'"
+    exit 1
+  fi 
+  echo "Format passed"
+fi
+
 exit 0

@@ -1,11 +1,12 @@
 from rest_framework import viewsets
 from rest_framework.permissions import SAFE_METHODS, BasePermission
-from .models import Faculty, Position, Semester, UniversityMembership
+from .models import Faculty, Position, Semester, University, UniversityMembership
 from .serializers import (
     FacultySerializer,
     PositionSerializer,
     SemesterSerializer,
     UniversityMembershipSerializer,
+    UniversitySerializer,
 )
 from core.permissions import IsStudentReadOnly, IsLecturerOrAdmin, IsAdmin
 from rest_framework.pagination import PageNumberPagination
@@ -53,6 +54,11 @@ class PositionViewSet(RoleBasedViewSet):
 class SemesterViewSet(RoleBasedViewSet):
     queryset = Semester.objects.select_related("faculty").all()
     serializer_class = SemesterSerializer
+
+
+class UniversityViewSet(RoleBasedViewSet):
+    queryset = University.objects.all()
+    serializer_class = UniversitySerializer
 
 
 class UniversityMembershipViewSet(RoleBasedViewSet):

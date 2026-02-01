@@ -1,38 +1,40 @@
 {
   "accessibility": {
+    "chat": "Chat with AI assistant",
     "closeDialog": "Close dialog",
     "closeMenu": "Close menu",
-    "currentPage": "Current page, page {page}",
+    "currentPage": "Current page: {page}",
     "loading": "Loading content, please wait",
     "next": "Next",
+    "openActionsMenu": "Open actions menu",
     "openDialog": "Open dialog",
     "openMenu": "Open menu",
+    "openNotifications": "Open notifications",
     "page": "Page",
     "previous": "Previous",
     "skipToContent": "Skip to main content",
-    "openNotifications": "Open notifications",
-    "openActionsMenu": "Open actions menu",
-    "sortByColumn": "Sort by {column}",
-    "chat": "Chat with AI assistant"
+    "sortByColumn": "Sort by {column}"
   },
   "button": {
+    "add": "Add",
     "backToHome": "Back to Home",
     "cancel": "Cancel",
     "confirm": "Confirm",
     "create": "Create",
     "delete": "Delete",
-    "done": "Ready",
+    "done": "Done",
     "edit": "Edit",
     "invite": "Invite",
     "login": "Log In",
     "next": "Next",
     "no": "No",
     "previous": "Back",
-    "register": "Create Account",
+    "register": "Sign Up",
     "reset": "Reset",
     "save": "Save",
     "submit": "Submit",
     "update": "Update",
+    "viewAll": "View all",
     "yes": "Yes"
   },
   "common": {
@@ -45,8 +47,46 @@
     "or": "or",
     "searchResults": "{count} result | {count} results"
   },
+  "dashboard": {
+    "activity": {
+      "classScheduled": "New class was scheduled",
+      "courseCreated": "Course \"{name}\" was created",
+      "groupUpdated": "Group \"{name}\" was updated"
+    },
+    "gettingStarted": {
+      "button": "View Guide",
+      "description": "Start by creating your first course or setting up your faculty structure",
+      "title": "Get Started"
+    },
+    "quickActions": {
+      "createCourse": "Add Course",
+      "createGroup": "Add Group",
+      "inviteEmployee": "Invite Employee",
+      "title": "Quick Actions",
+      "viewSchedule": "View Schedule"
+    },
+    "recentActivity": {
+      "title": "Recent Activity"
+    },
+    "stats": {
+      "courses": "Total Courses",
+      "faculties": "Faculties",
+      "groups": "Course Groups",
+      "todayClasses": "Today's Classes"
+    },
+    "subtitle": "Here's what's happening with your schedule today",
+    "todaySchedule": {
+      "noClasses": "No classes scheduled for today",
+      "title": "Today's Schedule"
+    },
+    "upcomingClasses": {
+      "noClasses": "No upcoming classes in the next 7 days",
+      "title": "Upcoming Classes"
+    },
+    "welcome": "Welcome back!"
+  },
   "dev": {
-    "resetTours": "Reset tours"
+    "resetTours": "Reset walkthroughs"
   },
   "feature": {
     "chat": {
@@ -54,7 +94,7 @@
       "helloMessage": "Hello! I'm your NSOS AI assistant. I can help you with:\n\n- Analyzing teacher workload and overtime\n- Finding optimal group schedules\n- Answering questions about academic regulations\n- Generating reports and summaries\n\nHow can I assist you today?",
       "placeholder": "Ask a question or enter a command...",
       "title": "AI Chat",
-      "tooltip": "AI Chat Assistant"
+      "tooltip": "AI Assistant"
     },
     "cookieConsent": {
       "accept": "Accept",
@@ -63,13 +103,13 @@
     },
     "csv": {
       "downloadTemplate": "Download CSV Template",
-      "dropFile": "Drop your CSV file here, or click to select",
-      "export": "Export CSV",
-      "import": "Import CSV",
+      "dropFile": "Drop CSV file here or click to select",
+      "export": "Export to CSV",
+      "import": "Import from CSV",
       "importValidationFailed": "Import validation failed",
-      "noRows": "CSV is empty",
-      "success": "Successfully imported",
-      "successDescription": "Successfully imported {count} rows from CSV file."
+      "noRows": "CSV file is empty",
+      "success": "Import successful",
+      "successDescription": "Successfully imported {count} rows."
     },
     "notifications": {
       "empty": "No new notifications",
@@ -83,7 +123,7 @@
       "goToDashboard": "Go to dashboard",
       "goToEmployees": "Go to employees",
       "goToFaculties": "Go to faculties",
-      "goToHarmonogram": "Go to harmonogram",
+      "goToHarmonogram": "Go to schedule",
       "goToInbox": "Go to inbox",
       "goToProfile": "Go to profile",
       "goToSettings": "Go to settings",
@@ -91,66 +131,116 @@
       "quickCreate": "Quick create",
       "showThisDialog": "Show this dialog",
       "toggleAIChat": "Toggle AI chat",
-      "toggleDashboardSidebar": "Toggle dashboard sidebar",
-      "toggleNotificationsSlideover": "Toggle notifications slideover"
+      "toggleDashboardSidebar": "Toggle sidebar",
+      "toggleNotificationsSlideover": "Toggle notifications"
     }
   },
   "form": {
+    "help": {
+      "academicYear": "Format: YYYY/YYYY (e.g., 2025/2026)",
+      "excludedDates": "Dates when classes will not occur (holidays, breaks, etc.)",
+      "recurrenceRule": "iCalendar RRULE format (e.g., FREQ=WEEKLY;BYDAY=MO,WE;INTERVAL=1)",
+      "scheduleEndDate": "When this schedule ends (defaults to semester end)",
+      "scheduleStartDate": "When this schedule starts (defaults to semester start)"
+    },
     "hint": {
-      "institutionCode": "Unique code for this institution",
-      "password": "Must be at least 8 characters"
+      "password": "Minimum 8 characters",
+      "universityCode": "Unique identifier for this institution"
     },
     "label": {
+      "academicYear": "Academic Year",
       "announcements": "Announcements",
       "avatar": "Avatar",
       "colorBlindMode": "Colorblind mode",
       "confirmPassword": "Confirm Password",
+      "course": {
+        "egz": "Exam",
+        "ekm": "Final Exam",
+        "zal": "Credit",
+        "zst": "Pass"
+      },
+      "courseCode": "Course Code",
       "courseGroup": "Course Group",
       "courseName": "Course Name",
       "courseType": "Course Type",
+      "date": "Date",
+      "dateHeld": "Date Held",
       "description": "Description",
       "disableAnimations": "Disable animations",
       "ects": "ECTS Credits",
-      "email": "Email | Emails",
+      "email": "Email",
+      "endDate": "End Date",
+      "endTime": "End Time",
+      "excludedDates": "Excluded Dates",
       "faculty": "Faculty",
       "firstName": "First Name",
       "fontScale": "Font scale",
-      "institutionAddress": "Address",
-      "institutionCode": "Code",
-      "institutionName": "Institution Name",
+      "hourlyRate": "Hourly Rate",
       "lastName": "Last Name",
+      "lecturer": "Lecturer",
       "lineHeight": "Line height",
       "name": "Name",
+      "notes": "Notes",
       "password": "Password",
       "position": "Position",
+      "recurrenceRule": "Recurrence Rule",
       "reduceMotion": "Reduce motion",
+      "room": "Room",
+      "schedule": "Schedule",
+      "semester": "Semester",
+      "semesterType": "Semester Type",
+      "startDate": "Start Date",
+      "startTime": "Start Time",
       "status": "Status",
+      "student": "Student",
       "tooltipDuration": "Tooltip duration",
-      "weeklyHours": "Weekly Hours"
+      "universityAddress": "Address",
+      "universityCode": "University Code",
+      "universityName": "University Name",
+      "weekday": "Weekday",
+      "weeklyHours": "Weekly Hours",
+      "weeksCount": "Number of Weeks",
+      "workload": "Workload"
     },
     "placeholder": {
+      "addExcludedDate": "Select date to exclude",
       "confirmPassword": "Re-enter your password",
-      "email": "e.g. john.doe{'@'}mail.com",
-      "faculty": "e.g. Faculty of Mathematics, Informatics and Mechanics",
+      "courseCode": "e.g., CS101",
+      "courseGroup": "Optional group ID",
+      "courseName": "Enter course name",
+      "description": "Enter description (optional)",
+      "ects": "e.g., 6",
+      "email": "e.g. john.doe@university.com",
+      "faculty": "e.g. Faculty of Informatics",
+      "facultyName": "Enter faculty name",
       "filterEmails": "Filter emails",
       "firstName": "e.g. John",
-      "institutionAddress": "e.g. Krakowskie Przedmieście 26/28",
-      "institutionCode": "e.g. UW001",
-      "institutionName": "e.g. University of Warsaw",
+      "groupName": "e.g. Group A1",
+      "hourlyRate": "Enter rate",
       "lastName": "e.g. Doe",
+      "notes": "Additional notes (optional)",
       "password": "Enter your password",
-      "position": "e.g. Lecturer",
-      "search": "Search..."
+      "position": "e.g. Senior Lecturer",
+      "positionName": "Enter position name",
+      "room": "e.g. A-101",
+      "search": "Search...",
+      "selectCourse": "Select a course",
+      "selectCourseGroup": "Select a group",
+      "selectFaculty": "Select a faculty",
+      "selectLecturer": "Select a lecturer",
+      "selectSchedule": "Select a schedule (optional)",
+      "selectSemester": "Select a semester",
+      "selectStudent": "Select a student (optional)",
+      "semesterName": "e.g. Summer Semester",
+      "universityAddress": "e.g. 1 Main St, Warsaw",
+      "universityCode": "e.g. UW-2025",
+      "universityName": "e.g. University of Warsaw",
+      "weeklyHours": "e.g. 4",
+      "weeksCount": "e.g. 15"
     },
     "selectItem": {
-      "1": "x1",
-      "1125": "x1.125",
-      "125": "x1.25",
-      "1375": "x1.375",
-      "15": "x1.5",
       "compact": "Compact",
       "deuteranopia": "Deuteranopia",
-      "long": "Persistent",
       "loose": "Loose",
       "monochrome": "Monochrome",
       "none": "None",
@@ -185,14 +275,14 @@
   "message": {
     "confirm": {
       "delete": "Are you sure you want to delete this item?",
-      "deleteInstitution": "Are you sure you want to delete this institution? This action cannot be undone.",
+      "deleteUniversity": "Are you sure you want to delete this university? This action cannot be undone.",
       "logout": "Are you sure you want to log out?"
     },
     "error": {
       "generic": "Something went wrong. Please try again.",
       "loginFailed": "Invalid email or password.",
       "network": "Network error. Please check your connection.",
-      "notFound": "The requested resource was not found.",
+      "notFound": "Requested resource not found.",
       "registerFailed": "Registration failed. Please try again.",
       "unauthorized": "You are not authorized to perform this action.",
       "validationFailed": "Please check the form for errors."
@@ -209,8 +299,8 @@
   },
   "navigation": {
     "code": "Code",
-    "courses": "Courses",
     "courseGroups": "Course Groups",
+    "courses": "Courses",
     "dashboard": "Dashboard",
     "employees": "Employees",
     "faculties": "Faculties",
@@ -218,17 +308,19 @@
     "goTo": "Go to",
     "help": "Help",
     "inbox": "Inbox",
-    "institutions": "Institutions",
+    "positions": "Positions",
     "schedule": "Schedule",
     "settings": "Settings",
     "shortcuts": "Keyboard shortcuts",
-    "sourceCode": "View page source",
-    "support": "Support"
+    "sourceCode": "View source",
+    "support": "Support",
+    "universities": "Universities",
+    "users": "Users"
   },
   "page": {
     "course": {
       "list": {
-        "description": "Manage your courses",
+        "description": "Manage courses",
         "title": "Courses"
       }
     },
@@ -247,17 +339,7 @@
         "description": "The page you're looking for doesn't exist.",
         "title": "Page Not Found"
       },
-      "permission": "Permission missing for user. Contact your admin for more info."
-    },
-    "institution": {
-      "create": {
-        "description": "Create a new institution to start managing its data and users.",
-        "title": "Create Institution"
-      },
-      "list": {
-        "description": "Manage your institutions",
-        "title": "Institutions"
-      }
+      "permission": "Permission denied. Please contact your administrator for access."
     },
     "login": {
       "description": "Sign in to your account",
@@ -266,29 +348,42 @@
     "register": {
       "description": "Create a new account",
       "title": "Sign Up"
+    },
+    "university": {
+      "create": {
+        "description": "Create a new university to start managing its data and users.",
+        "title": "Add University"
+      },
+      "list": {
+        "description": "Manage universities",
+        "title": "Universities"
+      }
     }
   },
   "table": {
     "action": {
       "copyId": "Copy ID",
-      "viewDetails": "View Details"
+      "viewDetails": "Details"
     },
     "column": {
       "address": "Address",
-      "courseGroup": "Course Group",
+      "courseGroup": "Group",
       "courseType": "Type",
       "date": "Date",
       "description": "Description",
       "ects": "ECTS",
       "email": "Email",
       "faculty": "Faculty",
+      "hourly_rate": "Rate",
       "message": "Message",
       "name": "Name",
       "position": "Position",
       "priority": "Priority",
+      "semester": "Semester",
       "status": "Status",
       "title": "Title",
-      "weeklyHours": "Weekly Hours"
+      "weeklyHours": "hrs/week",
+      "workload": "Workload"
     },
     "status": {
       "read": "Read",
@@ -298,41 +393,41 @@
   "tabs": {
     "accessibility": "Accessibility",
     "account": "Account",
-    "user": "User",
-    "permissions": "Permissions"
+    "permissions": "Permissions",
+    "user": "User"
   },
   "tours": {
     "inviteUsers": {
-      "title": "Invite users",
       "enterAnotherEmployee": {
         "description": "You can enter multiple employees by separating their addresses with commas.",
-        "title": "Move on"
+        "title": "Bulk Invite"
       },
       "enterEmployeeEmail": {
-        "description": "Enter the email address of the employee you want to invite. \nPlease make sure this is a valid email address.",
-        "title": "Enter the employee's email address"
+        "description": "Enter the email address of the employee you want to invite.",
+        "title": "Email Address"
       },
       "inviteNewEmployee": {
-        "description": "Click this button to open the employee invitation form.",
-        "title": "Invite New Employee"
+        "description": "Click this button to open the invitation form.",
+        "title": "Invite Employee"
       },
       "navigateToEmployees": {
-        "description": "Click here to go to the Employees section where you can manage employee accounts",
-        "title": "Navigate to Employees"
+        "description": "Go to the Employees section to manage your staff.",
+        "title": "Staff Management"
       },
       "sendInvitation": {
-        "description": "Click this button to send an invitation to selected employees.",
-        "title": "Send an invitation"
-      }
+        "description": "Click this button to send invitations to the selected people.",
+        "title": "Send"
+      },
+      "title": "Invite Users"
     }
-  },
-  "validation": {
-    "invalid": "Invalid value",
-    "invalidEmail": "Please enter a valid email address",
-    "required": "This field is required",
-    "passwordsDoNotMatch": "Passwords do not match"
   },
   "user": {
     "avatar": "Avatar"
+  },
+  "validation": {
+    "invalid": "Invalid value",
+    "invalidEmail": "Invalid email address",
+    "passwordsDoNotMatch": "Passwords do not match",
+    "required": "This field is required"
   }
 }

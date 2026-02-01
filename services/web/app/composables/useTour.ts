@@ -1,9 +1,4 @@
-import {
-  driver,
-  type Config,
-  type DriverHook,
-  type Popover,
-} from "driver.js";
+import { driver, type Config, type DriverHook, type Popover } from "driver.js";
 
 const NAVIGATION_TIMEOUT = 3000;
 const CHECK_INTERVAL = 100;
@@ -67,7 +62,7 @@ const onNextClick: DriverHook = (element, _, options) => {
  *
  * - CRUD students to courses
  *
- * - CRUD institution
+ * - CRUD university
  *
  * - CRUD course
  *

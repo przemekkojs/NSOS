@@ -87,7 +87,7 @@ definePageMeta({
   <UTable
     ref="table"
     v-model:column-filters="columnFilters"
-    :data="data ?? []"
+    :data="data?.results"
     :loading="isFetching"
     :columns
     sticky

@@ -1,44 +1,51 @@
 <script setup lang="ts">
 import { getTextFromMessage } from "@nuxt/ui/runtime/utils/ai.js";
 import MDC from "./ui/MDC.vue";
-// @ts-expect-error FIXME: the following type
-import type { UIMessage } from "ai";
+import { useAIChat } from "~/composables/useAIChat";
 
 const { t } = useI18n();
 
-const messages = ref<UIMessage[]>([
-  {
-    id: "1",
-    role: "assistant",
-    parts: [
-      {
-        type: "text",
-        text: t("feature.chat.helloMessage"),
-      },
-    ],
-  },
-]);
-const input = ref<string>("");
-const status = ref<"ready" | "streaming">("ready");
-const error = ref<Error | undefined>();
-
-const { isAIChatOpen } = useDashboard();
-
-function onSubmit() {
-  const trimmedInput = input.value.trim();
-  if (trimmedInput) {
-    messages.value.push({
-      id: Date.now().toString(),
-      role: "user",
+const { messages, input, status, error, sendMessage } = useAIChat({
+  initialMessages: [
+    {
+      id: "1",
+      role: "assistant",
       parts: [
         {
           type: "text",
-          text: trimmedInput,
+          text: t("feature.chat.helloMessage"),
         },
       ],
-    });
-    input.value = "";
-  }
+    },
+  ],
+  onError: (err) => {
+    console.error("Chat error:", err);
+  },
+  onFinish: (message) => {
+    console.log("Message finished:", message);
+  },
+});
+
+// const messages = ref<UIMessage[]>([
+//   {
+//     id: "1",
+//     role: "assistant",
+//     parts: [
+//       {
+//         type: "text",
+//         text: t("feature.chat.helloMessage"),
+//       },
+//     ],
+//   },
+// ]);
+// const input = ref<string>("");
+// const status = ref<"ready" | "streaming">("ready");
+// const error = ref<Error | undefined>();
+
+const { isAIChatOpen } = useDashboard();
+
+async function onSubmit() {
+  await sendMessage();
 }
 </script>
 <template>

@@ -59,23 +59,32 @@ services:
     restart: unless-stopped
     volumes:
       - huggingface_cache:/home/appuser/.cache/huggingface
+      - ../models/app/local:/app/app/local
     healthcheck:
       test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/health')\""]
       interval: 30s
-      timeout: 10s
-      retries: 3
+      timeout: 15s
+      retries: 6
       start_period: 40s
     networks:
       - nsos_net
 
 
   web:
-    build: ../services/web
+    build: 
+      context: ../services/web
+      args:
+        NUXT_PUBLIC_API_URL: ${NUXT_PUBLIC_API_URL}
+        NUXT_PUBLIC_APP_URL: ${NUXT_PUBLIC_APP_URL}
+        NUXT_PUBLIC_RAG_URL: ${NUXT_PUBLIC_RAG_URL}
+        NUXT_PUBLIC_FEATURE_FLAG_AI_CHAT: true
+        NUXT_PUBLIC_FEATURE_INSTITUTIONS: true
+        NUXT_PUBLIC_FEATURE_FLAG_CSV_IMPORT: true
+        NUXT_PUBLIC_FEATURE_FLAG_USER_AVATARS: true
     ports:
       - "3000:80"
     environment:
       NODE_ENV: production
-      NUXT_PUBLIC_API_URL: http://django:8000
       NUXT_PUBLIC_MSW_ENABLED: false
     depends_on:
       django:
