@@ -22,17 +22,20 @@ const items = computed<DropdownMenuItem[][]>(() => {
   ];
 
   if (!universities.value) {
-    return [additionalItems];
+    return [additionalItems.filter(truthy)];
   }
 
   return [
-    universities.value.results.map((uni) => ({
-      label: uni.name,
-      ...uni,
-      onSelect() {
-        selectedUni.value = uni;
-      },
-    })),
+    universities.value.results.map(
+      (uni): DropdownMenuItem => ({
+        label: uni.name,
+        ...uni,
+        description: uni.description || undefined,
+        onSelect() {
+          selectedUni.value = uni;
+        },
+      }),
+    ),
     additionalItems.filter(truthy),
   ];
 });

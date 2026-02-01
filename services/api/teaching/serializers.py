@@ -92,7 +92,7 @@ class ScheduleItemSerializer(serializers.ModelSerializer):
 
 
 class CalendarEventSerializer(serializers.Serializer):
-    """Serializer that formats schedule data for FullCalendar"""
+    """Serializer that formats Class (event) data for FullCalendar"""
 
     id = serializers.IntegerField()
     title = serializers.SerializerMethodField()
@@ -101,33 +101,34 @@ class CalendarEventSerializer(serializers.Serializer):
     extendedProps = serializers.SerializerMethodField()
 
     def get_title(self, obj):
-        """Format: CS101 - Group 1"""
-        return f"{obj.course_group.course.course_code} - {obj.course_group.name}"
+        # Shows "Course Name - Group Name"
+        course_name = obj.course_group.course.name if obj.course_group.course else "Unknown"
+        return f"{course_name} ({obj.course_group.name})"
 
     def get_start(self, obj):
-        """Combine date and start_time into ISO datetime"""
         from datetime import datetime
-
-        dt = datetime.combine(obj.date, obj.start_time)
+        # Change 'date' to 'date_held' to match Class model
+        dt = datetime.combine(obj.date_held, obj.start_time)
         return dt.isoformat()
 
     def get_end(self, obj):
-        """Combine date and end_time into ISO datetime"""
         from datetime import datetime
-
-        dt = datetime.combine(obj.date, obj.end_time)
+        # Change 'date' to 'date_held' to match Class model
+        dt = datetime.combine(obj.date_held, obj.end_time)
         return dt.isoformat()
 
     def get_extendedProps(self, obj):
-        """Additional event data for tooltips/modals"""
-        lecturer_name = None
-        if obj.course_group.lecturer:
-            lecturer_name = f"{obj.course_group.lecturer.user.first_name} {obj.course_group.lecturer.user.last_name}"
+        lecturer_name = "Unassigned"
+        # Check lecturer on the Class instance first, then fallback to Group
+        lecturer = obj.lecturer or obj.course_group.lecturer
+        
+        if lecturer and lecturer.user:
+            lecturer_name = lecturer.user.get_full_name() or f"{lecturer.user.first_name} {lecturer.user.last_name}"
 
         return {
-            "courseCode": obj.course_group.course.course_code,
-            "courseName": obj.course_group.course.name,
-            "room": obj.course_group.room,
+            "courseName": obj.course_group.course.name if obj.course_group.course else "",
+            "room": obj.room or obj.course_group.room,
             "lecturerName": lecturer_name,
             "groupName": obj.course_group.name,
+            "status": obj.status
         }

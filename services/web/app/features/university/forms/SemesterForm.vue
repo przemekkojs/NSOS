@@ -1,149 +1,118 @@
 <script setup lang="ts">
-import * as z from "zod";
+import {
+  type Semester,
+  type SemesterCreate,
+  SemesterCreateSchema,
+} from "~/lib/api/schemas";
 
 const props = defineProps<{
   isEdit?: boolean;
-  initialData?: {
-    id?: number;
-    name: string;
-    faculty: number;
-    type: "winter" | "summer";
-    academic_year: string;
-    start_date: string;
-    end_date: string;
-  };
+  initialData?: Semester;
 }>();
 
-defineEmits<{
-  (e: "success", data: SemesterFormData): void;
+const emit = defineEmits<{
+  (e: "success", data: SemesterCreate): void;
   (e: "cancel"): void;
 }>();
 
 // Fetch faculties for the dropdown
-const { data: faculties, isLoading: loadingFaculties } = useFaculties();
+const { data: faculties } = useFaculties();
 
-const SEMESTER_TYPE_OPTIONS = [
-  { value: "winter", label: "Winter" },
-  { value: "summer", label: "Summer" },
-];
+const year = new Date().getFullYear();
 
-const semesterFormSchema = z
-  .object({
-    name: z.string().min(1, "Name is required").max(50),
-    faculty: z.coerce.number().positive("Faculty is required"),
-    type: z.enum(["winter", "summer"]),
-    academic_year: z
-      .string()
-      .regex(/^\d{4}\/\d{4}$/, "Academic year must be in format YYYY/YYYY"),
-    start_date: z.string().min(1, "Start date is required"),
-    end_date: z.string().min(1, "End date is required"),
-  })
-  .refine(
-    (data) => {
-      const start = new Date(data.start_date);
-      const end = new Date(data.end_date);
-      return end > start;
-    },
-    {
-      message: "End date must be after start date",
-      path: ["end_date"],
-    },
-  );
-
-type SemesterFormData = z.infer<typeof semesterFormSchema>;
-
-const state = ref<Partial<SemesterFormData>>({
+const state = ref<Partial<SemesterCreate>>({
   name: props.initialData?.name || "",
-  faculty: props.initialData?.faculty || undefined,
+  faculty: props.initialData?.faculty.id || undefined,
   type: props.initialData?.type || "winter",
-  academic_year: props.initialData?.academic_year || "",
+  academic_year: props.initialData?.academic_year || year.toString(),
   start_date: props.initialData?.start_date || "",
   end_date: props.initialData?.end_date || "",
 });
 
-const facultyOptions = computed(() => {
-  if (!faculties.value) return [];
-  return faculties.value.results.map((f) => ({
-    value: f.id,
+watch(
+  state,
+  (newValue) => {
+    const res = SemesterCreateSchema.safeParse(newValue);
+
+    console.info(res);
+  },
+  { deep: true, immediate: true },
+);
+const typeOptions = [
+  { label: "Winter", value: "winter" },
+  { label: "Summer", value: "summer" },
+];
+
+const facultyOptions = computed(() =>
+  faculties.value?.results.map((f) => ({
     label: f.name,
-  }));
-});
+    value: f.id,
+  })),
+);
 </script>
 
 <template>
   <UForm
-    :schema="semesterFormSchema"
+    :schema="SemesterCreateSchema"
     :state="state"
-    class="flex flex-col gap-4"
-    @submit="$emit('success', state as SemesterFormData)"
+    class="space-y-4"
+    @submit.prevent="emit('success', $event.data)"
   >
-    <UFormField :label="$t('form.label.name')" name="name" required>
-      <UInput
-        v-model="state.name"
-        class="w-full"
-        :placeholder="$t('form.placeholder.semesterName')"
-      />
-    </UFormField>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <UFormField
+        :label="$t('form.label.name')"
+        name="name"
+        required
+        class="md:col-span-2"
+      >
+        <UInput v-model="state.name" placeholder="e.g. Winter Semester 2025" />
+      </UFormField>
 
-    <UFormField :label="$t('form.label.faculty')" name="faculty" required>
-      <USelect
-        v-model="state.faculty"
-        :options="facultyOptions"
-        option-attribute="label"
-        value-attribute="value"
-        class="w-full"
-        :loading="loadingFaculties"
-        :placeholder="$t('form.placeholder.selectFaculty')"
-      />
-    </UFormField>
+      <UFormField :label="$t('form.label.faculty')" name="faculty" required>
+        <USelect
+          v-model="state.faculty"
+          :items="facultyOptions"
+          placeholder="Select Faculty"
+        />
+      </UFormField>
 
-    <UFormField :label="$t('form.label.semesterType')" name="type" required>
-      <USelect
-        v-model="state.type"
-        :options="SEMESTER_TYPE_OPTIONS"
-        option-attribute="label"
-        value-attribute="value"
-        class="w-full"
-      />
-    </UFormField>
+      <UFormField :label="$t('form.label.type')" name="type" required>
+        <USelect v-model="state.type" :items="typeOptions" />
+      </UFormField>
 
-    <UFormField
-      :label="$t('form.label.academicYear')"
-      name="academic_year"
-      required
-      :help="$t('form.help.academicYear')"
-    >
-      <UInput
-        v-model="state.academic_year"
-        class="w-full"
-        placeholder="2025/2026"
-      />
-    </UFormField>
+      <UFormField
+        :label="$t('form.label.academicYear')"
+        name="academic_year"
+        required
+      >
+        <UInput v-model="state.academic_year" placeholder="2025/2026" />
+      </UFormField>
 
-    <div class="grid grid-cols-2 gap-4">
+      <div class="hidden md:block" />
+
       <UFormField
         :label="$t('form.label.startDate')"
         name="start_date"
         required
       >
-        <UInput v-model="state.start_date" type="date" class="w-full" />
+        <UInput v-model="state.start_date" type="date" />
       </UFormField>
 
       <UFormField :label="$t('form.label.endDate')" name="end_date" required>
-        <UInput v-model="state.end_date" type="date" class="w-full" />
+        <UInput v-model="state.end_date" type="date" />
       </UFormField>
     </div>
 
-    <div class="flex gap-2 justify-end mt-4">
+    <div class="flex gap-2 justify-end mt-6">
       <UButton
         type="button"
         color="neutral"
-        variant="outline"
-        @click="$emit('cancel')"
+        variant="ghost"
+        @click="emit('cancel')"
       >
         {{ $t("button.cancel") }}
       </UButton>
-      <UButton type="submit" class="text-white">
+      <UButton type="submit">
         {{ isEdit ? $t("button.update") : $t("button.create") }}
       </UButton>
     </div>

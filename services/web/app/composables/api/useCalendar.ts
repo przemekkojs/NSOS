@@ -1,7 +1,7 @@
 import { calendarApi } from "~/lib/api/modules/calendar";
 import { useQuery } from "@tanstack/vue-query";
-import type { CalendarOptions, EventInput } from "@fullcalendar/core/index.js";
-import type { CalendarEvent, CalendarParams } from "~/lib/api/modules/calendar";
+import type { CalendarOptions } from "@fullcalendar/core/index.js";
+import type { CalendarParams } from "~/lib/api/modules/calendar";
 
 export function useCalendar(params?: Ref<CalendarParams> | CalendarParams) {
   const { data, isLoading, error, refetch } = useQuery({
@@ -32,8 +32,8 @@ export function useCalendarEventSource() {
     try {
       if (!userStore.user) return;
 
-      const _user_id = unref(userStore.user.id);
-      console.info(_user_id);
+      // const _user_id = unref(userStore.user.id);
+      const _user_id = 90;
 
       const params: CalendarParams = {
         start_date: fetchInfo.start.toISOString().split("T")[0],

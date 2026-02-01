@@ -54,6 +54,12 @@ const links = computed<NavigationMenuItem[][]>(() => [
         icon: "i-lucide-building-2",
         to: route({ name: "universities" }).path,
         kbds: ["g", "i"],
+        children: [
+          hasPermission("university.view_semester") && {
+            label: t("navigation.semesters"),
+            to: route({ name: "semesters" }),
+          },
+        ].filter(truthy),
       } satisfies NavigationMenuItem),
     hasPermission("university.view_faculty") && {
       label: t("navigation.faculties"),

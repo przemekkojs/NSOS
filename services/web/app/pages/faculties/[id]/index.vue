@@ -1,5 +1,4 @@
 <script setup lang="ts">
-// eslint-disable-next-line no-restricted-globals
 const router = useRouter();
 // @ts-expect-error id should exist here
 const id = computed(() => router.currentRoute.value.params.id);

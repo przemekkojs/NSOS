@@ -6,7 +6,7 @@ const router = useRouter();
 // @ts-expect-error id exists here as well
 const id = computed(() => Number(router.currentRoute.value.params.id));
 const { isLoading, data } = useCourse(id);
-const { mutateAsync: update } = useUpdateCourse();
+const { mutateAsync: update } = useUpdateUniversity();
 
 async function onSubmit(data: UniversityCreate) {
   await update({

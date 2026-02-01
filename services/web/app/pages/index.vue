@@ -48,32 +48,27 @@ const upcomingClasses = computed(() => {
   );
 });
 
-// Quick action cards
 const quickActions = computed(() =>
   [
     hasPermission("teaching.add_course") && {
       label: t("dashboard.quickActions.createCourse"),
       icon: "i-lucide-book-plus",
       to: route({ name: "courses-create" })?.path,
-      color: "primary",
     },
     hasPermission("teaching.add_coursegroup") && {
       label: t("dashboard.quickActions.createGroup"),
       icon: "i-lucide-users-round",
       to: route({ name: "course-groups-create" })?.path,
-      color: "blue",
     },
     hasPermission("teaching.view_schedule") && {
       label: t("dashboard.quickActions.viewSchedule"),
       icon: "i-lucide-calendar-days",
       to: route({ name: "harmonogram" })?.path,
-      color: "green",
     },
     hasPermission("users.add_user") && {
       label: t("dashboard.quickActions.inviteEmployee"),
       icon: "i-lucide-user-plus",
       to: route({ name: "employees" })?.path,
-      color: "purple",
     },
   ].filter(truthy),
 );
@@ -101,16 +96,6 @@ const recentActivity = ref([
     time: "1 day ago",
   },
 ]);
-
-const getStatusColor = (status: string) => {
-  const colors: Record<string, string> = {
-    scheduled: "blue",
-    completed: "green",
-    cancelled: "red",
-    rescheduled: "yellow",
-  };
-  return colors[status] || "gray";
-};
 
 const formatTime = (time: string) => {
   return time?.slice(0, 5) || "";
@@ -205,7 +190,7 @@ definePageMeta({
           v-for="action in quickActions"
           :key="action.label"
           :to="action.to"
-          :color="action.color"
+          color="neutral"
           variant="outline"
           block
           class="justify-start"
@@ -249,7 +234,7 @@ definePageMeta({
           >
             <div class="flex-1">
               <p class="font-medium">
-                {{ cls.course_group?.name || "N/A" }}
+                {{ cls.course_group || "N/A" }}
               </p>
               <p class="text-sm text-muted-foreground">
                 {{ formatTime(cls.start_time) }} -
@@ -257,7 +242,7 @@ definePageMeta({
                 <span v-if="cls.room">• {{ cls.room }}</span>
               </p>
             </div>
-            <UBadge :color="getStatusColor(cls.status)" variant="subtle">
+            <UBadge variant="subtle">
               {{ cls.status }}
             </UBadge>
           </div>
@@ -296,7 +281,7 @@ definePageMeta({
           >
             <div class="flex-1">
               <p class="font-medium">
-                {{ cls.course_group?.name || "N/A" }}
+                {{ cls.course_group || "N/A" }}
               </p>
               <p class="text-sm text-muted-foreground">
                 {{ new Date(cls.date_held).toLocaleDateString() }}
@@ -304,7 +289,7 @@ definePageMeta({
                 {{ formatTime(cls.end_time) }}
               </p>
             </div>
-            <UBadge :color="getStatusColor(cls.status)" variant="subtle">
+            <UBadge variant="subtle">
               {{ cls.status }}
             </UBadge>
           </div>

@@ -1,6 +1,7 @@
 from django.db import models
 from university.models import Faculty, Semester
 from users.models import Lecturer, Student
+from datetime import timedelta
 
 
 class Course(models.Model):
@@ -63,6 +64,50 @@ class CourseGroup(models.Model):
     def __str__(self):
         return f"{self.name} - {self.course.name}"
 
+    def save(self, *args, **kwargs):
+        is_new = self.pk is None
+        super().save(*args, **kwargs)
+
+        if is_new:
+            self.generate_classes()
+
+    def generate_classes(self):
+        # Mapping string weekday to python isoweekday (1=Mon, 7=Sun)
+        # Ensure your 'weekday' field matches these keys or adjust accordingly
+        days_map = {
+            'monday': 1, 'tuesday': 2, 'wednesday': 3, 'thursday': 4,
+            'friday': 5, 'saturday': 6, 'sunday': 7
+        }
+        
+        target_weekday = days_map.get(self.weekday)
+        if not target_weekday:
+            return
+
+        current_date = self.semester.start_date
+        end_date = self.semester.end_date
+        
+        classes_to_create = []
+
+        while current_date <= end_date:
+            # isoweekday() returns 1-7
+            if current_date.isoweekday() == target_weekday:
+                classes_to_create.append(
+                    Class(
+                        course_group=self,
+                        lecturer=self.lecturer,
+                        date_held=current_date,
+                        start_time=self.start_time,
+                        end_time=self.end_time,
+                        room=self.room,
+                        status="scheduled"
+                    )
+                )
+            current_date += timedelta(days=1)
+
+        # Bulk create for efficiency
+        if classes_to_create:
+            Class.objects.bulk_create(classes_to_create)
+
 
 class Class(models.Model):
     schedule: "Schedule" = models.ForeignKey(
@@ -96,7 +141,7 @@ class Class(models.Model):
         unique_together = ["schedule", "date_held"]
 
     def __str__(self):
-        return f"{self.schedule.course.name} ({self.date_held})"
+        return f"{self.schedule.course.name if self.schedule is not None else ""} ({self.date_held})"
 
 
 class Schedule(models.Model):

@@ -115,10 +115,21 @@ export const PositionSchema = z.object({
 
 export type Workload = NonNullable<z.infer<typeof PositionSchema>["workload"]>;
 
+export const CourseGroupSchema = z.object({
+  course: z.number(), // Foreign key ID
+  id: z.number(),
+  name: z.string().max(100),
+  lecturer: z.number().or(z.undefined()),
+  weekday: z.string().max(10),
+  start_time: z.string(), // Time string from API (HH:MM:SS)
+  end_time: z.string(),
+  room: z.string().max(50),
+  semester: z.number(), // Foreign key ID
+});
+
 export const SemesterSchema = z.object({
   id: z.number(),
   name: z.string().max(50),
-  faculty: z.number(), // Foreign key ID
   type: z.literal(["winter", "summer"]),
   academic_year: z
     .string()
@@ -126,6 +137,8 @@ export const SemesterSchema = z.object({
     .regex(/^\d{4}\/\d{4}$/), // e.g., "2025/2026"
   start_date: z.string(), // ISO date string from API
   end_date: z.string(),
+  faculty: FacultySchema,
+  semester_groups: z.array(CourseGroupSchema),
 });
 
 export type SemesterType = NonNullable<z.infer<typeof SemesterSchema>["type"]>;
@@ -176,7 +189,7 @@ export const CourseSchema = z.object({
   id: z.number(),
   course_code: z.string().max(30),
   name: z.string().max(255),
-  weekly_hours: z.string().or(z.number()), // DecimalField
+  weekly_hours: z.number(), // DecimalField
   weeks_count: z.number().int().positive(),
   ects: z.string().or(z.number()), // DecimalField
   course_group: z.number(), // Foreign key ID
@@ -187,18 +200,6 @@ export const CourseSchema = z.object({
 export type CourseType = NonNullable<
   z.infer<typeof CourseSchema>["course_type"]
 >;
-
-export const CourseGroupSchema = z.object({
-  course: z.number(), // Foreign key ID
-  id: z.number(),
-  name: z.string().max(100),
-  lecturer: z.number().or(z.undefined()),
-  weekday: z.string().max(10),
-  start_time: z.string(), // Time string from API (HH:MM:SS)
-  end_time: z.string(),
-  room: z.string().max(50),
-  semester: z.number(), // Foreign key ID
-});
 
 export const ClassSchema = z.object({
   id: z.number(),
@@ -266,7 +267,11 @@ export const FacultyCreateSchema = FacultySchema.omit({ id: true });
 
 export const PositionCreateSchema = PositionSchema.omit({ id: true });
 
-export const SemesterCreateSchema = SemesterSchema.omit({ id: true });
+export const SemesterCreateSchema = SemesterSchema.omit({
+  id: true,
+  faculty: true,
+  semester_groups: true,
+}).and(z.object({ faculty: z.number() }));
 
 export const UserCreateSchema = z.object({
   username: z.string().min(1).max(150),

@@ -12,7 +12,7 @@ export const semestersKeys = {
 
 export function useSemesters() {
   return useQuery({
-    queryKey: semestersKeys.list(),
+    queryKey: semestersKeys.lists(),
     queryFn: semesterApi.getAll,
   });
 }
@@ -53,6 +53,7 @@ export function useDeleteSemester() {
     onSuccess: (_, id) => {
       queryClient.removeQueries({ queryKey: semestersKeys.detail(id) });
       queryClient.invalidateQueries({ queryKey: semestersKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: semestersKeys.list() });
     },
   });
 }
