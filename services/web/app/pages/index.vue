@@ -121,62 +121,70 @@ definePageMeta({
     <!-- Stats Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       <UCard>
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-sm text-muted-foreground">
-              {{ t("dashboard.stats.courses") }}
-            </p>
-            <p class="text-2xl font-bold mt-1">
-              {{ loadingCourses ? "..." : stats.courses }}
-            </p>
+        <NuxtLinkLocale to="/courses">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-muted-foreground">
+                {{ t("dashboard.stats.courses") }}
+              </p>
+              <p class="text-2xl font-bold mt-1">
+                {{ loadingCourses ? "..." : stats.courses }}
+              </p>
+            </div>
+            <UIcon name="i-lucide-book-open" class="size-8 text-primary" />
           </div>
-          <UIcon name="i-lucide-book-open" class="size-8 text-primary" />
-        </div>
+        </NuxtLinkLocale>
       </UCard>
 
       <UCard>
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-sm text-muted-foreground">
-              {{ t("dashboard.stats.groups") }}
-            </p>
-            <p class="text-2xl font-bold mt-1">
-              {{ loadingGroups ? "..." : stats.courseGroups }}
-            </p>
+        <NuxtLinkLocale to="/course-groups">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-muted-foreground">
+                {{ t("dashboard.stats.groups") }}
+              </p>
+              <p class="text-2xl font-bold mt-1">
+                {{ loadingGroups ? "..." : stats.courseGroups }}
+              </p>
+            </div>
+            <UIcon name="i-lucide-users" class="size-8 text-blue-500" />
           </div>
-          <UIcon name="i-lucide-users" class="size-8 text-blue-500" />
-        </div>
+        </NuxtLinkLocale>
       </UCard>
 
       <UCard>
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-sm text-muted-foreground">
-              {{ t("dashboard.stats.faculties") }}
-            </p>
-            <p class="text-2xl font-bold mt-1">
-              {{ loadingFaculties ? "..." : stats.faculties }}
-            </p>
+        <NuxtLinkLocale to="/faculties">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-muted-foreground">
+                {{ t("dashboard.stats.faculties") }}
+              </p>
+              <p class="text-2xl font-bold mt-1">
+                {{ loadingFaculties ? "..." : stats.faculties }}
+              </p>
+            </div>
+            <UIcon name="i-lucide-building" class="size-8 text-green-500" />
           </div>
-          <UIcon name="i-lucide-building" class="size-8 text-green-500" />
-        </div>
+        </NuxtLinkLocale>
       </UCard>
 
       <UCard>
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-sm text-muted-foreground">
-              {{ t("dashboard.stats.todayClasses") }}
-            </p>
-            <p class="text-2xl font-bold mt-1">
-              {{ loadingClasses ? "..." : stats.todayClasses }}
-            </p>
+        <NuxtLinkLocale to="/harmonogram">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-muted-foreground">
+                {{ t("dashboard.stats.todayClasses") }}
+              </p>
+              <p class="text-2xl font-bold mt-1">
+                {{ loadingClasses ? "..." : stats.todayClasses }}
+              </p>
+            </div>
+            <UIcon
+              name="i-lucide-calendar-check"
+              class="size-8 text-purple-500"
+            />
           </div>
-          <UIcon
-            name="i-lucide-calendar-check"
-            class="size-8 text-purple-500"
-          />
-        </div>
+        </NuxtLinkLocale>
       </UCard>
     </div>
 

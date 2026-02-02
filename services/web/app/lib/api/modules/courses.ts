@@ -5,9 +5,9 @@ import type { Paginated } from "../client-v2";
 const basePath = "/api/teaching/courses";
 
 export const courseApi = {
-  getAll: () => apiClient.get<Paginated<Course>>(basePath),
+  getAll: () => apiClient.get<Paginated<Course>>(basePath + "/", {}),
 
-  getById: (id: number) => apiClient.get<Course>(`${basePath}/${id}`),
+  getById: (id: number) => apiClient.get<Course>(`${basePath}/${id}/`),
 
   create: (data: CourseCreate) => apiClient.post<Course>(basePath + "/", data),
 

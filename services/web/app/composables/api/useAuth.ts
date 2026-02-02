@@ -1,4 +1,4 @@
-import { authApi } from "~/lib/api/modules/auth";
+import { authApi, type Credentials } from "~/lib/api/modules/auth";
 import { useMutation } from "@tanstack/vue-query";
 import { useUserStore } from "~/stores/user";
 
@@ -6,10 +6,15 @@ export function useLogin() {
   const navigateTo = useNavigateTo();
 
   return useMutation({
-    mutationFn: authApi.login,
+    mutationFn: (variables: Credentials) => {
+      // make sure user is logged out when relogging
+      // const { mutate: logout } = useLogout();
+      // logout();
+      return authApi.login(variables);
+    },
     async onSuccess({ data }) {
       const store = useUserStore();
-
+      await store.fetchUser();
       store.setUser(data.user);
       await navigateTo({ name: "index" });
     },

@@ -1,5 +1,4 @@
 import type { User } from "~/lib/api/schemas";
-import { permissions } from "~/lib/api/schemas";
 import { createFactory } from "./factory-builder";
 import { faker } from "@faker-js/faker";
 
@@ -15,7 +14,7 @@ export const createUsers = createFactory<User>((overrides = {}) => {
     username: faker.internet.username(),
     date_joined: faker.date.past().toISOString(),
     groups: [],
-    permissions: [...permissions],
+    // permissions: [...permissions], FIXME: readd something like this
   };
 
   return Object.assign(user, overrides);

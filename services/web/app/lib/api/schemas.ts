@@ -1,90 +1,7 @@
 import { z } from "zod";
+import type { components } from "~~/types/api";
 
-export const permissions = [
-  "admin.add_logentry",
-  "admin.change_logentry",
-  "admin.delete_logentry",
-  "admin.view_logentry",
-  "auth.add_group",
-  "auth.add_permission",
-  "auth.change_group",
-  "auth.change_permission",
-  "auth.delete_group",
-  "auth.delete_permission",
-  "auth.view_group",
-  "auth.view_permission",
-  "contenttypes.add_contenttype",
-  "contenttypes.change_contenttype",
-  "contenttypes.delete_contenttype",
-  "contenttypes.view_contenttype",
-  "sessions.add_session",
-  "sessions.change_session",
-  "sessions.delete_session",
-  "sessions.view_session",
-  "teaching.add_class",
-  "teaching.add_course",
-  "teaching.add_coursegroup",
-  "teaching.add_schedule",
-  "teaching.change_class",
-  "teaching.change_course",
-  "teaching.change_coursegroup",
-  "teaching.change_schedule",
-  "teaching.delete_class",
-  "teaching.delete_course",
-  "teaching.delete_coursegroup",
-  "teaching.delete_schedule",
-  "teaching.view_class",
-  "teaching.view_course",
-  "teaching.view_coursegroup",
-  "teaching.view_schedule",
-  "university.add_faculty",
-  "university.add_position",
-  "university.add_semester",
-  "university.change_faculty",
-  "university.change_position",
-  "university.change_semester",
-  "university.delete_faculty",
-  "university.delete_position",
-  "university.delete_semester",
-  "university.view_faculty",
-  "university.view_position",
-  "university.view_semester",
-  "users.add_lecturer",
-  "users.add_student",
-  "users.add_user",
-  "users.change_lecturer",
-  "users.change_student",
-  "users.change_user",
-  "users.delete_lecturer",
-  "users.delete_student",
-  "users.delete_user",
-  "users.view_lecturer",
-  "users.view_student",
-  "users.view_user",
-  // account app (8 permissions)
-  "account.add_emailaddress",
-  "account.change_emailaddress",
-  "account.delete_emailaddress",
-  "account.view_emailaddress",
-  "account.add_emailconfirmation",
-  "account.change_emailconfirmation",
-  "account.delete_emailconfirmation",
-  "account.view_emailconfirmation",
-
-  // university app (8 permissions)
-  "university.add_university",
-  "university.change_university",
-  "university.delete_university",
-  "university.view_university",
-  "university.add_universitymembership",
-  "university.change_universitymembership",
-  "university.delete_universitymembership",
-  "university.view_universitymembership",
-] as const;
-
-export type Permission = (typeof permissions)[number];
-
-export const PermissionSchema = z.literal(permissions);
+export type Permission = components["schemas"]["PermissionsEnum"];
 
 // NOTE: Generated data from Django models below
 
@@ -104,6 +21,7 @@ export const FacultySchema = z.object({
   id: z.number(),
   name: z.string().max(200),
   description: z.string().nullish(),
+  university: z.number().positive(),
 });
 
 export const PositionSchema = z.object({
@@ -125,6 +43,7 @@ export const CourseGroupSchema = z.object({
   end_time: z.string(),
   room: z.string().max(50),
   semester: z.number(), // Foreign key ID
+  max_students: z.number().positive(),
 });
 
 export const SemesterSchema = z.object({
@@ -137,7 +56,7 @@ export const SemesterSchema = z.object({
     .regex(/^\d{4}\/\d{4}$/), // e.g., "2025/2026"
   start_date: z.string(), // ISO date string from API
   end_date: z.string(),
-  faculty: FacultySchema,
+  faculty: z.number(),
   semester_groups: z.array(CourseGroupSchema),
 });
 
@@ -158,7 +77,7 @@ export const UserSchema = z.object({
   is_superuser: z.boolean().optional(),
   date_joined: z.string().optional(),
   groups: z.array(z.string()).optional(),
-  permissions: z.array(PermissionSchema).optional(),
+  permissions: z.array(z.string()).optional(),
 });
 
 export const LecturerSchema = z.object({
@@ -189,7 +108,7 @@ export const CourseSchema = z.object({
   id: z.number(),
   course_code: z.string().max(30),
   name: z.string().max(255),
-  weekly_hours: z.number(), // DecimalField
+  weekly_hours: z.coerce.number(), // DecimalField
   weeks_count: z.number().int().positive(),
   ects: z.string().or(z.number()), // DecimalField
   course_group: z.number(), // Foreign key ID
@@ -280,7 +199,9 @@ export const UserCreateSchema = z.object({
   first_name: z.string().optional(),
   last_name: z.string().optional(),
 });
-export const UserUpdateSchema = UserCreateSchema.omit({ password: true });
+export const UserUpdateSchema = UserCreateSchema.omit({
+  password: true,
+}).partial();
 
 export const LecturerCreateSchema = UserCreateSchema.extend({
   faculty: z.number(),

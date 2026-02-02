@@ -9,6 +9,8 @@ import type {
 } from "@fullcalendar/core/index.js";
 
 const { eventSource } = useCalendarEventSource();
+const navigateTo = useNavigateTo();
+const { hasPermission } = useUserStore();
 
 const handleDateClick: CalendarOptions["dateClick"] = (arg) => {
   console.info("dateClick", arg);
@@ -16,21 +18,12 @@ const handleDateClick: CalendarOptions["dateClick"] = (arg) => {
 
 const handleEventClick = (clickInfo: EventClickArg) => {
   const { event } = clickInfo;
-  const props = event.extendedProps;
-
-  // Show event details
-  console.log("Event clicked:", {
-    title: event.title,
-    start: event.start,
-    end: event.end,
-    courseCode: props.courseCode,
-    courseName: props.courseName,
-    room: props.room,
-    lecturer: props.lecturerName,
-    group: props.groupName,
+  navigateTo({
+    name: "classes-id",
+    params: {
+      id: parseInt(event.id),
+    },
   });
-
-  // TODO: Open event details modal
 };
 
 const handleSelect: CalendarOptions["select"] = (selectInfo) => {
@@ -51,8 +44,10 @@ const options = ref<CalendarOptions>({
     right: "dayGridMonth,timeGridWeek,timeGridDay",
   },
   dateClick: handleDateClick,
-  eventClick: handleEventClick,
-  select: handleSelect,
+  eventClick: hasPermission("teaching.view_class")
+    ? handleEventClick
+    : undefined,
+  select: hasPermission("teaching.add_coursegroup") ? handleSelect : undefined,
   selectable: true,
   selectMirror: true,
   nowIndicator: true,

@@ -4,8 +4,9 @@ import {
   type UniversityCreate,
 } from "~/lib/api/schemas";
 
-const { university = {} } = defineProps<{
-  university?: Partial<UniversityCreate>;
+const { initialData = {}, isEdit } = defineProps<{
+  initialData?: Partial<UniversityCreate>;
+  isEdit?: boolean;
 }>();
 
 defineEmits<{
@@ -14,9 +15,9 @@ defineEmits<{
 }>();
 
 const state = ref<Partial<UniversityCreate>>({
-  ...university,
   name: "",
   description: "",
+  ...initialData,
 });
 </script>
 <template>
@@ -24,8 +25,7 @@ const state = ref<Partial<UniversityCreate>>({
     :state
     :schema="UniversityCreateSchema"
     class="space-y-2"
-    @submit.prevent="$emit('success', $event.data)"
-    @error="console.error"
+    @submit="$emit('success', $event.data)"
   >
     <UFormField :label="$t('form.label.name')" name="name" required>
       <UInput id="name" v-model="state.name" />
@@ -38,7 +38,9 @@ const state = ref<Partial<UniversityCreate>>({
       <UInput id="code" v-model="state.description" />
     </UFormField>
     <div class="flex gap-2">
-      <UButton type="submit">{{ $t("button.create") }}</UButton>
+      <UButton type="submit">{{
+        isEdit ? $t("button.edit") : $t("button.create")
+      }}</UButton>
       <UButton @click="$emit('cancel')">{{ $t("button.cancel") }}</UButton>
     </div>
   </UForm>

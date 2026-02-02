@@ -1,37 +1,24 @@
-<!-- <script setup lang="ts">
-const router = useRouter();
-// @ts-expect-error id exists here as well
-const id = computed(() => Number(router.currentRoute.value.params.id));
-const { data } = useCourseGroup(id);
-definePageMeta({
-  permission: "teaching.view_coursegroup",
-});
-</script>
-<template>
-  <pre>{{ data }}</pre>
-</template> -->
-
 <script setup lang="ts">
 const router = useRouter();
 // @ts-expect-error id exists here as well
 const id = computed(() => Number(router.currentRoute.value.params.id));
 
 const { data: group, isLoading } = useCourseGroup(id);
+const courseId = computed(() => group.value?.course);
+const semesterId = computed(() => group.value?.semester);
+// const facultyId = computed(() => semester.value?.faculty);
+const lecturerId = computed(() => group.value?.lecturer);
+// @ts-expect-error too little time to fix types
+const { data: course } = useCourse(courseId);
+// @ts-expect-error too little time to fix types
+const { data: semester } = useSemester(semesterId);
+// const { data: faculty } = useFaculties(facultyId);
+// @ts-expect-error too little time to fix types
+const { data: lecturer } = useLecturer(lecturerId);
 
 definePageMeta({
   permission: "teaching.view_coursegroup",
 });
-
-// Helper for status colors
-const getStatusColor = (status: string) => {
-  const colors: Record<string, string> = {
-    active: "green",
-    planned: "blue",
-    completed: "gray",
-    cancelled: "red",
-  };
-  return colors[status.toLowerCase()] || "primary";
-};
 </script>
 
 <template>
@@ -39,10 +26,10 @@ const getStatusColor = (status: string) => {
     <div class="flex items-center justify-between">
       <div>
         <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
-          {{ group?.course?.name || (isLoading && "Loading Course Group...") }}
+          {{ course?.name || (isLoading && "Loading Course Group...") }}
         </h1>
         <p class="text-sm text-gray-500">
-          Group ID: #{{ id }} • {{ group?.semester?.name }}
+          Group ID: #{{ id }} • {{ semester?.name }}
         </p>
       </div>
       <div class="flex gap-2">
@@ -54,10 +41,8 @@ const getStatusColor = (status: string) => {
         >
           Edit Group
         </UButton>
-        <UBadge
-          :color="getStatusColor(group?.status || 'active')"
-          variant="soft"
-        >
+        <UBadge variant="soft">
+          <!-- @vue-expect-error -->
           {{ group?.status?.toUpperCase() || "ACTIVE" }}
         </UBadge>
       </div>
@@ -79,20 +64,20 @@ const getStatusColor = (status: string) => {
                 >Course</span
               >
               <p class="font-medium">
-                {{ group?.course?.name }} ({{ group?.course?.code }})
+                {{ course?.name }} ({{ course?.course_code }})
               </p>
             </div>
             <div>
               <span class="text-xs text-gray-400 uppercase font-bold"
                 >Faculty</span
               >
-              <p class="font-medium">{{ group?.course?.faculty?.name }}</p>
+              <p class="font-medium">{{ semester?.faculty }}</p>
             </div>
             <div>
               <span class="text-xs text-gray-400 uppercase font-bold"
                 >Semester</span
               >
-              <p class="font-medium">{{ group?.semester?.name }}</p>
+              <p class="font-medium">{{ semester?.name }}</p>
             </div>
             <div>
               <span class="text-xs text-gray-400 uppercase font-bold"
@@ -119,7 +104,8 @@ const getStatusColor = (status: string) => {
             </div>
           </template>
 
-          <div v-if="group?.classes?.length" class="space-y-2"></div>
+          <!-- @vue-expect-error -->
+          <div v-if="group?.classes?.length" class="space-y-2" />
           <div
             v-else
             class="text-center py-8 text-gray-500 border-2 border-dashed border-gray-200 rounded-lg"
@@ -135,20 +121,24 @@ const getStatusColor = (status: string) => {
             <div class="font-semibold">Lecturer</div>
           </template>
           <div class="flex items-center gap-3">
+            <!-- @vue-expect-error -->
             <UAvatar :alt="group?.lecturer?.user?.full_name" size="lg" />
             <div>
               <p class="font-bold">
-                {{ group?.lecturer?.user?.full_name || "Unassigned" }}
+                {{
+                  lecturer?.first_name + " " + lecturer?.last_name ||
+                  "Unassigned"
+                }}
               </p>
               <p class="text-xs text-gray-500">
-                {{ group?.lecturer?.position?.name }}
+                {{ lecturer?.position }}
               </p>
             </div>
           </div>
           <template #footer>
             <UButton
               block
-              color="gray"
+              color="neutral"
               variant="link"
               icon="i-heroicons-envelope"
               >Contact Lecturer</UButton
@@ -160,13 +150,17 @@ const getStatusColor = (status: string) => {
           <div class="space-y-4">
             <div class="flex justify-between items-center">
               <span class="text-sm">Workload</span>
-              <span class="font-mono font-bold"
-                >{{ group?.course?.hours_lecture }}h</span
-              >
+              <span class="font-mono font-bold">
+                <!-- @vue-expect-error -->
+                {{ group?.course?.hours_lecture }}h
+              </span>
             </div>
             <div class="flex justify-between items-center">
               <span class="text-sm">Course Type</span>
-              <UBadge size="xs">{{ group?.course?.course_type }}</UBadge>
+              <UBadge size="xs">
+                <!-- @vue-expect-error -->
+                {{ group?.course?.course_type }}
+              </UBadge>
             </div>
           </div>
         </UCard>

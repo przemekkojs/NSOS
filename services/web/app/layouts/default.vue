@@ -97,6 +97,12 @@ const links = computed<NavigationMenuItem[][]>(() => [
   ].filter(truthy),
   [
     {
+      label: "Wprowadzenie",
+      to: route({
+        name: "getting-started",
+      }).path,
+    },
+    {
       label: t("navigation.help"),
       icon: "i-lucide-info",
       to: route({
@@ -140,6 +146,7 @@ const groups = computed(() => [
   },
 ]);
 
+const { breadcrumbs } = useBreadcrumbs();
 const cookie = useStorage("cookie-consent", "pending");
 onMounted(() => {
   if (cookie.value === "accepted") return;
@@ -218,6 +225,7 @@ onMounted(() => {
           <UDashboardNavbar :ui="{ right: 'gap-3' }">
             <template #leading>
               <UDashboardSidebarCollapse />
+              <UBreadcrumb :items="breadcrumbs" />
             </template>
 
             <template #right>

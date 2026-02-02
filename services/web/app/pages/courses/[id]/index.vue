@@ -5,14 +5,18 @@ const id = computed(() => Number(router.currentRoute.value.params.id));
 
 const { data: course, isFetching } = useCourse(id);
 
-const items = [
+const items = computed(() => [
   {
-    label: "General Info",
+    label: $t("course.tabs.generalInfo"),
     icon: "i-heroicons-information-circle",
     slot: "info",
   },
-  { label: "Course Groups", icon: "i-heroicons-users", slot: "groups" },
-];
+  {
+    label: $t("course.tabs.courseGroups"),
+    icon: "i-heroicons-users",
+    slot: "groups",
+  },
+]);
 
 definePageMeta({
   permission: "teaching.view_course",
@@ -34,12 +38,12 @@ definePageMeta({
           }}</UBadge>
         </div>
         <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
-          {{ course?.name || "Loading Course..." }}
+          {{ course?.name || $t("course.loading") }}
         </h1>
         <p class="text-gray-500 mt-1">
-          Managed by
+          {{ $t("course.managedBy") }}
           <span class="font-medium text-gray-700 dark:text-gray-300">{{
-            course?.faculty || "Faculty"
+            course?.faculty || $t("course.faculty")
           }}</span>
         </p>
       </div>
@@ -56,7 +60,7 @@ definePageMeta({
         <UButton
           icon="i-heroicons-list-bullet"
           variant="soft"
-          label="View Groups"
+          :label="$t('button.viewGroups')"
           :to="$localePath({ name: 'course-groups', query: { courseId: id } })"
         />
       </div>
@@ -70,23 +74,23 @@ definePageMeta({
     <div v-else-if="course" class="grid grid-cols-1 md:grid-cols-3 gap-6">
       <UCard class="md:col-span-1">
         <template #header>
-          <h3 class="font-semibold">Curriculum Details</h3>
+          <h3 class="font-semibold">{{ $t("course.curriculumDetails") }}</h3>
         </template>
         <div class="space-y-4">
           <div class="flex justify-between border-b dark:border-gray-800 pb-2">
-            <span class="text-gray-500">ECTS Credits</span>
+            <span class="text-gray-500">{{ $t("course.ectsCredits") }}</span>
             <span class="font-bold text-primary-600">{{ course.ects }}</span>
           </div>
           <div class="flex justify-between border-b dark:border-gray-800 pb-2">
-            <span class="text-gray-500">Weekly Hours</span>
+            <span class="text-gray-500">{{ $t("course.weeklyHours") }}</span>
             <span class="font-medium">{{ course.weekly_hours }}h</span>
           </div>
           <div class="flex justify-between border-b dark:border-gray-800 pb-2">
-            <span class="text-gray-500">Duration (Weeks)</span>
+            <span class="text-gray-500">{{ $t("course.durationWeeks") }}</span>
             <span class="font-medium">{{ course.weeks_count }}</span>
           </div>
           <div class="flex justify-between">
-            <span class="text-gray-500">Total Hours</span>
+            <span class="text-gray-500">{{ $t("course.totalHours") }}</span>
             <span class="font-medium"
               >{{ course.weekly_hours * course.weeks_count }}h</span
             >
@@ -95,47 +99,45 @@ definePageMeta({
       </UCard>
 
       <UCard class="md:col-span-2">
-        <UTabs
-          :items="[
-            { label: 'General Info', icon: 'i-heroicons-information-circle' },
-            { label: 'Course Groups', icon: 'i-heroicons-users' },
-          ]"
-        >
-          <template #item="{ item }">
-            <div v-if="item.label === 'General Info'" class="py-4 space-y-4">
+        <UTabs :items>
+          <template #content="{ item }">
+            <div
+              v-if="item.label === $t('course.tabs.generalInfo')"
+              class="py-4 space-y-4"
+            >
               <div>
                 <h4 class="text-xs font-bold uppercase text-gray-400 mb-1">
-                  Internal Reference
+                  {{ $t("course.internalReference") }}
                 </h4>
                 <p
                   class="font-mono bg-gray-50 dark:bg-gray-800 p-2 rounded text-sm"
                 >
-                  ID: {{ id }}
+                  {{ $t("course.idLabel") }}: {{ id }}
                 </p>
               </div>
 
               <div>
                 <h4 class="text-xs font-bold uppercase text-gray-400 mb-1">
-                  Syllabus Note
+                  {{ $t("course.syllabusNote") }}
                 </h4>
                 <p class="text-gray-600 dark:text-gray-400 italic">
-                  No additional course description provided.
+                  {{ $t("course.noAdditionalDescription") }}
                 </p>
               </div>
             </div>
 
             <div
-              v-else-if="item.label === 'Course Groups'"
+              v-else-if="item.label === $t('course.tabs.courseGroups')"
               class="py-4 text-center"
             >
               <p class="text-sm text-gray-500 mb-4">
-                View active groups for this course in the current semester.
+                {{ $t("course.viewActiveGroups") }}
               </p>
               <UButton
                 size="sm"
                 variant="outline"
                 icon="i-heroicons-arrow-top-right-on-square"
-                label="Manage Course Groups"
+                :label="$t('button.manageCourseGroups')"
               />
             </div>
           </template>
@@ -147,7 +149,7 @@ definePageMeta({
       <UAccordion
         :items="[
           {
-            label: 'Developer Raw Data',
+            label: $t('course.developerRawData'),
             content: JSON.stringify(course, null, 2),
           },
         ]"

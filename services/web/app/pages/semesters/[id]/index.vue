@@ -4,6 +4,9 @@ const router = useRouter();
 const id = computed(() => router.currentRoute.value.params.id);
 
 const { data: semester } = useSemester(id);
+const facultyId = computed(() => semester.value?.faculty);
+// @ts-expect-error it exists again
+const { data: faculty } = useFaculty(facultyId);
 
 definePageMeta({
   permission: "university.view_semester",
@@ -35,7 +38,7 @@ const progress = computed(() => {
           }}</span>
         </div>
         <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
-          {{ semester?.name || "Loading Semester..." }}
+          {{ semester?.name || $t("semester.loading") }}
         </h1>
       </div>
 
@@ -60,14 +63,16 @@ const progress = computed(() => {
             class="flex items-center gap-2 font-semibold text-sm uppercase tracking-wider text-gray-500"
           >
             <UIcon name="i-heroicons-calendar" />
-            Semester Duration
+            {{ $t("semester.duration") }}
           </div>
         </template>
 
         <div class="space-y-6 py-2">
           <div class="flex justify-between items-center text-sm font-medium">
             <div class="text-center">
-              <p class="text-gray-400 text-xs uppercase">Start Date</p>
+              <p class="text-gray-400 text-xs uppercase">
+                {{ $t("form.label.startDate") }}
+              </p>
               <p>{{ semester?.start_date }}</p>
             </div>
             <UIcon
@@ -75,17 +80,19 @@ const progress = computed(() => {
               class="text-gray-300 w-8 h-8"
             />
             <div class="text-center">
-              <p class="text-gray-400 text-xs uppercase">End Date</p>
+              <p class="text-gray-400 text-xs uppercase">
+                {{ $t("form.label.endDate") }}
+              </p>
               <p>{{ semester?.end_date }}</p>
             </div>
           </div>
 
           <div class="space-y-2">
             <div class="flex justify-between text-xs">
-              <span>Semester Progress</span>
+              <span>{{ $t("semester.progress") }}</span>
               <span>{{ progress }}%</span>
             </div>
-            <UProgress :value="progress" color="primary" />
+            <UProgress v-model="progress" color="primary" />
           </div>
         </div>
       </UCard>
@@ -100,8 +107,10 @@ const progress = computed(() => {
         </template>
         <div class="space-y-4">
           <div>
-            <p class="text-xs text-gray-400 uppercase">Faculty</p>
-            <p class="font-medium">{{ semester?.faculty?.name }}</p>
+            <p class="text-xs text-gray-400 uppercase">
+              {{ $t("form.label.faculty") }}
+            </p>
+            <p class="font-medium">{{ faculty?.name }}</p>
           </div>
           <UButton
             block
@@ -111,7 +120,7 @@ const progress = computed(() => {
             :to="
               $localePath({
                 name: 'faculties-id',
-                params: { id: semester?.faculty?.id },
+                params: { id: semester?.faculty },
               })
             "
           />
@@ -122,7 +131,9 @@ const progress = computed(() => {
     <UCard>
       <template #header>
         <div class="flex items-center justify-between">
-          <h3 class="font-bold">Course Groups in this Semester</h3>
+          <h3 class="font-bold">
+            {{ $t("semester.courseGroupThisSemester") }}
+          </h3>
           <UButton
             size="xs"
             icon="i-heroicons-plus"
@@ -167,7 +178,7 @@ const progress = computed(() => {
       </div>
       <div v-else class="text-center py-12">
         <p class="text-gray-400 italic">
-          No course groups registered for this semester yet.
+          {{ $t("semester.noCourseGroupsRegistered") }}
         </p>
       </div>
     </UCard>

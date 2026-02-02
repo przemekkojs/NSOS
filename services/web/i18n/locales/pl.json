@@ -15,6 +15,32 @@
     "skipToContent": "Przejdź do treści głównej",
     "sortByColumn": "Sortuj według: {column}"
   },
+  "breadcrumb": {
+    "add": "@:button.add",
+    "classes": "Zajęcia",
+    "code": "@:navigation.code",
+    "course-groups": "@:navigation.courseGroups",
+    "courseGroups": "@:navigation.courseGroups",
+    "courses": "@:navigation.courses",
+    "create": "@:button.add",
+    "dashboard": "@:navigation.dashboard",
+    "edit": "@:button.edit",
+    "employees": "@:navigation.employees",
+    "faculties": "@:navigation.faculties",
+    "feedback": "@:navigation.feedback",
+    "harmonogram": "@:navigation.schedule",
+    "help": "@:navigation.help",
+    "inbox": "@:navigation.inbox",
+    "positions": "@:navigation.positions",
+    "schedule": "@:navigation.schedule",
+    "semesters": "@:navigation.semesters",
+    "settings": "@:navigation.settings",
+    "shortcuts": "@:navigation.shortcuts",
+    "sourceCode": "@:navigation.sourceCode",
+    "support": "@:navigation.support",
+    "universities": "@:navigation.universities",
+    "users": "@:navigation.users"
+  },
   "button": {
     "add": "Dodaj",
     "backToHome": "Wróć do strony głównej",
@@ -26,6 +52,7 @@
     "edit": "Edytuj",
     "invite": "Zaproś",
     "login": "Zaloguj się",
+    "manageCourseGroups": "Zarządzaj grupami kursowymi",
     "next": "Dalej",
     "no": "Nie",
     "previous": "Wstecz",
@@ -35,17 +62,49 @@
     "submit": "Wyślij",
     "update": "Aktualizuj",
     "viewAll": "Zobacz wszystko",
+    "viewGroups": "Wyświetl grupy",
     "yes": "Tak"
   },
+  "classes": {
+    "detail": "Szczegóły zajęć",
+    "edit": "Edytuj klasę"
+  },
   "common": {
+    "about": "Opis",
+    "added": "W dodatku",
     "and": "i",
+    "continue": "Kontynuuj",
     "itemsSelected": "{count} element zaznaczony | {count} elementy zaznaczone | {count} elementów zaznaczonych",
     "loading": "Ładowanie...",
     "noData": "Brak danych",
     "noResults": "Nie znaleziono wyników",
     "of": "z",
     "or": "lub",
-    "searchResults": "{count} wynik | {count} wyniki | {count} wyników"
+    "searchResults": "{count} wynik | {count} wyniki | {count} wyników",
+    "status": {
+      "active": "Aktywny"
+    },
+    "time": "Czas"
+  },
+  "course": {
+    "curriculumDetails": "Szczegóły programu nauczania",
+    "developerRawData": "Dane surowe dla programistów",
+    "durationWeeks": "Czas trwania (tygodnie)",
+    "ectsCredits": "Punkty ECTS",
+    "faculty": "Wydział",
+    "idLabel": "ID",
+    "internalReference": "Referencja wewnętrzna",
+    "loading": "Ładowanie kursu...",
+    "managedBy": "Zarządzane przez",
+    "noAdditionalDescription": "Brak dodatkowego opisu kursu.",
+    "syllabusNote": "Notatka sylabusa",
+    "tabs": {
+      "courseGroups": "Grupy kursowe",
+      "generalInfo": "Informacje ogólne"
+    },
+    "totalHours": "Całkowita liczba godzin",
+    "viewActiveGroups": "Wyświetl aktywne grupy dla tego kursu w bieżącym semestrze.",
+    "weeklyHours": "Godziny tygodniowo"
   },
   "dashboard": {
     "activity": {
@@ -87,6 +146,12 @@
   },
   "dev": {
     "resetTours": "Zresetuj samouczki"
+  },
+  "faculty": {
+    "noDescription": "Brak opisu",
+    "notFound": "Nie znaleziono wydziału",
+    "overview": "Przegląd wydziału",
+    "viewCourses": "Zobacz kursy"
   },
   "feature": {
     "chat": {
@@ -194,6 +259,7 @@
       "status": "Status",
       "student": "Student",
       "tooltipDuration": "Czas wyświetlania podpowiedzi",
+      "type": "Rodzaj",
       "universityAddress": "Adres",
       "universityCode": "Kod instytucji",
       "universityName": "Nazwa uczelni",
@@ -210,7 +276,7 @@
       "courseName": "Wprowadź nazwę kursu",
       "description": "Dodaj opcjonalny opis",
       "ects": "np. 6",
-      "email": "np. jan.kowalski@uczelnia.pl",
+      "email": "np. jan.kowalski{'@'}uczelnia.pl",
       "faculty": "np. Wydział Informatyki",
       "facultyName": "Wprowadź nazwę wydziału",
       "filterEmails": "Filtruj adresy e-mail",
@@ -310,12 +376,17 @@
     "inbox": "Skrzynka odbiorcza",
     "positions": "Stanowiska",
     "schedule": "Harmonogram",
+    "semesters": "Semestry",
     "settings": "Ustawienia",
     "shortcuts": "Skróty klawiszowe",
     "sourceCode": "Kod źródłowy",
     "support": "Wsparcie",
     "universities": "Uczelnie",
     "users": "Użytkownicy"
+  },
+  "onboarding": {
+    "tellUsAboutYourself": "Na początek opowiedz nam trochę o sobie.",
+    "welcome": "Powitanie! \nSkonfigurujmy Twój profil"
   },
   "page": {
     "course": {
@@ -359,6 +430,15 @@
         "title": "Uczelnie"
       }
     }
+  },
+  "semester": {
+    "courseGroupThisSemester": "Grupy przedmiotów w tym semestrze",
+    "duration": "Czas trwania semestru",
+    "loading": "Ładowanie semestru...",
+    "noCourseGroupsRegistered": "Na ten semestr nie zarejestrowano jeszcze żadnych grup przedmiotów.",
+    "progress": "Postęp semestru",
+    "summer": "Lato",
+    "winter": "Zima"
   },
   "table": {
     "action": {

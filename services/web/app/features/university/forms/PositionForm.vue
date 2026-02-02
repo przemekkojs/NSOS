@@ -53,7 +53,7 @@ const state = ref<Partial<PositionCreate>>({
       <UInput
         v-model="state.hourly_rate"
         type="number"
-        step="1"
+        :step="1"
         class="w-full"
         :placeholder="$t('form.placeholder.hourlyRate')"
       />
@@ -63,8 +63,6 @@ const state = ref<Partial<PositionCreate>>({
       <USelect
         v-model="state.workload"
         :items="WORKLOAD_OPTIONS"
-        option-attribute="label"
-        value-attribute="value"
         class="w-full"
       />
     </UFormField>

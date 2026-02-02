@@ -15,6 +15,32 @@
     "skipToContent": "Skip to main content",
     "sortByColumn": "Sort by {column}"
   },
+  "breadcrumb": {
+    "add": "@:button.add",
+    "classes": "Classes",
+    "code": "@:navigation.code",
+    "course-groups": "@:navigation.courseGroups",
+    "courseGroups": "@:navigation.courseGroups",
+    "courses": "@:navigation.courses",
+    "create": "@:button.add",
+    "dashboard": "@:navigation.dashboard",
+    "edit": "@:button.edit",
+    "employees": "@:navigation.employees",
+    "faculties": "@:navigation.faculties",
+    "feedback": "@:navigation.feedback",
+    "harmonogram": "@:navigation.schedule",
+    "help": "@:navigation.help",
+    "inbox": "@:navigation.inbox",
+    "positions": "@:navigation.positions",
+    "schedule": "@:navigation.schedule",
+    "semesters": "@:navigation.semesters",
+    "settings": "@:navigation.settings",
+    "shortcuts": "@:navigation.shortcuts",
+    "sourceCode": "@:navigation.sourceCode",
+    "support": "@:navigation.support",
+    "universities": "@:navigation.universities",
+    "users": "@:navigation.users"
+  },
   "button": {
     "add": "Add",
     "backToHome": "Back to Home",
@@ -26,6 +52,7 @@
     "edit": "Edit",
     "invite": "Invite",
     "login": "Log In",
+    "manageCourseGroups": "Manage Course Groups",
     "next": "Next",
     "no": "No",
     "previous": "Back",
@@ -35,17 +62,49 @@
     "submit": "Submit",
     "update": "Update",
     "viewAll": "View all",
+    "viewGroups": "View Groups",
     "yes": "Yes"
   },
+  "classes": {
+    "detail": "Class Details",
+    "edit": "Edit Class"
+  },
   "common": {
+    "about": "About",
+    "added": "Added",
     "and": "and",
+    "continue": "Continue",
     "itemsSelected": "{count} item selected | {count} items selected",
     "loading": "Loading...",
     "noData": "No data available",
     "noResults": "No results found",
     "of": "of",
     "or": "or",
-    "searchResults": "{count} result | {count} results"
+    "searchResults": "{count} result | {count} results",
+    "status": {
+      "active": "Active"
+    },
+    "time": "Time"
+  },
+  "course": {
+    "curriculumDetails": "Curriculum Details",
+    "developerRawData": "Developer Raw Data",
+    "durationWeeks": "Duration (Weeks)",
+    "ectsCredits": "ECTS Credits",
+    "faculty": "Faculty",
+    "idLabel": "ID",
+    "internalReference": "Internal Reference",
+    "loading": "Loading Course...",
+    "managedBy": "Managed by",
+    "noAdditionalDescription": "No additional course description provided.",
+    "syllabusNote": "Syllabus Note",
+    "tabs": {
+      "courseGroups": "Course Groups",
+      "generalInfo": "General Info"
+    },
+    "totalHours": "Total Hours",
+    "viewActiveGroups": "View active groups for this course in the current semester.",
+    "weeklyHours": "Weekly Hours"
   },
   "dashboard": {
     "activity": {
@@ -87,6 +146,12 @@
   },
   "dev": {
     "resetTours": "Reset walkthroughs"
+  },
+  "faculty": {
+    "noDescription": "No description",
+    "notFound": "Faculty not found",
+    "overview": "Faculty overview",
+    "viewCourses": "View courses"
   },
   "feature": {
     "chat": {
@@ -194,6 +259,7 @@
       "status": "Status",
       "student": "Student",
       "tooltipDuration": "Tooltip duration",
+      "type": "Type",
       "universityAddress": "Address",
       "universityCode": "University Code",
       "universityName": "University Name",
@@ -210,7 +276,7 @@
       "courseName": "Enter course name",
       "description": "Enter description (optional)",
       "ects": "e.g., 6",
-      "email": "e.g. john.doe@university.com",
+      "email": "e.g. john.doe{'@'}university.com",
       "faculty": "e.g. Faculty of Informatics",
       "facultyName": "Enter faculty name",
       "filterEmails": "Filter emails",
@@ -310,12 +376,17 @@
     "inbox": "Inbox",
     "positions": "Positions",
     "schedule": "Schedule",
+    "semesters": "Semesters",
     "settings": "Settings",
     "shortcuts": "Keyboard shortcuts",
     "sourceCode": "View source",
     "support": "Support",
     "universities": "Universities",
     "users": "Users"
+  },
+  "onboarding": {
+    "tellUsAboutYourself": "Tell us a bit about yourself to get started.",
+    "welcome": "Welcome! Let's set up your profile"
   },
   "page": {
     "course": {
@@ -359,6 +430,15 @@
         "title": "Universities"
       }
     }
+  },
+  "semester": {
+    "courseGroupThisSemester": "Course Groups in this Semester",
+    "duration": "Semester Duration",
+    "loading": "Loading Semester...",
+    "noCourseGroupsRegistered": "No course groups registered for this semester yet.",
+    "progress": "Semester Progress",
+    "summer": "Summer",
+    "winter": "Winter"
   },
   "table": {
     "action": {

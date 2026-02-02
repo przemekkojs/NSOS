@@ -7,7 +7,7 @@ import {
 
 const props = defineProps<{
   isEdit?: boolean;
-  initialData?: Faculty;
+  initialData?: Partial<Faculty>;
 }>();
 
 defineEmits<{
@@ -18,15 +18,16 @@ defineEmits<{
 const state = ref<Partial<FacultyCreate>>({
   name: props.initialData?.name || "",
   description: props.initialData?.description || "",
+  university: props.initialData?.university,
 });
 </script>
 
 <template>
   <UForm
+    :state
     :schema="FacultyCreateSchema"
-    :state="state"
-    class="flex flex-col gap-4"
-    @submit.prevent="$emit('success', $event.data)"
+    class="space-y-2"
+    @submit="$emit('success', $event.data)"
   >
     <UFormField :label="$t('form.label.name')" name="name" required>
       <UInput
@@ -45,17 +46,12 @@ const state = ref<Partial<FacultyCreate>>({
       />
     </UFormField>
 
-    <div class="flex gap-2 justify-end mt-4">
-      <UButton
-        type="button"
-        color="neutral"
-        variant="outline"
-        @click="$emit('cancel')"
-      >
-        {{ $t("button.cancel") }}
-      </UButton>
-      <UButton type="submit" class="text-white">
+    <div class="flex gap-2">
+      <UButton type="submit">
         {{ isEdit ? $t("button.update") : $t("button.create") }}
+      </UButton>
+      <UButton color="neutral" variant="outline" @click="$emit('cancel')">
+        {{ $t("button.cancel") }}
       </UButton>
     </div>
   </UForm>

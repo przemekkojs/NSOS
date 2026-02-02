@@ -32,8 +32,7 @@ export function useCalendarEventSource() {
     try {
       if (!userStore.user) return;
 
-      // const _user_id = unref(userStore.user.id);
-      const _user_id = 90;
+      const _user_id = unref(userStore.user.id);
 
       const params: CalendarParams = {
         start_date: fetchInfo.start.toISOString().split("T")[0],

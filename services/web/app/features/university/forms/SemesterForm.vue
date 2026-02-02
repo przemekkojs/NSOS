@@ -22,12 +22,14 @@ const year = new Date().getFullYear();
 
 const state = ref<Partial<SemesterCreate>>({
   name: props.initialData?.name || "",
-  faculty: props.initialData?.faculty.id || undefined,
+  faculty: props.initialData?.faculty || undefined,
   type: props.initialData?.type || "winter",
   academic_year: props.initialData?.academic_year || year.toString(),
   start_date: props.initialData?.start_date || "",
   end_date: props.initialData?.end_date || "",
 });
+
+console.info("initial-data", props.initialData);
 
 watch(
   state,
@@ -38,10 +40,10 @@ watch(
   },
   { deep: true, immediate: true },
 );
-const typeOptions = [
-  { label: "Winter", value: "winter" },
-  { label: "Summer", value: "summer" },
-];
+const typeOptions = computed(() => [
+  { label: $t("semester.winter"), value: "winter" },
+  { label: $t("semester.summer"), value: "summer" },
+]);
 
 const facultyOptions = computed(() =>
   faculties.value?.results.map((f) => ({
