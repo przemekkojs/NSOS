@@ -56,6 +56,7 @@ class CourseGroup(models.Model):
     semester = models.ForeignKey(
         Semester, on_delete=models.CASCADE, related_name="semester_groups"
     )
+    max_students = models.PositiveIntegerField(default=0)  # 0 means unlimited
 
     class Meta:
         verbose_name = "Course Group"
@@ -75,17 +76,22 @@ class CourseGroup(models.Model):
         # Mapping string weekday to python isoweekday (1=Mon, 7=Sun)
         # Ensure your 'weekday' field matches these keys or adjust accordingly
         days_map = {
-            'monday': 1, 'tuesday': 2, 'wednesday': 3, 'thursday': 4,
-            'friday': 5, 'saturday': 6, 'sunday': 7
+            "monday": 1,
+            "tuesday": 2,
+            "wednesday": 3,
+            "thursday": 4,
+            "friday": 5,
+            "saturday": 6,
+            "sunday": 7,
         }
-        
+
         target_weekday = days_map.get(self.weekday)
         if not target_weekday:
             return
 
         current_date = self.semester.start_date
         end_date = self.semester.end_date
-        
+
         classes_to_create = []
 
         while current_date <= end_date:
@@ -99,7 +105,7 @@ class CourseGroup(models.Model):
                         start_time=self.start_time,
                         end_time=self.end_time,
                         room=self.room,
-                        status="scheduled"
+                        status="scheduled",
                     )
                 )
             current_date += timedelta(days=1)
@@ -141,7 +147,7 @@ class Class(models.Model):
         unique_together = ["schedule", "date_held"]
 
     def __str__(self):
-        return f"{self.schedule.course.name if self.schedule is not None else ""} ({self.date_held})"
+        return f"{self.schedule.course.name if self.schedule is not None else ''} ({self.date_held})"
 
 
 class Schedule(models.Model):

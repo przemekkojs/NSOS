@@ -11,6 +11,7 @@ from university.models import (
     UniversityMembership,
 )
 from teaching.models import Course, CourseGroup, Class, Schedule
+import random
 
 
 class Command(BaseCommand):
@@ -63,7 +64,7 @@ class Command(BaseCommand):
 
     def create_universities(self):
         self.stdout.write("\nCreating universities...")
-
+        self.universities = []
         universities = [
             {
                 "name": "University of Technology",
@@ -83,6 +84,7 @@ class Command(BaseCommand):
             university, created = University.objects.get_or_create(
                 name=data["name"], defaults=data
             )
+            self.universities.append(university)
             if created:
                 self.stdout.write(f"  ✓ Created: {university.name}")
 
@@ -113,8 +115,11 @@ class Command(BaseCommand):
         ]
 
         for data in faculties:
+            university = random.choice(self.universities)
+
+            faculty_data = {**data, 'university': university}
             faculty, created = Faculty.objects.get_or_create(
-                name=data["name"], defaults=data
+                name=data["name"], defaults=faculty_data
             )
             if created:
                 self.stdout.write(f"  ✓ Created: {faculty.name}")
@@ -164,12 +169,12 @@ class Command(BaseCommand):
             # Winter semester
             winter, created = Semester.objects.get_or_create(
                 faculty=faculty,
-                academic_year=f"{current_year}/{current_year + 1}",
+                academic_year=f"{current_year - 1}/{current_year}",
                 type=Semester.WINTER,
                 defaults={
-                    "name": f"Winter {current_year}/{current_year + 1}",
-                    "start_date": datetime(current_year, 10, 1).date(),
-                    "end_date": datetime(current_year + 1, 2, 28).date(),
+                    "name": f"Winter {current_year - 1}/{current_year}",
+                    "start_date": datetime(current_year - 1, 10, 1).date(),
+                    "end_date": datetime(current_year, 2, 28).date(),
                 },
             )
             if created:
@@ -178,12 +183,12 @@ class Command(BaseCommand):
             # Summer semester
             summer, created = Semester.objects.get_or_create(
                 faculty=faculty,
-                academic_year=f"{current_year}/{current_year + 1}",
+                academic_year=f"{current_year - 1}/{current_year}",
                 type=Semester.SUMMER,
                 defaults={
-                    "name": f"Summer {current_year}/{current_year + 1}",
-                    "start_date": datetime(current_year + 1, 3, 1).date(),
-                    "end_date": datetime(current_year + 1, 6, 30).date(),
+                    "name": f"Summer {current_year - 1}/{current_year}",
+                    "start_date": datetime(current_year - 1, 3, 1).date(),
+                    "end_date": datetime(current_year, 6, 30).date(),
                 },
             )
             if created:
@@ -263,6 +268,8 @@ class Command(BaseCommand):
             },
         ]
 
+        lecturer_group = Group.objects.get_or_create(name="Lecturer")[0]
+
         for data in lecturers_data:
             user, created = User.objects.get_or_create(
                 username=data["username"],
@@ -285,6 +292,7 @@ class Command(BaseCommand):
                 },
             )
             if created:
+                user.groups.add(lecturer_group)
                 self.stdout.write(f"  ✓ Created lecturer: {user.get_full_name()}")
 
     def create_students(self):
@@ -366,6 +374,7 @@ class Command(BaseCommand):
             },
         ]
 
+        student_group = Group.objects.get_or_create(name="Student")[0]
         for data in students_data:
             user, created = User.objects.get_or_create(
                 username=data["username"],
@@ -393,6 +402,7 @@ class Command(BaseCommand):
                 },
             )
             if created:
+                user.groups.add(student_group)
                 self.stdout.write(
                     f"  ✓ Created student: {user.get_full_name()} ({data['index_number']})"
                 )
@@ -559,6 +569,7 @@ class Command(BaseCommand):
                     },
                 )
                 if created:
+                    course_group.generate_classes()
                     self.stdout.write(
                         f"  ✓ Created: {course.course_code} - {course_group.name}"
                     )

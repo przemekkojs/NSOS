@@ -1,5 +1,14 @@
+from drf_spectacular.utils import extend_schema_field
+from django.contrib.auth.models import Permission
 from rest_framework import serializers
 from .models import User, Lecturer, Student
+
+# NOTE: doesn't update in runtime
+FULL_PERMS = [
+    f"{p.content_type.app_label}.{p.codename}"
+    for p in Permission.objects.select_related("content_type").all()
+]
+# GROUP_CODENAMES = list(Group.objects.values_list('codename', flat=True))
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -20,14 +29,17 @@ class UserSerializer(serializers.ModelSerializer):
             "role",
         ]
 
+    @extend_schema_field(serializers.ChoiceField(choices=FULL_PERMS, allow_null=True))
     def get_permissions(self, obj):
         """Return list of permission codenames user has (from groups + user permissions)"""
         return list(obj.get_all_permissions())
 
+    @extend_schema_field(serializers.ListField(child=serializers.CharField()))
     def get_groups(self, obj):
         """Return list of group names user belongs to"""
         return list(obj.groups.values_list("name", flat=True))
 
+    @extend_schema_field(serializers.CharField())  # Or a ChoiceField for literal types
     def get_role(self, obj):
         """Return primary role: admin, lecturer, or student"""
         if obj.is_superuser:

@@ -5,9 +5,11 @@ from users.serializers import UserSerializer
 
 
 class FacultySerializer(serializers.ModelSerializer):
+    university = serializers.PrimaryKeyRelatedField(queryset=University.objects.all())
+
     class Meta:
         model = Faculty
-        fields = ["id", "name", "description"]
+        fields = ["id", "name", "description", "university"]
 
 
 class PositionSerializer(serializers.ModelSerializer):
