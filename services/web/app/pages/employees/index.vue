@@ -8,54 +8,34 @@ import { userHeaderUserAdapter } from "~/features/users/adapters";
 import type { UserHeader } from "~/lib/api/csv-import";
 import CSVImport from "~/components/forms/CSVImport.vue";
 
+const { t } = useI18n();
+const { isEnabled } = useFeatureFlagsStore();
 const { data, isFetching } = useUsers();
 const { mutate: create } = useCreateUser();
-
 const getDropdownActions = useTableActions();
-const { isEnabled } = useFeatureFlagsStore();
-const { t } = useI18n();
+
+// Move logic out of the template for readability
+const table = useTemplateRef("table");
 
 const columns = computed<TableColumn<User>[]>(() => [
   { accessorKey: "email", header: t("table.column.email") },
-  {
-    accessorKey: "faculty.name",
-    header: t("table.column.name"),
-  },
-  {
-    accessorKey: "position.name",
-    header: t("table.column.position"),
-  },
-  {
-    id: "actions",
-  },
+  { accessorKey: "faculty.name", header: t("table.column.faculty") }, // Fixed key to match faculty
+  { accessorKey: "position.name", header: t("table.column.position") },
+  { id: "actions", class: "w-0" }, // Keep actions column tight
 ]);
 
-const columnFilters = ref([
-  {
-    id: "email",
-    value: "",
-  },
-]);
-
-const table = useTemplateRef("table");
-
+const columnFilters = ref([{ id: "email", value: "" }]);
 const inviteModalOpen = ref(false);
+
 defineShortcuts({
-  i: () => {
-    inviteModalOpen.value = !inviteModalOpen.value;
-  },
+  i: () => (inviteModalOpen.value = !inviteModalOpen.value),
 });
 
 function onImported(importedData: UserHeader[]) {
-  const adaptedData = importedData.map(userHeaderUserAdapter);
-  for (const adaptedDataItem of adaptedData) {
-    create(adaptedDataItem);
-  }
+  importedData.map(userHeaderUserAdapter).forEach((user) => create(user));
 }
 
-definePageMeta({
-  permission: "users.view_user",
-});
+definePageMeta({ permission: "users.view_user" });
 </script>
 <template>
   <div class="flex justify-between">
@@ -65,6 +45,7 @@ definePageMeta({
       "
       class="max-w-sm"
       :placeholder="$t('form.placeholder.filterEmails')"
+      autocomplete="off"
       @update:model-value="
         table?.tableApi?.getColumn('email')?.setFilterValue($event)
       "
@@ -87,7 +68,7 @@ definePageMeta({
   <UTable
     ref="table"
     v-model:column-filters="columnFilters"
-    :data="data ?? []"
+    :data="data?.results"
     :loading="isFetching"
     :columns
     sticky

@@ -2,6 +2,7 @@ import { useRouter } from "@typed-router";
 import { useClipboard } from "@vueuse/core";
 import type { DropdownMenuItem } from "@nuxt/ui";
 import { useI18n } from "vue-i18n";
+import type { MutateFunction } from "@tanstack/vue-query";
 
 export function useTableActions() {
   const toast = useToast();
@@ -14,10 +15,11 @@ export function useTableActions() {
     view?: MaybeRefOrGetter<boolean>;
     change?: MaybeRefOrGetter<boolean>;
     delete?: MaybeRefOrGetter<boolean>;
+    api?: { delete: MutateFunction<unknown, Error, number> };
   }): DropdownMenuItem[][] {
-    row.view ??= true;
-    row.change ??= true;
-    row.delete ??= true;
+    row.view ??= false;
+    row.change ??= false;
+    row.delete ??= false;
 
     const manageGroup: DropdownMenuItem[] = [
       row.view && {
@@ -43,6 +45,7 @@ export function useTableActions() {
         icon: "i-lucide-trash",
         color: "error" as const,
         onSelect: () => {
+          row.api?.delete(row.id);
           toast.add({
             title: "Delete action selected",
             color: "warning",

@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { navigateTo } from "@typed-router";
 import type { FacultyCreate } from "~/lib/api/schemas";
+import FacultyForm from "~/features/university/forms/FacultyForm.vue";
 
 const { mutateAsync: create } = useCreateFaculty();
 
 async function onSubmit(data: FacultyCreate) {
   const { id } = await create(data);
   navigateTo({
-    path: "/faculties/:id",
+    name: "faculties-id",
     params: {
       id,
     },
@@ -19,5 +20,5 @@ definePageMeta({
 });
 </script>
 <template>
-  <FacultyForm @submit="onSubmit" />
+  <FacultyForm @success="onSubmit" @cancel="$router.back()" />
 </template>

@@ -42,7 +42,3 @@
   padding-inline: calc(var(--spacing) * 2.5);
   text-align: center;
 }
-
-.fc-media-screen {
-  height: 100%;
-}

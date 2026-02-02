@@ -10,9 +10,11 @@ from django.contrib.auth import get_user_model
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import ScheduleItemSerializer
+from .serializers import CalendarEventSerializer
 from datetime import timedelta
 from django.utils.timezone import localdate
+from drf_spectacular.utils import extend_schema, OpenApiParameter
+from drf_spectacular.types import OpenApiTypes
 
 User = get_user_model()
 
@@ -53,6 +55,21 @@ class ScheduleViewSet(RoleBasedViewSet):
 
 
 class UserScheduleView(APIView):
+    @extend_schema(
+        summary="Get user calendar events",
+        parameters=[
+            OpenApiParameter(
+                "start_date", OpenApiTypes.DATE, description="Filter from this date"
+            ),
+            OpenApiParameter(
+                "end_date", OpenApiTypes.DATE, description="Filter to this date"
+            ),
+            OpenApiParameter(
+                "user_id", OpenApiTypes.INT, required=True, description="ID of the user"
+            ),
+        ],
+        responses={200: CalendarEventSerializer(many=True)},
+    )
     def get(self, request):
         start_date = request.query_params.get("start_date")
         end_date = request.query_params.get("end_date")
@@ -70,7 +87,7 @@ class UserScheduleView(APIView):
                 {"detail": "User not found"}, status=status.HTTP_404_NOT_FOUND
             )
 
-        schedules = Schedule.objects.all()
+        # schedules = Schedule.objects.all()
 
         today = localdate()
         weekday = today.weekday()
@@ -85,19 +102,24 @@ class UserScheduleView(APIView):
         elif end_date and not start_date:
             start_date = end_date - timedelta(days=6)
 
-        schedules = schedules.filter(date__gte=start_date, date__lte=end_date)
+        # 1. Change target to Class model
+        classes = Class.objects.select_related(
+            "course_group__course", "lecturer__user"
+        ).all()
 
-        if user.is_student:
-            schedules = schedules.filter(student=user.student_profile)
-        elif user.is_lecturer:
-            schedules = schedules.filter(lecturer=user.lecturer_profile)
-        else:
-            return Response(
-                {"detail": "User is neither student nor lecturer"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+        # 2. Date filtering (use 'date_held' instead of 'date')
+        classes = classes.filter(date_held__gte=start_date, date_held__lte=end_date)
 
-        schedules = schedules.order_by("date", "start_time")
+        # 3. User filtering via the CourseGroup/Lecturer link
+        if hasattr(user, "student_profile") and user.student_profile:
+            # Assuming students are enrolled in CourseGroups
+            classes = classes.filter(course_group__students=user.student_profile)
+        elif hasattr(user, "lecturer_profile") and user.lecturer_profile:
+            # Check lecturer directly on the Class or via the Group
+            classes = classes.filter(lecturer=user.lecturer_profile)
 
-        serializer = ScheduleItemSerializer(schedules, many=True)
+        classes = classes.order_by("date_held", "start_time")
+
+        # 4. Use your serializer (ensure it points to Class fields)
+        serializer = CalendarEventSerializer(classes, many=True)
         return Response(serializer.data)

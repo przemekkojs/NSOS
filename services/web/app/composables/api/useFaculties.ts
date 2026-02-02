@@ -11,7 +11,7 @@ export const facultyKeys = {
 };
 
 export function useFaculties(
-  params?: MaybeRef<{ page?: number; limit?: number }>
+  params?: MaybeRef<{ page?: number; limit?: number }>,
 ) {
   return useQuery({
     queryKey: facultyKeys.list(unref(params)),
@@ -23,7 +23,6 @@ export function useFaculty(id: MaybeRef<number>) {
   return useQuery({
     queryKey: computed(() => facultyKeys.detail(unref(id))),
     queryFn: () => facultyApi.getById(unref(id)),
-    enabled: computed(() => !!unref(id)),
   });
 }
 

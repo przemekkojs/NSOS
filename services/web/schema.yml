@@ -1,0 +1,3195 @@
+openapi: 3.0.3
+info:
+  title: ''
+  version: 0.0.0
+paths:
+  /api/schema/:
+    get:
+      operationId: schema_retrieve
+      description: |-
+        OpenApi3 schema for this API. Format can be selected via content negotiation.
+
+        - YAML: application/vnd.oai.openapi
+        - JSON: application/vnd.oai.openapi+json
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - yaml
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+          - af
+          - ar
+          - ar-dz
+          - ast
+          - az
+          - be
+          - bg
+          - bn
+          - br
+          - bs
+          - ca
+          - ckb
+          - cs
+          - cy
+          - da
+          - de
+          - dsb
+          - el
+          - en
+          - en-au
+          - en-gb
+          - eo
+          - es
+          - es-ar
+          - es-co
+          - es-mx
+          - es-ni
+          - es-ve
+          - et
+          - eu
+          - fa
+          - fi
+          - fr
+          - fy
+          - ga
+          - gd
+          - gl
+          - he
+          - hi
+          - hr
+          - hsb
+          - ht
+          - hu
+          - hy
+          - ia
+          - id
+          - ig
+          - io
+          - is
+          - it
+          - ja
+          - ka
+          - kab
+          - kk
+          - km
+          - kn
+          - ko
+          - ky
+          - lb
+          - lt
+          - lv
+          - mk
+          - ml
+          - mn
+          - mr
+          - ms
+          - my
+          - nb
+          - ne
+          - nl
+          - nn
+          - os
+          - pa
+          - pl
+          - pt
+          - pt-br
+          - ro
+          - ru
+          - sk
+          - sl
+          - sq
+          - sr
+          - sr-latn
+          - sv
+          - sw
+          - ta
+          - te
+          - tg
+          - th
+          - tk
+          - tr
+          - tt
+          - udm
+          - ug
+          - uk
+          - ur
+          - uz
+          - vi
+          - zh-hans
+          - zh-hant
+      tags:
+      - schema
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/vnd.oai.openapi:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/yaml:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/vnd.oai.openapi+json:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/teaching/classes/:
+    get:
+      operationId: teaching_classes_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - teaching
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedClassList'
+          description: ''
+    post:
+      operationId: teaching_classes_create
+      tags:
+      - teaching
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Class'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Class'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Class'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Class'
+          description: ''
+  /api/teaching/classes/{id}/:
+    get:
+      operationId: teaching_classes_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Class.
+        required: true
+      tags:
+      - teaching
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Class'
+          description: ''
+    put:
+      operationId: teaching_classes_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Class.
+        required: true
+      tags:
+      - teaching
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Class'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Class'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Class'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Class'
+          description: ''
+    patch:
+      operationId: teaching_classes_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Class.
+        required: true
+      tags:
+      - teaching
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedClass'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedClass'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedClass'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Class'
+          description: ''
+    delete:
+      operationId: teaching_classes_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Class.
+        required: true
+      tags:
+      - teaching
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/teaching/course-groups/:
+    get:
+      operationId: teaching_course_groups_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - teaching
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCourseGroupList'
+          description: ''
+    post:
+      operationId: teaching_course_groups_create
+      tags:
+      - teaching
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CourseGroup'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CourseGroup'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CourseGroup'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseGroup'
+          description: ''
+  /api/teaching/course-groups/{id}/:
+    get:
+      operationId: teaching_course_groups_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Course Group.
+        required: true
+      tags:
+      - teaching
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseGroup'
+          description: ''
+    put:
+      operationId: teaching_course_groups_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Course Group.
+        required: true
+      tags:
+      - teaching
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CourseGroup'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CourseGroup'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CourseGroup'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseGroup'
+          description: ''
+    patch:
+      operationId: teaching_course_groups_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Course Group.
+        required: true
+      tags:
+      - teaching
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCourseGroup'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCourseGroup'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCourseGroup'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseGroup'
+          description: ''
+    delete:
+      operationId: teaching_course_groups_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Course Group.
+        required: true
+      tags:
+      - teaching
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/teaching/courses/:
+    get:
+      operationId: teaching_courses_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - teaching
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCourseList'
+          description: ''
+    post:
+      operationId: teaching_courses_create
+      tags:
+      - teaching
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Course'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Course'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Course'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+          description: ''
+  /api/teaching/courses/{id}/:
+    get:
+      operationId: teaching_courses_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Course.
+        required: true
+      tags:
+      - teaching
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+          description: ''
+    put:
+      operationId: teaching_courses_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Course.
+        required: true
+      tags:
+      - teaching
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Course'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Course'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Course'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+          description: ''
+    patch:
+      operationId: teaching_courses_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Course.
+        required: true
+      tags:
+      - teaching
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCourse'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCourse'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCourse'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+          description: ''
+    delete:
+      operationId: teaching_courses_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Course.
+        required: true
+      tags:
+      - teaching
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/teaching/schedules/:
+    get:
+      operationId: teaching_schedules_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - teaching
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedScheduleList'
+          description: ''
+    post:
+      operationId: teaching_schedules_create
+      tags:
+      - teaching
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Schedule'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Schedule'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Schedule'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+          description: ''
+  /api/teaching/schedules/{id}/:
+    get:
+      operationId: teaching_schedules_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Schedule.
+        required: true
+      tags:
+      - teaching
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+          description: ''
+    put:
+      operationId: teaching_schedules_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Schedule.
+        required: true
+      tags:
+      - teaching
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Schedule'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Schedule'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Schedule'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+          description: ''
+    patch:
+      operationId: teaching_schedules_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Schedule.
+        required: true
+      tags:
+      - teaching
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedSchedule'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedSchedule'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedSchedule'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+          description: ''
+    delete:
+      operationId: teaching_schedules_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Schedule.
+        required: true
+      tags:
+      - teaching
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/teaching/user-schedule/:
+    get:
+      operationId: teaching_user_schedule_list
+      summary: Get user calendar events
+      parameters:
+      - in: query
+        name: end_date
+        schema:
+          type: string
+          format: date
+        description: Filter to this date
+      - in: query
+        name: start_date
+        schema:
+          type: string
+          format: date
+        description: Filter from this date
+      - in: query
+        name: user_id
+        schema:
+          type: integer
+        description: ID of the user
+        required: true
+      tags:
+      - teaching
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CalendarEvent'
+          description: ''
+  /api/university/faculties/:
+    get:
+      operationId: university_faculties_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - university
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedFacultyList'
+          description: ''
+    post:
+      operationId: university_faculties_create
+      tags:
+      - university
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Faculty'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Faculty'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Faculty'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Faculty'
+          description: ''
+  /api/university/faculties/{id}/:
+    get:
+      operationId: university_faculties_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Faculty.
+        required: true
+      tags:
+      - university
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Faculty'
+          description: ''
+    put:
+      operationId: university_faculties_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Faculty.
+        required: true
+      tags:
+      - university
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Faculty'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Faculty'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Faculty'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Faculty'
+          description: ''
+    patch:
+      operationId: university_faculties_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Faculty.
+        required: true
+      tags:
+      - university
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedFaculty'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedFaculty'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedFaculty'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Faculty'
+          description: ''
+    delete:
+      operationId: university_faculties_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Faculty.
+        required: true
+      tags:
+      - university
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/university/memberships/:
+    get:
+      operationId: university_memberships_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - university
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUniversityMembershipList'
+          description: ''
+    post:
+      operationId: university_memberships_create
+      tags:
+      - university
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UniversityMembership'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UniversityMembership'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UniversityMembership'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UniversityMembership'
+          description: ''
+  /api/university/memberships/{id}/:
+    get:
+      operationId: university_memberships_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this University Membership.
+        required: true
+      tags:
+      - university
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UniversityMembership'
+          description: ''
+    put:
+      operationId: university_memberships_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this University Membership.
+        required: true
+      tags:
+      - university
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UniversityMembership'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UniversityMembership'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UniversityMembership'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UniversityMembership'
+          description: ''
+    patch:
+      operationId: university_memberships_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this University Membership.
+        required: true
+      tags:
+      - university
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUniversityMembership'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUniversityMembership'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUniversityMembership'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UniversityMembership'
+          description: ''
+    delete:
+      operationId: university_memberships_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this University Membership.
+        required: true
+      tags:
+      - university
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/university/positions/:
+    get:
+      operationId: university_positions_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - university
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPositionList'
+          description: ''
+    post:
+      operationId: university_positions_create
+      tags:
+      - university
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Position'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Position'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Position'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Position'
+          description: ''
+  /api/university/positions/{id}/:
+    get:
+      operationId: university_positions_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Position.
+        required: true
+      tags:
+      - university
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Position'
+          description: ''
+    put:
+      operationId: university_positions_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Position.
+        required: true
+      tags:
+      - university
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Position'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Position'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Position'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Position'
+          description: ''
+    patch:
+      operationId: university_positions_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Position.
+        required: true
+      tags:
+      - university
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedPosition'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedPosition'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedPosition'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Position'
+          description: ''
+    delete:
+      operationId: university_positions_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Position.
+        required: true
+      tags:
+      - university
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/university/semesters/:
+    get:
+      operationId: university_semesters_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - university
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSemesterList'
+          description: ''
+    post:
+      operationId: university_semesters_create
+      tags:
+      - university
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Semester'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Semester'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Semester'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Semester'
+          description: ''
+  /api/university/semesters/{id}/:
+    get:
+      operationId: university_semesters_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Semester.
+        required: true
+      tags:
+      - university
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Semester'
+          description: ''
+    put:
+      operationId: university_semesters_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Semester.
+        required: true
+      tags:
+      - university
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Semester'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Semester'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Semester'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Semester'
+          description: ''
+    patch:
+      operationId: university_semesters_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Semester.
+        required: true
+      tags:
+      - university
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedSemester'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedSemester'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedSemester'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Semester'
+          description: ''
+    delete:
+      operationId: university_semesters_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Semester.
+        required: true
+      tags:
+      - university
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/university/universities/:
+    get:
+      operationId: university_universities_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - university
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUniversityList'
+          description: ''
+    post:
+      operationId: university_universities_create
+      tags:
+      - university
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/University'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/University'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/University'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/University'
+          description: ''
+  /api/university/universities/{id}/:
+    get:
+      operationId: university_universities_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this University.
+        required: true
+      tags:
+      - university
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/University'
+          description: ''
+    put:
+      operationId: university_universities_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this University.
+        required: true
+      tags:
+      - university
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/University'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/University'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/University'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/University'
+          description: ''
+    patch:
+      operationId: university_universities_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this University.
+        required: true
+      tags:
+      - university
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUniversity'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUniversity'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUniversity'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/University'
+          description: ''
+    delete:
+      operationId: university_universities_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this University.
+        required: true
+      tags:
+      - university
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/users/lecturers/:
+    get:
+      operationId: users_lecturers_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - users
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedLecturerList'
+          description: ''
+    post:
+      operationId: users_lecturers_create
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Lecturer'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Lecturer'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Lecturer'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lecturer'
+          description: ''
+  /api/users/lecturers/{id}/:
+    get:
+      operationId: users_lecturers_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Lecturer.
+        required: true
+      tags:
+      - users
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lecturer'
+          description: ''
+    put:
+      operationId: users_lecturers_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Lecturer.
+        required: true
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Lecturer'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Lecturer'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Lecturer'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lecturer'
+          description: ''
+    patch:
+      operationId: users_lecturers_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Lecturer.
+        required: true
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedLecturer'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedLecturer'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedLecturer'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lecturer'
+          description: ''
+    delete:
+      operationId: users_lecturers_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Lecturer.
+        required: true
+      tags:
+      - users
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/users/students/:
+    get:
+      operationId: users_students_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - users
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedStudentList'
+          description: ''
+    post:
+      operationId: users_students_create
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Student'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Student'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Student'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+          description: ''
+  /api/users/students/{id}/:
+    get:
+      operationId: users_students_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Student.
+        required: true
+      tags:
+      - users
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+          description: ''
+    put:
+      operationId: users_students_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Student.
+        required: true
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Student'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Student'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Student'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+          description: ''
+    patch:
+      operationId: users_students_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Student.
+        required: true
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedStudent'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedStudent'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedStudent'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+          description: ''
+    delete:
+      operationId: users_students_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Student.
+        required: true
+      tags:
+      - users
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/users/users/:
+    get:
+      operationId: users_users_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - users
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUserList'
+          description: ''
+    post:
+      operationId: users_users_create
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /api/users/users/{id}/:
+    get:
+      operationId: users_users_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this User.
+        required: true
+      tags:
+      - users
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    put:
+      operationId: users_users_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this User.
+        required: true
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    patch:
+      operationId: users_users_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this User.
+        required: true
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    delete:
+      operationId: users_users_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this User.
+        required: true
+      tags:
+      - users
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    CalendarEvent:
+      type: object
+      description: Serializer that formats Class (event) data for FullCalendar
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+          readOnly: true
+        start:
+          type: string
+          readOnly: true
+        end:
+          type: string
+          readOnly: true
+        extendedProps:
+          allOf:
+          - $ref: '#/components/schemas/CalendarExtendedProps'
+          readOnly: true
+      required:
+      - end
+      - extendedProps
+      - id
+      - start
+      - title
+    CalendarExtendedProps:
+      type: object
+      description: Internal helper to document extendedProps structure
+      properties:
+        courseName:
+          type: string
+        room:
+          type: string
+          nullable: true
+        lecturerName:
+          type: string
+        groupName:
+          type: string
+        status:
+          type: string
+      required:
+      - courseName
+      - groupName
+      - lecturerName
+      - room
+      - status
+    Class:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        lecturer:
+          type: integer
+        course_group:
+          allOf:
+          - $ref: '#/components/schemas/CourseGroup'
+          readOnly: true
+        date_held:
+          type: string
+          format: date
+      required:
+      - course_group
+      - date_held
+      - id
+      - lecturer
+    Course:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        course_code:
+          type: string
+          maxLength: 30
+        name:
+          type: string
+          maxLength: 255
+        weekly_hours:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,1})?$
+        weeks_count:
+          type: integer
+          maximum: 32767
+          minimum: -32768
+        ects:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,1})?$
+        course_group:
+          type: integer
+          nullable: true
+        course_type:
+          $ref: '#/components/schemas/CourseTypeEnum'
+        faculty:
+          type: integer
+      required:
+      - course_code
+      - course_type
+      - faculty
+      - id
+      - name
+      - weekly_hours
+      - weeks_count
+    CourseGroup:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        course:
+          type: integer
+        name:
+          type: string
+          maxLength: 100
+        lecturer:
+          type: integer
+          nullable: true
+        weekday:
+          type: string
+          maxLength: 10
+        start_time:
+          type: string
+          format: time
+        max_students:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        end_time:
+          type: string
+          format: time
+        room:
+          type: string
+          maxLength: 50
+        semester:
+          type: integer
+      required:
+      - course
+      - end_time
+      - id
+      - name
+      - room
+      - semester
+      - start_time
+      - weekday
+    CourseTypeEnum:
+      enum:
+      - zal
+      - zst
+      - egz
+      - ekm
+      type: string
+      description: |-
+        * `zal` - Credit
+        * `zst` - Graded Credit
+        * `egz` - Exam
+        * `ekm` - Committee Exam
+    Faculty:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+          nullable: true
+        university:
+          type: integer
+      required:
+      - id
+      - name
+      - university
+    Lecturer:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          readOnly: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+        first_name:
+          type: string
+          readOnly: true
+        last_name:
+          type: string
+          readOnly: true
+        faculty:
+          type: integer
+        position:
+          type: integer
+          nullable: true
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+      required:
+      - email
+      - faculty
+      - first_name
+      - id
+      - last_name
+      - username
+    NullEnum:
+      enum:
+      - null
+    PaginatedClassList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Class'
+    PaginatedCourseGroupList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CourseGroup'
+    PaginatedCourseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Course'
+    PaginatedFacultyList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Faculty'
+    PaginatedLecturerList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Lecturer'
+    PaginatedPositionList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Position'
+    PaginatedScheduleList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Schedule'
+    PaginatedSemesterList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Semester'
+    PaginatedStudentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Student'
+    PaginatedUniversityList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/University'
+    PaginatedUniversityMembershipList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UniversityMembership'
+    PaginatedUserList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+    PatchedClass:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        lecturer:
+          type: integer
+        course_group:
+          allOf:
+          - $ref: '#/components/schemas/CourseGroup'
+          readOnly: true
+        date_held:
+          type: string
+          format: date
+    PatchedCourse:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        course_code:
+          type: string
+          maxLength: 30
+        name:
+          type: string
+          maxLength: 255
+        weekly_hours:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,1})?$
+        weeks_count:
+          type: integer
+          maximum: 32767
+          minimum: -32768
+        ects:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,1})?$
+        course_group:
+          type: integer
+          nullable: true
+        course_type:
+          $ref: '#/components/schemas/CourseTypeEnum'
+        faculty:
+          type: integer
+    PatchedCourseGroup:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        course:
+          type: integer
+        name:
+          type: string
+          maxLength: 100
+        lecturer:
+          type: integer
+          nullable: true
+        weekday:
+          type: string
+          maxLength: 10
+        start_time:
+          type: string
+          format: time
+        max_students:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        end_time:
+          type: string
+          format: time
+        room:
+          type: string
+          maxLength: 50
+        semester:
+          type: integer
+    PatchedFaculty:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+          nullable: true
+        university:
+          type: integer
+    PatchedLecturer:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          readOnly: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+        first_name:
+          type: string
+          readOnly: true
+        last_name:
+          type: string
+          readOnly: true
+        faculty:
+          type: integer
+        position:
+          type: integer
+          nullable: true
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+    PatchedPosition:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        hourly_rate:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,6}(?:\.\d{0,2})?$
+        workload:
+          allOf:
+          - $ref: '#/components/schemas/WorkloadEnum'
+          minimum: -2147483648
+          maximum: 2147483647
+    PatchedSchedule:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        lecturer:
+          type: integer
+          nullable: true
+        student:
+          type: integer
+          nullable: true
+        course_group:
+          type: integer
+        date:
+          type: string
+          format: date
+        start_time:
+          type: string
+          format: time
+        end_time:
+          type: string
+          format: time
+    PatchedSemester:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 50
+        faculty:
+          type: integer
+        type:
+          $ref: '#/components/schemas/TypeEnum'
+        academic_year:
+          type: string
+          maxLength: 9
+        start_date:
+          type: string
+          format: date
+        semester_groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/CourseGroup'
+          readOnly: true
+        end_date:
+          type: string
+          format: date
+    PatchedStudent:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          readOnly: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+        first_name:
+          type: string
+          readOnly: true
+        last_name:
+          type: string
+          readOnly: true
+        index_number:
+          type: string
+          maxLength: 20
+        field_of_study:
+          type: string
+          maxLength: 100
+        year_of_study:
+          type: integer
+          maximum: 32767
+          minimum: -32768
+        semester:
+          type: integer
+          nullable: true
+        faculty:
+          type: integer
+    PatchedUniversity:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+          nullable: true
+    PatchedUniversityMembership:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        university:
+          allOf:
+          - $ref: '#/components/schemas/University'
+          readOnly: true
+        university_id:
+          type: integer
+        position:
+          type: integer
+          nullable: true
+    PatchedUser:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        permissions:
+          nullable: true
+          readOnly: true
+          oneOf:
+          - $ref: '#/components/schemas/PermissionsEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        groups:
+          type: array
+          items:
+            type: string
+          readOnly: true
+        role:
+          type: string
+          readOnly: true
+    PermissionsEnum:
+      enum:
+      - account.add_emailaddress
+      - account.change_emailaddress
+      - account.delete_emailaddress
+      - account.view_emailaddress
+      - account.add_emailconfirmation
+      - account.change_emailconfirmation
+      - account.delete_emailconfirmation
+      - account.view_emailconfirmation
+      - admin.add_logentry
+      - admin.change_logentry
+      - admin.delete_logentry
+      - admin.view_logentry
+      - auth.add_group
+      - auth.change_group
+      - auth.delete_group
+      - auth.view_group
+      - auth.add_permission
+      - auth.change_permission
+      - auth.delete_permission
+      - auth.view_permission
+      - contenttypes.add_contenttype
+      - contenttypes.change_contenttype
+      - contenttypes.delete_contenttype
+      - contenttypes.view_contenttype
+      - sessions.add_session
+      - sessions.change_session
+      - sessions.delete_session
+      - sessions.view_session
+      - teaching.add_class
+      - teaching.change_class
+      - teaching.delete_class
+      - teaching.view_class
+      - teaching.add_course
+      - teaching.change_course
+      - teaching.delete_course
+      - teaching.view_course
+      - teaching.add_coursegroup
+      - teaching.change_coursegroup
+      - teaching.delete_coursegroup
+      - teaching.view_coursegroup
+      - teaching.add_schedule
+      - teaching.change_schedule
+      - teaching.delete_schedule
+      - teaching.view_schedule
+      - university.add_faculty
+      - university.change_faculty
+      - university.delete_faculty
+      - university.view_faculty
+      - university.add_position
+      - university.change_position
+      - university.delete_position
+      - university.view_position
+      - university.add_semester
+      - university.change_semester
+      - university.delete_semester
+      - university.view_semester
+      - university.add_university
+      - university.change_university
+      - university.delete_university
+      - university.view_university
+      - university.add_universitymembership
+      - university.change_universitymembership
+      - university.delete_universitymembership
+      - university.view_universitymembership
+      - users.add_lecturer
+      - users.change_lecturer
+      - users.delete_lecturer
+      - users.view_lecturer
+      - users.add_student
+      - users.change_student
+      - users.delete_student
+      - users.view_student
+      - users.add_user
+      - users.change_user
+      - users.delete_user
+      - users.view_user
+      type: string
+      description: |-
+        * `account.add_emailaddress` - account.add_emailaddress
+        * `account.change_emailaddress` - account.change_emailaddress
+        * `account.delete_emailaddress` - account.delete_emailaddress
+        * `account.view_emailaddress` - account.view_emailaddress
+        * `account.add_emailconfirmation` - account.add_emailconfirmation
+        * `account.change_emailconfirmation` - account.change_emailconfirmation
+        * `account.delete_emailconfirmation` - account.delete_emailconfirmation
+        * `account.view_emailconfirmation` - account.view_emailconfirmation
+        * `admin.add_logentry` - admin.add_logentry
+        * `admin.change_logentry` - admin.change_logentry
+        * `admin.delete_logentry` - admin.delete_logentry
+        * `admin.view_logentry` - admin.view_logentry
+        * `auth.add_group` - auth.add_group
+        * `auth.change_group` - auth.change_group
+        * `auth.delete_group` - auth.delete_group
+        * `auth.view_group` - auth.view_group
+        * `auth.add_permission` - auth.add_permission
+        * `auth.change_permission` - auth.change_permission
+        * `auth.delete_permission` - auth.delete_permission
+        * `auth.view_permission` - auth.view_permission
+        * `contenttypes.add_contenttype` - contenttypes.add_contenttype
+        * `contenttypes.change_contenttype` - contenttypes.change_contenttype
+        * `contenttypes.delete_contenttype` - contenttypes.delete_contenttype
+        * `contenttypes.view_contenttype` - contenttypes.view_contenttype
+        * `sessions.add_session` - sessions.add_session
+        * `sessions.change_session` - sessions.change_session
+        * `sessions.delete_session` - sessions.delete_session
+        * `sessions.view_session` - sessions.view_session
+        * `teaching.add_class` - teaching.add_class
+        * `teaching.change_class` - teaching.change_class
+        * `teaching.delete_class` - teaching.delete_class
+        * `teaching.view_class` - teaching.view_class
+        * `teaching.add_course` - teaching.add_course
+        * `teaching.change_course` - teaching.change_course
+        * `teaching.delete_course` - teaching.delete_course
+        * `teaching.view_course` - teaching.view_course
+        * `teaching.add_coursegroup` - teaching.add_coursegroup
+        * `teaching.change_coursegroup` - teaching.change_coursegroup
+        * `teaching.delete_coursegroup` - teaching.delete_coursegroup
+        * `teaching.view_coursegroup` - teaching.view_coursegroup
+        * `teaching.add_schedule` - teaching.add_schedule
+        * `teaching.change_schedule` - teaching.change_schedule
+        * `teaching.delete_schedule` - teaching.delete_schedule
+        * `teaching.view_schedule` - teaching.view_schedule
+        * `university.add_faculty` - university.add_faculty
+        * `university.change_faculty` - university.change_faculty
+        * `university.delete_faculty` - university.delete_faculty
+        * `university.view_faculty` - university.view_faculty
+        * `university.add_position` - university.add_position
+        * `university.change_position` - university.change_position
+        * `university.delete_position` - university.delete_position
+        * `university.view_position` - university.view_position
+        * `university.add_semester` - university.add_semester
+        * `university.change_semester` - university.change_semester
+        * `university.delete_semester` - university.delete_semester
+        * `university.view_semester` - university.view_semester
+        * `university.add_university` - university.add_university
+        * `university.change_university` - university.change_university
+        * `university.delete_university` - university.delete_university
+        * `university.view_university` - university.view_university
+        * `university.add_universitymembership` - university.add_universitymembership
+        * `university.change_universitymembership` - university.change_universitymembership
+        * `university.delete_universitymembership` - university.delete_universitymembership
+        * `university.view_universitymembership` - university.view_universitymembership
+        * `users.add_lecturer` - users.add_lecturer
+        * `users.change_lecturer` - users.change_lecturer
+        * `users.delete_lecturer` - users.delete_lecturer
+        * `users.view_lecturer` - users.view_lecturer
+        * `users.add_student` - users.add_student
+        * `users.change_student` - users.change_student
+        * `users.delete_student` - users.delete_student
+        * `users.view_student` - users.view_student
+        * `users.add_user` - users.add_user
+        * `users.change_user` - users.change_user
+        * `users.delete_user` - users.delete_user
+        * `users.view_user` - users.view_user
+    Position:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        hourly_rate:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,6}(?:\.\d{0,2})?$
+        workload:
+          allOf:
+          - $ref: '#/components/schemas/WorkloadEnum'
+          minimum: -2147483648
+          maximum: 2147483647
+      required:
+      - hourly_rate
+      - id
+      - name
+    Schedule:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        lecturer:
+          type: integer
+          nullable: true
+        student:
+          type: integer
+          nullable: true
+        course_group:
+          type: integer
+        date:
+          type: string
+          format: date
+        start_time:
+          type: string
+          format: time
+        end_time:
+          type: string
+          format: time
+      required:
+      - course_group
+      - date
+      - end_time
+      - id
+      - start_time
+    Semester:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 50
+        faculty:
+          type: integer
+        type:
+          $ref: '#/components/schemas/TypeEnum'
+        academic_year:
+          type: string
+          maxLength: 9
+        start_date:
+          type: string
+          format: date
+        semester_groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/CourseGroup'
+          readOnly: true
+        end_date:
+          type: string
+          format: date
+      required:
+      - academic_year
+      - end_date
+      - faculty
+      - id
+      - name
+      - semester_groups
+      - start_date
+      - type
+    StatusEnum:
+      enum:
+      - active
+      - inactive
+      - retired
+      type: string
+      description: |-
+        * `active` - Active
+        * `inactive` - Inactive
+        * `retired` - No longer employed
+    Student:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          readOnly: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+        first_name:
+          type: string
+          readOnly: true
+        last_name:
+          type: string
+          readOnly: true
+        index_number:
+          type: string
+          maxLength: 20
+        field_of_study:
+          type: string
+          maxLength: 100
+        year_of_study:
+          type: integer
+          maximum: 32767
+          minimum: -32768
+        semester:
+          type: integer
+          nullable: true
+        faculty:
+          type: integer
+      required:
+      - email
+      - faculty
+      - field_of_study
+      - first_name
+      - id
+      - index_number
+      - last_name
+      - username
+      - year_of_study
+    TypeEnum:
+      enum:
+      - winter
+      - summer
+      type: string
+      description: |-
+        * `winter` - Winter
+        * `summer` - Summer
+    University:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+          nullable: true
+      required:
+      - id
+      - name
+    UniversityMembership:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        university:
+          allOf:
+          - $ref: '#/components/schemas/University'
+          readOnly: true
+        university_id:
+          type: integer
+        position:
+          type: integer
+          nullable: true
+      required:
+      - id
+      - university
+      - university_id
+      - user
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        permissions:
+          nullable: true
+          readOnly: true
+          oneOf:
+          - $ref: '#/components/schemas/PermissionsEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        groups:
+          type: array
+          items:
+            type: string
+          readOnly: true
+        role:
+          type: string
+          readOnly: true
+      required:
+      - email
+      - groups
+      - id
+      - permissions
+      - role
+      - username
+    WorkloadEnum:
+      enum:
+      - 40
+      - 20
+      - 30
+      type: integer
+      description: |-
+        * `40` - Full (40h)
+        * `20` - Half (20h)
+        * `30` - Three quarter (30h)
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid

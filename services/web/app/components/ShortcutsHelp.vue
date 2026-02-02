@@ -55,7 +55,7 @@ const items = computed(() =>
       kbds: ["s"],
       label: t("feature.shortcuts.toggleDashboardSidebar"),
     },
-    isEnabled("aiChat") && {
+    {
       kbds: ["a"],
       label: t("feature.shortcuts.toggleAIChat"),
     },
@@ -67,7 +67,7 @@ const items = computed(() =>
       kbds: ["c", "e"],
       label: t("feature.shortcuts.createEmployee"),
     },
-  ].filter(truthy)
+  ].filter(truthy),
 );
 </script>
 <template>

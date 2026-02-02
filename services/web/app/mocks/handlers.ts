@@ -1,9 +1,9 @@
 import { http, HttpResponse } from "msw";
-import { createUsers, createInsitution } from "~/mocks/fixtures";
+import { createUsers, createInstitution } from "~/mocks/fixtures";
 import { createCourses } from "./fixtures/courses";
 
 const courses = createCourses.bulk(6);
-const institutions = createInsitution.bulk(2);
+const universities = createInstitution.bulk(2);
 const users = createUsers.bulk(6);
 const user = users[0]!;
 
@@ -37,7 +37,7 @@ const authHandlers = [
         headers: {
           "Set-Cookie": [sessionCookie].join("; "),
         },
-      }
+      },
     );
   }),
   http.post(apiUrl("/auth/login"), async (req) => {
@@ -53,7 +53,7 @@ const authHandlers = [
         headers: {
           "Set-Cookie": [sessionCookie].join("; "),
         },
-      }
+      },
     );
   }),
   http.post(apiUrl("/auth/logout"), () => {
@@ -64,7 +64,7 @@ const authHandlers = [
         headers: {
           "Set-Cookie": [expireCookie].join("; "),
         },
-      }
+      },
     );
   }),
 ];
@@ -110,42 +110,42 @@ const employeesHandlers = [
   }),
 ];
 
-const institutionsHandlers = [
-  http.get(apiUrl("/institutions"), () => {
-    return HttpResponse.json(institutions);
+const universitiesHandlers = [
+  http.get(apiUrl("/universities"), () => {
+    return HttpResponse.json(universities);
   }),
-  http.get(apiUrl(/\/institutions\/\d+/), (req) => {
+  http.get(apiUrl(/\/universities\/\d+/), (req) => {
     const url = new URL(req.request.url);
     const id = Number(url.pathname.split("/").pop());
-    const institution = institutions.find((v) => v.id === id);
+    const university = universities.find((v) => v.id === id);
 
-    if (institution) {
-      return HttpResponse.json(institution);
+    if (university) {
+      return HttpResponse.json(university);
     }
 
     return HttpNotFound();
   }),
-  http.post(apiUrl("/institutions"), async ({ request }) => {
+  http.post(apiUrl("/universities"), async ({ request }) => {
     const data = (await request.json()) as object;
 
-    const newInstitution = {
+    const newUniversity = {
       id: Math.floor(Math.random() * 1000) + 3,
       ...data,
     };
 
-    return HttpResponse.json(newInstitution, { status: 201 });
+    return HttpResponse.json(newUniversity, { status: 201 });
   }),
-  http.put(apiUrl(/\/institutions\/\d+/), async (req) => {
+  http.put(apiUrl(/\/universities\/\d+/), async (req) => {
     const url = new URL(req.request.url);
     const id = Number(url.pathname.split("/").pop());
     const data = (await req.request.json()) as object;
 
-    const updatedInstitution = {
+    const updatedUniversity = {
       id,
       ...data,
     };
 
-    return HttpResponse.json(updatedInstitution);
+    return HttpResponse.json(updatedUniversity);
   }),
 ];
 
@@ -185,6 +185,6 @@ export const handlers = [
   ...corsHandlers,
   ...authHandlers,
   ...employeesHandlers,
-  ...institutionsHandlers,
+  ...universitiesHandlers,
   ...courseHandlers,
 ];

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import FirstSetupForm from "~/features/first-setup/FirstSetupForm.vue";
+import FirstSetupWizard from "~/features/first-setup/FirstSetupWizard.vue";
 
 definePageMeta({
   layout: "auth",
 });
 </script>
 <template>
-  <FirstSetupForm />
+  <FirstSetupWizard />
 </template>

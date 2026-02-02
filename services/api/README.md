@@ -23,3 +23,9 @@ Create superuser
 ```sh
 python3 manage.py createsuperuser
 ```
+
+## Generate OpenApi schema
+
+```sh
+python manage.py spectacular --color --file schema.yml
+```

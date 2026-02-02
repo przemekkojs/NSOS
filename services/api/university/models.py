@@ -5,6 +5,9 @@ from django.db import models
 class Faculty(models.Model):
     name = models.CharField(max_length=200, unique=True)
     description = models.TextField(blank=True, null=True)
+    university = models.ForeignKey(
+        "University", on_delete=models.CASCADE, related_name="faculties"
+    )
 
     class Meta:
         verbose_name = "Faculty"

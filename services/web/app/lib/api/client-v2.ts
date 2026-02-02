@@ -7,6 +7,13 @@ export interface AllauthRequestOptions {
   [key: string]: unknown;
 }
 
+export type Paginated<T> = {
+  count: number;
+  next: number;
+  previous: number;
+  results: T[];
+};
+
 export class AllauthApiClient {
   private baseURL: string | undefined;
 
@@ -28,7 +35,7 @@ export class AllauthApiClient {
 
   async request<T = unknown>(
     endpoint: string,
-    options: AllauthRequestOptions = {}
+    options: AllauthRequestOptions = {},
   ) {
     const csrfToken = this.getCsrfToken();
     const method = options.method || "GET";

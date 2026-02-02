@@ -32,14 +32,33 @@ const columns = computed<TableColumn<Course>[]>(() => [
   },
 ]);
 
+const user = useUserStore();
+const permissions = {
+  view: user.hasPermission("teaching.view_course"),
+  delete: user.hasPermission("teaching.delete_class"),
+  change: user.hasPermission("teaching.change_class"),
+};
+
 definePageMeta({
   permission: "teaching.view_course",
 });
 </script>
 <template>
-  <UTable :data="data" :loading="isFetching" :columns>
+  <PermissionGuard permission="teaching.add_course">
+    <div class="flex gap-2">
+      <UButton to="/courses/create" :label="$t('button.create')" />
+    </div>
+  </PermissionGuard>
+  <UTable :data="data?.results" :loading="isFetching" :columns>
     <template #actions-cell="{ row }">
-      <UDropdownMenu :items="getDropdownActions(row.original)">
+      <UDropdownMenu
+        :items="
+          getDropdownActions({
+            ...row.original,
+            ...permissions,
+          })
+        "
+      >
         <UButton
           icon="i-lucide-ellipsis-vertical"
           color="neutral"

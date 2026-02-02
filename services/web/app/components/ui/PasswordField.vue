@@ -1,17 +1,21 @@
 <script setup lang="ts">
-import type { InputProps } from '@nuxt/ui'
+const model = defineModel<string>();
 
-const model = defineModel<string>()
-
-interface PasswordInputProps extends Omit<InputProps, 'model' | 'modelValue'> {
-  show?: boolean
-  label?: string
-  name?: string
+interface PasswordInputProps {
+  show?: boolean;
+  label?: string;
+  name?: string;
+  placeholder?: string;
 }
-const { show = false, label=undefined, name = undefined,  ...props } = defineProps<PasswordInputProps>()
+const {
+  show = false,
+  label = undefined,
+  name = undefined,
+  ...props
+} = defineProps<PasswordInputProps>();
 
-const type = computed(() => (show ? 'text' : 'password'))
-const color = 'primary'
+const type = computed(() => (show ? "text" : "password"));
+const color = "primary";
 </script>
 <template>
   <UFormField

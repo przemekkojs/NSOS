@@ -12,6 +12,7 @@ export const createFaculty = createFactory<Faculty>((overrides = {}) => {
     id: faker.number.int(),
     name: faker.helpers.arrayElement(FACULTIES),
     description: faker.lorem.sentence(),
+    university: 1, // FIXME:
   };
 
   return Object.assign(faculty, overrides);

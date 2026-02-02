@@ -5,38 +5,38 @@ defineProps<{
   collapsed?: boolean;
 }>();
 
-const teams = ref<
-  {
-    label: string;
-    avatar: {
-      src: string;
-      alt: string;
-    };
-  }[]
->([]);
-const selectedTeam = ref(teams.value[0]);
+const { data: universities } = useUniversities();
+
+const selectedUni = ref(universities.value?.results[0]);
 const { t } = useI18n();
 const route = useLocaleRoute();
-const { isEnabled } = useFeatureFlagsStore();
 const { hasPermission } = useUserStore();
 
 const items = computed<DropdownMenuItem[][]>(() => {
+  const additionalItems = [
+    hasPermission("university.add_university") && {
+      label: t("page.university.create.title"),
+      icon: "i-lucide-circle-plus",
+      to: route({ name: "universities-create" }).path,
+    },
+  ];
+
+  if (!universities.value) {
+    return [additionalItems.filter(truthy)];
+  }
+
   return [
-    teams.value.map((team) => ({
-      ...team,
-      onSelect() {
-        selectedTeam.value = team;
-      },
-    })),
-    [
-      isEnabled("institutions") &&
-        // @ts-expect-error TODO: implement institutions
-        hasPermission("institutions.add_institution") && {
-          label: t("page.institution.create.title"),
-          icon: "i-lucide-circle-plus",
-          to: route({ name: "institutions-create" }).path,
+    universities.value.results.map(
+      (uni): DropdownMenuItem => ({
+        label: uni.name,
+        ...uni,
+        description: uni.description || undefined,
+        onSelect() {
+          selectedUni.value = uni;
         },
-    ].filter(truthy),
+      }),
+    ),
+    additionalItems.filter(truthy),
   ];
 });
 </script>
@@ -50,8 +50,8 @@ const items = computed<DropdownMenuItem[][]>(() => {
   >
     <UButton
       v-bind="{
-        ...selectedTeam,
-        label: collapsed ? undefined : selectedTeam?.label,
+        ...selectedUni,
+        label: collapsed ? undefined : selectedUni?.name,
         trailingIcon: collapsed ? undefined : 'i-lucide-chevrons-up-down',
       }"
       color="neutral"
